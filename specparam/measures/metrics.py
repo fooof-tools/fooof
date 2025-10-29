@@ -6,19 +6,62 @@ from specparam.measures.error import (compute_mean_abs_error, compute_mean_squar
 from specparam.measures.gof import compute_r_squared, compute_adj_r_squared
 
 ###################################################################################################
+## ERROR METRICS
+
+error_mae = Metric(
+    category='error',
+    measure='mae',
+    func=compute_mean_abs_error,
+)
+
+error_mse = Metric(
+    category='error',
+    measure='mse',
+    func=compute_mean_squared_error
+)
+
+error_rmse = Metric(
+    category='error',
+    measure='rmse',
+    func=compute_root_mean_squared_error,
+)
+
+error_medae = Metric(
+    category='error',
+    measure='medae',
+    func=compute_median_abs_error,
+)
+
 ###################################################################################################
+## GOF
+
+gof_rsquared = Metric(
+    category='gof',
+    measure='rsquared',
+    func=compute_r_squared,
+)
+
+gof_adjrsquared = Metric(
+    category='gof',
+    measure='adjrsquared',
+    func=compute_adj_r_squared,
+    kwargs={'n_params' : lambda data, results: \
+            results.params.periodic.params.size + results.params.aperiodic.params.size},
+)
+
+###################################################################################################
+## COLLECT ALL METRICS TOGETHER
 
 METRICS = {
 
     # Available error metrics
-    'error_mae' : Metric('error', 'mae', compute_mean_abs_error),
-    'error_mse' : Metric('error', 'mse', compute_mean_squared_error),
-    'error_rmse' : Metric('error', 'rmse', compute_root_mean_squared_error),
-    'error_medae' : Metric('error', 'medae', compute_median_abs_error),
+    'error_mae' : error_mae,
+    'error_mse' : error_mse,
+    'error_rmse' : error_rmse,
+    'error_medae' : error_medae,
 
     # Available GOF / r-squared metrics
-    'gof_rsquared' : Metric('gof', 'rsquared', compute_r_squared),
-    'gof_adjrsquared' : Metric('gof', 'adjrsquared', compute_adj_r_squared, \
-        {'n_params' : lambda data, results: \
-            results.params.periodic.params.size + results.params.aperiodic.params.size})
+    'gof_rsquared' : gof_rsquared,
+    'gof_adjrsquared' : gof_adjrsquared,
+
 }
