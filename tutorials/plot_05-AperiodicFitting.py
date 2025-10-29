@@ -14,8 +14,8 @@ from specparam import SpectralModel
 from specparam.utils.download import load_example_data
 
 ###################################################################################################
-# Aperiodic Fitting Approaches
-# ----------------------------
+# Aperiodic Fit Modes
+# -------------------
 #
 # There are currently two approaches for fitting the aperiodic component:
 #
@@ -38,6 +38,96 @@ from specparam.utils.download import load_example_data
 # the aperiodic component. This indicates that there is not a single 1/f property across
 # all frequencies, but rather a 'bend' in the aperiodic component. For these cases, fitting
 # should be done using an extra parameter to capture this, using the 'knee' mode.
+#
+
+
+
+
+
+###################################################################################################
+# Relating Exponents to Power Spectrum Slope
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# Another way to measure 1/f properties in neural power spectra is to measure the slope
+# of the spectrum in log-log spacing, fitting a linear equation as:
+#
+# .. math::
+#    L(log(F)) = aF + b
+#
+# Where:
+#
+# - :math:`a` is the power spectrum slope
+# - :math:`b` is the offset
+# - :math:`F` is the array of frequency values
+#
+# In this formulation, the data is considered in log-log space, meaning the frequency values
+# are also in log space. Since 1/f is a straight line in log-log spacing, this approach captures
+# 1/f activity.
+#
+# This is equivalent to the power spectrum model in this module, when fitting with no knee,
+# with a direct relationship between the slope (:math:`a`) and the exponent (:math:`\chi`):
+#
+# .. math::
+#    \chi = -a
+#
+
+
+
+
+
+###################################################################################################
+# Mathematical Description of the Aperiodic Component
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# To fit the aperiodic component, we will use the function :math:`L`:
+#
+# .. math::
+#    L(F) = b - \log(k + F^\chi)
+#
+# Note that this function is fit on the semi-log power spectrum, meaning linear frequencies
+# and :math:`log_{10}` power values.
+#
+# In this formulation, the parameters :math:`b`, :math:`k`, and :math:`\chi`
+# define the aperiodic component, as:
+#
+# - :math:`b` is the broadband 'offset'
+# - :math:`k` is the 'knee'
+# - :math:`\chi` is the 'exponent' of the aperiodic fit
+# - :math:`F` is the array of frequency values
+#
+# Note that fitting the knee parameter is optional. If used, the knee parameter defines a
+# 'bend' in the aperiodic `1/f` like component of the data. If not used, the 'knee'
+# parameter is set to zero.
+#
+# This function form is technically described as a Lorentzian function. We use the option
+# of adding a knee parameter, since even though neural data is often discussed in terms
+# of having `1/f` activity, there is often not a single `1/f` characteristic, especially
+# across broader frequency ranges. Therefore, using this function form allows for modeling
+# bends in the power spectrum of the aperiodic component, if and when they occur.
+#
+# Note that if we were to want the equivalent function in linear power, using :math:`AP`
+# to indicate the aperiodic component in linear spacing, it would be:
+#
+# .. math::
+#    AP(F) = 10^b * \frac{1}{(k + F^\chi)}
+#
+
+
+
+
+
+
+
+
+
+
+
+
+
+###################################################################################################
+#
+#
+#
 #
 
 ###################################################################################################
@@ -119,8 +209,8 @@ fm.report(freqs, spectrum, [2, 70], plt_log=True)
 #
 
 ###################################################################################################
-# Choosing an Aperiodic Fitting Procedure
-# ---------------------------------------
+# Choosing an Aperiodic Fit Mode
+# ------------------------------
 #
 # It is important to choose the appropriate aperiodic fitting approach for your data.
 #

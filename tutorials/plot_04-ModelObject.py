@@ -1,5 +1,5 @@
 """
-04: Exploring the model object
+XX: Exploring the model object
 ==============================
 
 Further exploring the SpectralModel object, including algorithm settings and available methods.
