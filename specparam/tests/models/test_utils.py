@@ -6,7 +6,7 @@ import numpy as np
 
 from specparam import SpectralGroupModel
 from specparam.sim import sim_group_power_spectra
-from specparam.measures.metrics import METRICS
+from specparam.metrics.definitions import METRICS
 from specparam.modutils.errors import NoModelError, IncompatibleSettingsError
 
 from specparam.tests.tdata import default_group_params

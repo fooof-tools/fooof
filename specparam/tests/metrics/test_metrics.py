@@ -1,35 +1,15 @@
-"""Tests for specparam.objs.metrics."""
+"""Tests for specparam.metrics.metrics"""
 
 from pytest import raises
 
-from specparam.measures.error import compute_mean_abs_error
-from specparam.measures.gof import compute_r_squared, compute_adj_r_squared
+from specparam.metrics.metric import Metric
+from specparam.metrics.error import compute_mean_abs_error
+from specparam.metrics.gof import compute_r_squared, compute_adj_r_squared
 
-from specparam.objs.metrics import *
+from specparam.metrics.metrics import *
 
 ###################################################################################################
 ###################################################################################################
-
-def test_metric(tfm):
-
-    metric = Metric('error', 'mae', compute_mean_abs_error)
-    assert isinstance(metric, Metric)
-    assert isinstance(metric.label, str)
-
-    metric.compute_metric(tfm.data, tfm.results)
-    assert isinstance(metric.result, float)
-
-def test_metric_kwargs(tfm):
-
-    metric = Metric('gof', 'ar2', compute_adj_r_squared,
-                    {'n_params' : lambda data, results: \
-                        results.params.periodic.params.size + results.params.aperiodic.params.size})
-
-    assert isinstance(metric, Metric)
-    assert isinstance(metric.label, str)
-
-    metric.compute_metric(tfm.data, tfm.results)
-    assert isinstance(metric.result, float)
 
 def test_metrics_null():
 
@@ -38,8 +18,8 @@ def test_metrics_null():
 
 def test_metrics_obj(tfm):
 
-    er_metric = Metric('error', 'mae', compute_mean_abs_error)
-    gof_metric = Metric('gof', 'rsquared', compute_r_squared)
+    er_metric = Metric('error', 'mae', 'Description.', compute_mean_abs_error)
+    gof_metric = Metric('gof', 'rsquared', 'Description.', compute_r_squared)
 
     metrics = Metrics([er_metric, gof_metric])
     assert isinstance(metrics, Metrics)
@@ -61,8 +41,10 @@ def test_metrics_obj(tfm):
 
 def test_metrics_dict(tfm):
 
-    er_met_def = {'category' : 'error', 'measure' : 'mae', 'func' : compute_mean_abs_error}
-    gof_met_def = {'category' : 'gof', 'measure' : 'rsquared', 'func' : compute_r_squared}
+    er_met_def = {'category' : 'error', 'measure' : 'mae',
+                  'description' : 'Description.', 'func' : compute_mean_abs_error}
+    gof_met_def = {'category' : 'gof', 'measure' : 'rsquared',
+                   'description' : 'Description.', 'func' : compute_r_squared}
 
     metrics = Metrics([er_met_def, gof_met_def])
     assert isinstance(metrics, Metrics)
@@ -79,8 +61,10 @@ def test_metrics_dict(tfm):
 
 def test_metrics_kwargs(tfm):
 
-    er_met_def = {'category' : 'error', 'measure' : 'mae', 'func' : compute_mean_abs_error}
+    er_met_def = {'category' : 'error', 'measure' : 'mae',
+                  'description' : 'Description.', 'func' : compute_mean_abs_error}
     ar2_met_def = {'category' : 'gof', 'measure' : 'arsquared',
+                   'description' : 'Description.',
                    'func' : compute_adj_r_squared,
                    'kwargs' : {'n_params' : lambda data, results: \
                         results.params.periodic.params.size + results.params.aperiodic.params.size}}

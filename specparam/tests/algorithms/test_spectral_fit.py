@@ -1,8 +1,8 @@
 """Tests for specparam.algorthms.spectral_fit."""
 
 from specparam.models.base import BaseModel
-from specparam.objs.data import Data
-from specparam.objs.results import Results
+from specparam.data.data import Data
+from specparam.results.results import Results
 from specparam.sim import sim_power_spectrum
 from specparam.algorithms.algorithm import Algorithm
 

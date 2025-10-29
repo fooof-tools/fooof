@@ -7,15 +7,15 @@ import numpy as np
 
 from specparam.bands.bands import check_bands
 from specparam.modes.modes import Modes
-from specparam.objs.metrics import Metrics
-from specparam.objs.params import ModelParameters
-from specparam.objs.components import ModelComponents
-from specparam.measures.metrics import METRICS
+from specparam.results.params import ModelParameters
+from specparam.results.components import ModelComponents
+from specparam.metrics.metrics import Metrics
+from specparam.metrics.definitions import METRICS
 from specparam.utils.checks import check_inds, check_array_dim
 from specparam.modutils.errors import NoModelError
 from specparam.modutils.docs import (copy_doc_func_to_method, docs_get_section,
                                      replace_docstring_sections)
-from specparam.data.data import FitResults
+from specparam.data.stores import FitResults
 from specparam.data.conversions import group_to_dict, event_group_to_dict
 from specparam.data.utils import (get_model_params, get_group_params, get_group_metrics,
                                   get_results_by_ind, get_results_by_row)
@@ -37,8 +37,8 @@ class Results():
         Modes object with fit mode definitions.
     metrics : Metrics
         Metrics object with metric definitions.
-    bands : Bands
-        Bands object with band definitions.
+    bands : Bands or dict or int or None
+        Bands object with band definitions, or definition that can be turned into a Bands object.
 
     Attributes
     ----------

@@ -8,8 +8,9 @@ Methods without defined docstrings import docs at runtime, from aliased external
 import numpy as np
 
 from specparam.models.base import BaseModel
-from specparam.objs.data import Data
-from specparam.objs.results import Results
+from specparam.data.data import Data
+from specparam.data.conversions import model_to_dataframe
+from specparam.results.results import Results
 from specparam.algorithms.spectral_fit import SpectralFitAlgorithm, SPECTRAL_FIT_SETTINGS_DEF
 from specparam.reports.save import save_model_report
 from specparam.reports.strings import gen_model_results_str
@@ -19,7 +20,6 @@ from specparam.modutils.docs import (copy_doc_func_to_method, replace_docstring_
 from specparam.io.files import load_json
 from specparam.io.models import save_model
 from specparam.plts.model import plot_model
-from specparam.data.conversions import model_to_dataframe
 
 ###################################################################################################
 ###################################################################################################
@@ -38,6 +38,13 @@ class SpectralModel(BaseModel):
         Which approach to take for fitting the aperiodic component.
     periodic_mode : {'gaussian', 'skewed_gaussian', 'cauchy'}
         Which approach to take for fitting the periodic component.
+    metrics : Metrics or list of Metric or list or str
+        Metrics definition(s) to use to evaluate the model.
+    bands : Bands or dict or int or None, optional
+        Bands object with band definitions, or definition that can be turned into a Bands object.
+    debug : bool, optional, default: False
+        Whether to run in debug mode.
+        If in debug, any errors encountered during fitting will raise an error.
     verbose : bool, optional, default: True
         Verbosity mode. If True, prints out warnings and general status updates.
     **model_kwargs
