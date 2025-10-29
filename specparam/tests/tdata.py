@@ -4,7 +4,7 @@ import numpy as np
 
 from specparam.bands import Bands
 from specparam.modes.modes import Modes
-from specparam.data.data import FitResults
+from specparam.data.stores import FitResults
 from specparam.models import (SpectralModel, SpectralGroupModel,
                               SpectralTimeModel, SpectralTimeEventModel)
 from specparam.objs.data import Data, Data2D

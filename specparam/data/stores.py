@@ -1,4 +1,4 @@
-"""Data objects.
+"""Data stores to store data related information.
 
 Notes on data objects:
 - these data objects are NamedTuples, immutable data types with attribute labels

@@ -1,8 +1,8 @@
-"""Tests for the specparam.data.data."""
+"""Tests for the specparam.data.stores."""
 
 import numpy as np
 
-from specparam.data.data import *
+from specparam.data.stores import *
 
 ###################################################################################################
 ###################################################################################################

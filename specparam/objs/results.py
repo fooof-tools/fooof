@@ -15,7 +15,7 @@ from specparam.utils.checks import check_inds, check_array_dim
 from specparam.modutils.errors import NoModelError
 from specparam.modutils.docs import (copy_doc_func_to_method, docs_get_section,
                                      replace_docstring_sections)
-from specparam.data.data import FitResults
+from specparam.data.stores import FitResults
 from specparam.data.conversions import group_to_dict, event_group_to_dict
 from specparam.data.utils import (get_model_params, get_group_params, get_group_metrics,
                                   get_results_by_ind, get_results_by_row)

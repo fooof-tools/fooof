@@ -3,7 +3,7 @@
 import numpy as np
 
 from specparam.sim import gen_freqs
-from specparam.data.data import FitResults
+from specparam.data.stores import FitResults
 from specparam.utils.checks import check_input_options
 from specparam.models import (SpectralModel, SpectralGroupModel,
                               SpectralTimeModel, SpectralTimeEventModel)
