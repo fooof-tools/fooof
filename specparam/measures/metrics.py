@@ -11,24 +11,28 @@ from specparam.measures.gof import compute_r_squared, compute_adj_r_squared
 error_mae = Metric(
     category='error',
     measure='mae',
+    description='Mean absolute error of the model fit to the data.',
     func=compute_mean_abs_error,
 )
 
 error_mse = Metric(
     category='error',
     measure='mse',
+    description='Mean squared error of the model fit to the data.',
     func=compute_mean_squared_error
 )
 
 error_rmse = Metric(
     category='error',
     measure='rmse',
+    description='Root mean squared error of the model fit to the data.',
     func=compute_root_mean_squared_error,
 )
 
 error_medae = Metric(
     category='error',
     measure='medae',
+    description='Median absolute error of the model fit to the data.',
     func=compute_median_abs_error,
 )
 
@@ -38,12 +42,14 @@ error_medae = Metric(
 gof_rsquared = Metric(
     category='gof',
     measure='rsquared',
+    description='R-squared between the model fit and the data.',
     func=compute_r_squared,
 )
 
 gof_adjrsquared = Metric(
     category='gof',
     measure='adjrsquared',
+    description='Adjusted R-squared between the model fit and the data.',
     func=compute_adj_r_squared,
     kwargs={'n_params' : lambda data, results: \
             results.params.periodic.params.size + results.params.aperiodic.params.size},
