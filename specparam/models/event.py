@@ -3,19 +3,18 @@
 import numpy as np
 
 from specparam.models import SpectralModel, SpectralTimeModel
-from specparam.objs.results import Results3D
+from specparam.results.results import Results3D
+from specparam.results.utils import run_parallel_event, pbar
 from specparam.data.data import Data3D
-from specparam.plts.event import plot_event_model
 from specparam.data.conversions import event_group_to_dataframe, dict_to_df
 from specparam.data.utils import flatten_results_dict
 from specparam.modutils.docs import (copy_doc_func_to_method, docs_get_section,
                                      replace_docstring_sections)
 from specparam.reports.save import save_event_report
 from specparam.reports.strings import gen_event_results_str
-
+from specparam.plts.event import plot_event_model
 from specparam.io.utils import get_files
 from specparam.io.models import save_event
-from specparam.objs.utils import run_parallel_event, pbar
 from specparam.utils.checks import check_inds
 
 ###################################################################################################

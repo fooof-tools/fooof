@@ -1,8 +1,8 @@
-"""Tests for specparam.objs.params."""
+"""Tests for specparam.results.params."""
 
 import numpy as np
 
-from specparam.objs.params import *
+from specparam.results.params import *
 
 ###################################################################################################
 ###################################################################################################

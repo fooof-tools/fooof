@@ -9,8 +9,9 @@ import numpy as np
 
 from specparam.models import SpectralModel
 from specparam.data.data import Data2D
-from specparam.objs.results import Results2D
-from specparam.objs.utils import run_parallel_group, pbar
+from specparam.data.conversions import group_to_dataframe
+from specparam.results.results import Results2D
+from specparam.results.utils import run_parallel_group, pbar
 from specparam.plts.group import plot_group_model
 from specparam.io.models import save_group
 from specparam.io.files import load_jsonlines
@@ -18,7 +19,6 @@ from specparam.reports.save import save_group_report
 from specparam.reports.strings import gen_group_results_str
 from specparam.modutils.docs import (copy_doc_func_to_method,
                                      docs_get_section, replace_docstring_sections)
-from specparam.data.conversions import group_to_dataframe
 from specparam.utils.checks import check_inds
 
 ###################################################################################################

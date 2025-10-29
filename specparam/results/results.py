@@ -7,8 +7,8 @@ import numpy as np
 
 from specparam.bands.bands import check_bands
 from specparam.modes.modes import Modes
-from specparam.objs.params import ModelParameters
-from specparam.objs.components import ModelComponents
+from specparam.results.params import ModelParameters
+from specparam.results.components import ModelComponents
 from specparam.metrics.metrics import Metrics
 from specparam.metrics.definitions import METRICS
 from specparam.utils.checks import check_inds, check_array_dim

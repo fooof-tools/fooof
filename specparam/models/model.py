@@ -9,7 +9,8 @@ import numpy as np
 
 from specparam.models.base import BaseModel
 from specparam.data.data import Data
-from specparam.objs.results import Results
+from specparam.data.conversions import model_to_dataframe
+from specparam.results.results import Results
 from specparam.algorithms.spectral_fit import SpectralFitAlgorithm, SPECTRAL_FIT_SETTINGS_DEF
 from specparam.reports.save import save_model_report
 from specparam.reports.strings import gen_model_results_str
@@ -19,7 +20,6 @@ from specparam.modutils.docs import (copy_doc_func_to_method, replace_docstring_
 from specparam.io.files import load_json
 from specparam.io.models import save_model
 from specparam.plts.model import plot_model
-from specparam.data.conversions import model_to_dataframe
 
 ###################################################################################################
 ###################################################################################################
