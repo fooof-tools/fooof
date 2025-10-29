@@ -8,7 +8,7 @@ Methods without defined docstrings import docs at runtime, from aliased external
 import numpy as np
 
 from specparam.models import SpectralModel
-from specparam.objs.data import Data2D
+from specparam.data.data import Data2D
 from specparam.objs.results import Results2D
 from specparam.objs.utils import run_parallel_group, pbar
 from specparam.plts.group import plot_group_model

@@ -2,7 +2,7 @@
 
 from specparam.models import SpectralModel, SpectralGroupModel
 from specparam.objs.results import Results2DT
-from specparam.objs.data import Data2DT
+from specparam.data.data import Data2DT
 from specparam.data.conversions import group_to_dataframe, dict_to_df
 from specparam.data.utils import get_results_by_ind
 from specparam.io.models import save_time

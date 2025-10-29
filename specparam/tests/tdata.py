@@ -4,10 +4,10 @@ import numpy as np
 
 from specparam.bands import Bands
 from specparam.modes.modes import Modes
+from specparam.data.data import Data, Data2D
 from specparam.data.stores import FitResults
 from specparam.models import (SpectralModel, SpectralGroupModel,
                               SpectralTimeModel, SpectralTimeEventModel)
-from specparam.objs.data import Data, Data2D
 from specparam.sim.params import param_sampler
 from specparam.sim.sim import sim_power_spectrum, sim_group_power_spectra, sim_spectrogram
 

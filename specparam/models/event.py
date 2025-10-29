@@ -4,7 +4,7 @@ import numpy as np
 
 from specparam.models import SpectralModel, SpectralTimeModel
 from specparam.objs.results import Results3D
-from specparam.objs.data import Data3D
+from specparam.data.data import Data3D
 from specparam.plts.event import plot_event_model
 from specparam.data.conversions import event_group_to_dataframe, dict_to_df
 from specparam.data.utils import flatten_results_dict

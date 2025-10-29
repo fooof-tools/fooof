@@ -1,10 +1,10 @@
-"""Tests for specparam.objs.data."""
+"""Tests for specparam.data.data."""
 
 from specparam.data import SpectrumMetaData, ModelChecks
 
 from specparam.tests.tutils import plot_test
 
-from specparam.objs.data import *
+from specparam.data.data import *
 
 ###################################################################################################
 ###################################################################################################
