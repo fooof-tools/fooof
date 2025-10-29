@@ -88,7 +88,6 @@ class Mode():
     def check_params(self):
         """Check the description of the parameters for the current mode."""
 
-        print('Parameters for the {} component in {} mode:'.format(\
-            self.component, self.name))
+        print('Parameters for the {} mode:'.format(self.name))
         for pkey, desc in self.params.descriptions.items():
-            print('\t{:15s} {:s}'.format(pkey, desc))
+            print('    {:15s} {:s}'.format(pkey, desc))

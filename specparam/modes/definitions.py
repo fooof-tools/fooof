@@ -148,3 +148,13 @@ PE_MODES = {
     'skewed_gaussian' : pe_skewnorm,
     'cauchy' : pe_cauchy,
 }
+
+###################################################################################################
+## ALL MODES
+
+# Collect a store of all available modes
+
+MODES = {
+    'aperiodic' : AP_MODES,
+    'periodic' : PE_MODES,
+}
