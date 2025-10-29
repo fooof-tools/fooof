@@ -38,6 +38,13 @@ class SpectralModel(BaseModel):
         Which approach to take for fitting the aperiodic component.
     periodic_mode : {'gaussian', 'skewed_gaussian', 'cauchy'}
         Which approach to take for fitting the periodic component.
+    metrics : Metrics or list of Metric or list or str
+        Metrics definition(s) to use to evaluate the model.
+    bands : Bands or dict or int or None, optional
+        Bands object with band definitions, or definition that can be turned into a Bands object.
+    debug : bool, optional, default: False
+        Whether to run in debug mode.
+        If in debug, any errors encountered during fitting will raise an error.
     verbose : bool, optional, default: True
         Verbosity mode. If True, prints out warnings and general status updates.
     **model_kwargs

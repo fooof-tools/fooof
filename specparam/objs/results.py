@@ -37,8 +37,8 @@ class Results():
         Modes object with fit mode definitions.
     metrics : Metrics
         Metrics object with metric definitions.
-    bands : Bands
-        Bands object with band definitions.
+    bands : Bands or dict or int or None
+        Bands object with band definitions, or definition that can be turned into a Bands object.
 
     Attributes
     ----------
