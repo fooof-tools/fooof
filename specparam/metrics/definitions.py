@@ -71,3 +71,11 @@ METRICS = {
     'gof_adjrsquared' : gof_adjrsquared,
 
 }
+
+
+def check_metrics():
+    """Check the set of available metrics."""
+
+    print('Available metrics:')
+    for metric in METRICS.values():
+        print('    {:8s} {:12s} : {:s}'.format(metric.category, metric.measure, metric.description))
