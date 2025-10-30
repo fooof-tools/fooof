@@ -10,26 +10,84 @@ Choosing and using different modes for fitting the aperiodic component.
 # Import the model object
 from specparam import SpectralModel
 
+# Import function to check available list of modes
+from specparam.modes.definitions import check_modes
+
 # Import a utility to download and load example data
 from specparam.utils.download import load_example_data
 
 ###################################################################################################
-# Aperiodic Fitting Approaches
-# ----------------------------
+# Component Fit Modes
+# -------------------
 #
-# There are currently two approaches for fitting the aperiodic component:
+# Just like for the periodic mode, the aperiodic component has different fit modes that
+# can be applied to the data.
 #
-# - Fitting with just an offset and a exponent, equivalent to a linear fit in log-log space
-#
-#   - `aperiodic_mode` = 'fixed'
-# - Including a 'knee' parameter, reflecting a fit with a bend, in log-log space
-#
-#   - `aperiodic_mode` = 'knee'
+
+###################################################################################################
+
+# Check the available aperiodic fit modes
+check_modes('aperiodic')
+
+###################################################################################################
+# Aperiodic Fit Mode: fixed
+# -------------------------
 #
 # Fitting in the 'fixed' mode assumes a single 1/f like characteristic to the aperiodic
 # component, meaning it looks linear across all frequencies in log-log space.
 #
-# Though this assumption is true across *some* frequency ranges in neural data, it generally
+# The 'fixed' aperiodic mode fits the aperiodic component with an offset and a exponent,
+# using the following definition:
+#
+# .. math::
+#    L(F) = b - \log(F^\chi)
+#
+# Note that this is the default aperiodic fit mode,
+# and the one we have been using in the previous examples.
+#
+
+###################################################################################################
+
+fm1 = SpectralModel(aperiodic_mode='fixed')
+
+###################################################################################################
+# Relating Exponents to Power Spectrum Slope
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# The 'fixed' mode is equivalent to a linear fit in log-log space
+#
+# Another way to measure 1/f properties in neural power spectra is to measure the slope
+# of the spectrum in log-log spacing, fitting a linear equation as:
+#
+# .. math::
+#    L(log(F)) = aF + b
+#
+# Where:
+#
+# - :math:`a` is the power spectrum slope
+# - :math:`b` is the offset
+# - :math:`F` is the array of frequency values
+#
+# In this formulation, the data is considered in log-log space, meaning the frequency values
+# are also in log space. Since 1/f is a straight line in log-log spacing, this approach captures
+# 1/f activity.
+#
+# This is equivalent to the power spectrum model in this module, when fitting with no knee,
+# with a direct relationship between the slope (:math:`a`) and the exponent (:math:`\chi`):
+#
+# .. math::
+#    \chi = -a
+#
+
+###################################################################################################
+# Aperiodic Fit Mode: knee
+# ------------------------
+#
+# Another available aperiodic fit mode is the 'knee' mode, which includes a 'knee' parameter,
+# reflecting a fit with a bend, in log-log space.
+#
+# Adding a knee is done because also the although the assumption of a linear log-log property
+# is typically true across *some* frequency ranges in neural data, it generally
 # does not hold up across broad frequency ranges. If fitting is done in the 'fixed' mode,
 # but the assumption of a single 1/f is violated, then fitting will go wrong.
 #
@@ -38,6 +96,44 @@ from specparam.utils.download import load_example_data
 # the aperiodic component. This indicates that there is not a single 1/f property across
 # all frequencies, but rather a 'bend' in the aperiodic component. For these cases, fitting
 # should be done using an extra parameter to capture this, using the 'knee' mode.
+#
+
+###################################################################################################
+
+# Initialize a new spectral model with the knee aperiodic mode
+fm2 = SpectralModel(aperiodic_mode='knee')
+
+###################################################################################################
+# Mathematical Description of the Aperiodic Component
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# To fit the aperiodic component with a knee, we will use the following function :math:`L`:
+#
+# .. math::
+#    L(F) = b - \log(k + F^\chi)
+#
+# Note that this function is fit on the semi-log power spectrum, meaning linear frequencies
+# and :math:`log_{10}` power values.
+#
+# In this formulation, the parameters :math:`b`, :math:`k`, and :math:`\chi`
+# define the aperiodic component, as:
+#
+# - :math:`b` is the broadband 'offset'
+# - :math:`k` is the 'knee'
+# - :math:`\chi` is the 'exponent' of the aperiodic fit
+# - :math:`F` is the array of frequency values
+#
+# This function form is technically described as a Lorentzian function. We use the option
+# of adding a knee parameter, since even though neural data is often discussed in terms
+# of having `1/f` activity, there is often not a single `1/f` characteristic, especially
+# across broader frequency ranges. Therefore, using this function form allows for modeling
+# bends in the power spectrum of the aperiodic component, if and when they occur.
+#
+# Note that if we were to want the equivalent function in linear power, using :math:`AP`
+# to indicate the aperiodic component in linear spacing, it would be:
+#
+# .. math::
+#    AP(F) = 10^b * \frac{1}{(k + F^\chi)}
 #
 
 ###################################################################################################
@@ -119,8 +215,8 @@ fm.report(freqs, spectrum, [2, 70], plt_log=True)
 #
 
 ###################################################################################################
-# Choosing an Aperiodic Fitting Procedure
-# ---------------------------------------
+# Choosing an Aperiodic Fit Mode
+# ------------------------------
 #
 # It is important to choose the appropriate aperiodic fitting approach for your data.
 #

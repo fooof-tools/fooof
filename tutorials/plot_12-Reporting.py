@@ -1,5 +1,5 @@
 """
-10: Reporting & Referencing
+12: Reporting & Referencing
 ===========================
 
 This section covers how to access reporting info and reference use of the module.
@@ -162,6 +162,11 @@ methods_report_info(fg)
 methods_report_text(fg)
 
 ###################################################################################################
+# Conclusion
+# ----------
 #
-# That concludes the example of using the helper utilities for generating methods reports!
+# This is the end of the main tutorial materials!
+#
+# If you are having any troubles, please submit an issue on Github
+# `here <https://github.com/fooof-tools/fooof>`_.
 #

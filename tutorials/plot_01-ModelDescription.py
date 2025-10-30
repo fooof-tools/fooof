@@ -2,7 +2,7 @@
 01: Model Description
 =====================
 
-A description of and introduction to the power spectrum model.
+A description of and introduction to the spectral parameterization module.
 """
 
 ###################################################################################################
@@ -11,8 +11,8 @@ A description of and introduction to the power spectrum model.
 #
 # Welcome to the tutorials!
 #
-# In this first tutorial, we will introduce an overview and description of power spectrum
-# model, as well as visualizing some examples.
+# In this first tutorial, we will introduce an overview and description of the
+# spectral parameterization module, as well as visualizing some examples.
 #
 # Keep in mind as you go, that if you want more information that describes, motivates, and
 # justifies our modeling approach, you can also check out the associated
@@ -29,15 +29,15 @@ A description of and introduction to the power spectrum model.
 # First, we will import and run some code to simulate some example power spectra, and
 # fit some power spectrum models to them, to use as examples.
 #
-# For the purpose of this tutorial, you don't need to know how this code works
-# yet, and can skip past reading the code itself.
+# Note that for the purpose of this tutorial, you don't need to know exactly how this code works
+# yet, as the details of what is happening will be clarified across the rest of the tutorials.
 #
 
 ###################################################################################################
 
 # sphinx_gallery_thumbnail_number = 5
 
-# Import required code for visualizing example models
+# Import required code for simulating and visualizing example models
 from specparam import SpectralModel
 from specparam.sim import sim_power_spectrum
 from specparam.sim.utils import set_random_seed
@@ -208,26 +208,6 @@ plot_annotated_model(fm1, annotate_aperiodic=False)
 #
 
 ###################################################################################################
-# Mathematical Description of the Periodic Component
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#
-# To fit this periodic activity - the regions of power over above the aperiodic component,
-# or 'peaks' - the model uses Gaussians. As we've seen, there can be multiple peaks in the model.
-#
-# Each Gaussian, :math:`n`, referred to as :math:`G(F)_n`, is of the form:
-#
-# .. math::
-#    G(F)_n = a * exp (\frac{- (F - c)^2}{2 * w^2})
-#
-# This describes each peak in terms of parameters `a`, `c` and `w`, where:
-#
-# - :math:`a` is the height of the peak, over and above the aperiodic component
-# - :math:`c` is the center frequency of the peak
-# - :math:`w` is the width of the peak
-# - :math:`F` is the array of frequency values
-#
-
-###################################################################################################
 # Aperiodic Component
 # -------------------
 #
@@ -258,43 +238,6 @@ plot_annotated_model(fm1, annotate_peaks=False)
 #
 
 ###################################################################################################
-# Mathematical Description of the Aperiodic Component
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#
-# To fit the aperiodic component, we will use the function :math:`L`:
-#
-# .. math::
-#    L(F) = b - \log(k + F^\chi)
-#
-# Note that this function is fit on the semi-log power spectrum, meaning linear frequencies
-# and :math:`log_{10}` power values.
-#
-# In this formulation, the parameters :math:`b`, :math:`k`, and :math:`\chi`
-# define the aperiodic component, as:
-#
-# - :math:`b` is the broadband 'offset'
-# - :math:`k` is the 'knee'
-# - :math:`\chi` is the 'exponent' of the aperiodic fit
-# - :math:`F` is the array of frequency values
-#
-# Note that fitting the knee parameter is optional. If used, the knee parameter defines a
-# 'bend' in the aperiodic `1/f` like component of the data. If not used, the 'knee'
-# parameter is set to zero.
-#
-# This function form is technically described as a Lorentzian function. We use the option
-# of adding a knee parameter, since even though neural data is often discussed in terms
-# of having `1/f` activity, there is often not a single `1/f` characteristic, especially
-# across broader frequency ranges. Therefore, using this function form allows for modeling
-# bends in the power spectrum of the aperiodic component, if and when they occur.
-#
-# Note that if we were to want the equivalent function in linear power, using :math:`AP`
-# to indicate the aperiodic component in linear spacing, it would be:
-#
-# .. math::
-#    AP(F) = 10^b * \frac{1}{(k + F^\chi)}
-#
-
-###################################################################################################
 # A Note on Logging
 # ~~~~~~~~~~~~~~~~~
 #
@@ -315,33 +258,6 @@ plot_annotated_model(fm1, annotate_peaks=False)
 
 # Plot the power spectrum model, in log-log space
 plot_annotated_model(fm1, plt_log=True)
-
-###################################################################################################
-# Relating Exponents to Power Spectrum Slope
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#
-# Another way to measure 1/f properties in neural power spectra is to measure the slope
-# of the spectrum in log-log spacing, fitting a linear equation as:
-#
-# .. math::
-#    L(log(F)) = aF + b
-#
-# Where:
-#
-# - :math:`a` is the power spectrum slope
-# - :math:`b` is the offset
-# - :math:`F` is the array of frequency values
-#
-# In this formulation, the data is considered in log-log space, meaning the frequency values
-# are also in log space. Since 1/f is a straight line in log-log spacing, this approach captures
-# 1/f activity.
-#
-# This is equivalent to the power spectrum model in this module, when fitting with no knee,
-# with a direct relationship between the slope (:math:`a`) and the exponent (:math:`\chi`):
-#
-# .. math::
-#    \chi = -a
-#
 
 ###################################################################################################
 # Fitting Knees
@@ -374,14 +290,19 @@ plot_annotated_model(fm2, plt_log=True)
 #
 # So far, we have explored how neural power spectra, :math:`NPS`, across a set of frequencies
 # :math:`F` can be modeled as a combination of an aperiodic component, :math:`L`, and the
-# periodic component, which is comprised of `N` peaks, where each :math:`G_n` is a Gaussian.
+# periodic component (P), which is comprised of a group of `N` peaks.
 #
-# To summarize, the full model is:
+# To summarize, the full model, in abstract terms, is:
 #
 # .. math::
-#    NPS(F) = L(F) + G(F)_n
+#    NPS(F) = L(F) + P(F)_n
 #
-# where:
+# In further tutorials we will dig into the details of choosing specific fit functions
+# to instantiate this model. For now, using the defaults as above, we have
+# been fitting a model that uses fits the the aperiodic component as a Lorentzian,
+# and the periodic component as Gaussians.
+#
+# Using these fit functions, the model has this form:
 #
 # .. math::
 #    L(F) = b - \log(k + F^\chi) \quad \quad G(F)_n = a * exp (\frac{- (F - c)^2}{2 * w^2})
