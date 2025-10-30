@@ -273,27 +273,27 @@ fm.plot(plt_log)
 #
 # Stored model components:
 #
-# - Aperiodic Component: ``_ap_fit``
+# - Aperiodic Component (``SpectralModel.results.model.get_component('aperiodic')``)
 #
 #   - This is the aperiodic-only fit of the data.
 #   - It is computed by generating a reconstruction of the measured aperiodic parameters
 #
-# - Periodic Component: ``_peak_fit``
+# - Periodic Component: (``SpectralModel.results.model.get_component('peak')``)
 #
 #   - This is the periodic-only (or peak) fit of the data.
 #   - It is computed by generating a reconstruction of the measured periodic (peak) parameters
 #
 # Stored data attributes:
 #
-# - Flattened Spectrum: ``_spectrum_flat``
+# - Flattened Spectrum: (``SpectralModel.get_data('aperiodic')``)
 #
 #   - The original data, with the aperiodic component removed
-#   - This is computed as ``power_spectrum`` - ``_ap_fit``
+#   - This is computed as the power_spectrum minus the model aperiodic fit
 #
-# - Peak Removed Spectrum: ``_spectrum_peak_rm``
+# - Peak Removed Spectrum: (``SpectralModel.get_data('aperiodic')``)
 #
 #   - The original data, with the periodic component (peaks) removed
-#   - This is computed as ``power_spectrum`` - ``_peak_fit``
+#   - This is computed as the power_spectrum minus the model peak fit
 #
 
 ###################################################################################################

@@ -162,6 +162,11 @@ methods_report_info(fg)
 methods_report_text(fg)
 
 ###################################################################################################
+# Conclusion
+# ----------
 #
-# That concludes the example of using the helper utilities for generating methods reports!
+# This is the end of the main tutorial materials!
+#
+# If you are having any troubles, please submit an issue on Github
+# `here <https://github.com/fooof-tools/fooof>`_.
 #

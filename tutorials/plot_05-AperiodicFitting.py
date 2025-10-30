@@ -33,12 +33,17 @@ check_modes('aperiodic')
 # Aperiodic Fit Mode: fixed
 # -------------------------
 #
-# The 'fixed' aperiodic mode fits the aperiodic component with an offset and a exponent,
-#
 # Fitting in the 'fixed' mode assumes a single 1/f like characteristic to the aperiodic
 # component, meaning it looks linear across all frequencies in log-log space.
 #
-# This is the default aperiodic fit mode, and the one we have been using in the previous examples.
+# The 'fixed' aperiodic mode fits the aperiodic component with an offset and a exponent,
+# using the following definition:
+#
+# .. math::
+#    L(F) = b - \log(F^\chi)
+#
+# Note that this is the default aperiodic fit mode,
+# and the one we have been using in the previous examples.
 #
 
 ###################################################################################################
@@ -74,7 +79,6 @@ fm1 = SpectralModel(aperiodic_mode='fixed')
 #    \chi = -a
 #
 
-
 ###################################################################################################
 # Aperiodic Fit Mode: knee
 # ------------------------
@@ -82,11 +86,8 @@ fm1 = SpectralModel(aperiodic_mode='fixed')
 # Another available aperiodic fit mode is the 'knee' mode, which includes a 'knee' parameter,
 # reflecting a fit with a bend, in log-log space.
 #
-# Adding a knee is done because
-#
-
-#
-# Though this assumption is true across *some* frequency ranges in neural data, it generally
+# Adding a knee is done because also the although the assumption of a linear log-log property
+# is typically true across *some* frequency ranges in neural data, it generally
 # does not hold up across broad frequency ranges. If fitting is done in the 'fixed' mode,
 # but the assumption of a single 1/f is violated, then fitting will go wrong.
 #
@@ -99,13 +100,14 @@ fm1 = SpectralModel(aperiodic_mode='fixed')
 
 ###################################################################################################
 
+# Initialize a new spectral model with the knee aperiodic mode
 fm2 = SpectralModel(aperiodic_mode='knee')
 
 ###################################################################################################
 # Mathematical Description of the Aperiodic Component
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# To fit the aperiodic component, we will use the function :math:`L`:
+# To fit the aperiodic component with a knee, we will use the following function :math:`L`:
 #
 # .. math::
 #    L(F) = b - \log(k + F^\chi)
@@ -120,10 +122,6 @@ fm2 = SpectralModel(aperiodic_mode='knee')
 # - :math:`k` is the 'knee'
 # - :math:`\chi` is the 'exponent' of the aperiodic fit
 # - :math:`F` is the array of frequency values
-#
-# Note that fitting the knee parameter is optional. If used, the knee parameter defines a
-# 'bend' in the aperiodic `1/f` like component of the data. If not used, the 'knee'
-# parameter is set to zero.
 #
 # This function form is technically described as a Lorentzian function. We use the option
 # of adding a knee parameter, since even though neural data is often discussed in terms

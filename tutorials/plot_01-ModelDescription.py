@@ -290,14 +290,19 @@ plot_annotated_model(fm2, plt_log=True)
 #
 # So far, we have explored how neural power spectra, :math:`NPS`, across a set of frequencies
 # :math:`F` can be modeled as a combination of an aperiodic component, :math:`L`, and the
-# periodic component, which is comprised of `N` peaks, where each :math:`G_n` is a Gaussian.
+# periodic component (P), which is comprised of a group of `N` peaks.
 #
-# To summarize, the full model is:
+# To summarize, the full model, in abstract terms, is:
 #
 # .. math::
-#    NPS(F) = L(F) + G(F)_n
+#    NPS(F) = L(F) + P(F)_n
 #
-# where:
+# In further tutorials we will dig into the details of choosing specific fit functions
+# to instantiate this model. For now, using the defaults as above, we have
+# been fitting a model that uses fits the the aperiodic component as a Lorentzian,
+# and the periodic component as Gaussians.
+#
+# Using these fit functions, the model has this form:
 #
 # .. math::
 #    L(F) = b - \log(k + F^\chi) \quad \quad G(F)_n = a * exp (\frac{- (F - c)^2}{2 * w^2})

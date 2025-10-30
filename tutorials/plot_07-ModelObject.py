@@ -102,17 +102,6 @@ fm = SpectralModel()
 # used and the peak search will halt when a candidate peak fails to pass either the absolute,
 # or relative threshold.
 #
-# Aperiodic Mode
-# ~~~~~~~~~~~~~~
-#
-# **aperiodic_mode (string)** default='fixed'
-#
-# The fitting approach to use for the aperiodic component.
-#
-# Options:
-#   - 'fixed' : fits without a knee parameter (with the knee parameter 'fixed' at 0)
-#   - 'knee' : fits the full exponential equation, including the 'knee' parameter
-#
 # Verbosity
 # ~~~~~~~~~
 #
@@ -157,10 +146,10 @@ fm = SpectralModel(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_height=0.15
 # - ``freq_range``: the frequency range of the data
 # - ``freq_res``: the frequency resolution of the data
 #
-# During the fit procedure, interim (hidden) data variables are also created and used.
+# Note that these are all stored in a data object that is stored as a component of the
+# overall model object (``SpectralModel.data``).
 #
-# There is also an indicator attribute, ``has_data`` which indicates
-# if the current object has data loaded.
+# During the fit procedure, interim (hidden) data variables are also created and used.
 #
 
 ###################################################################################################
@@ -177,16 +166,22 @@ fm.add_data(freqs, spectrum, freq_range)
 
 ###################################################################################################
 
-# Check if the object has data loaded
-print('Has data loaded: ', fm.data.has_data)
-
-###################################################################################################
-
 # Check out the data attributes in the object
 print('Frequency Range: \t', fm.data.freq_range)
 print('Frequency Resolution: \t', fm.data.freq_res)
 print('Frequency Values: \t', fm.data.freqs[0:5])
 print('Power Values: \t\t', fm.data.power_spectrum[0:5])
+
+###################################################################################################
+#
+# There is also an indicator attribute, ``has_data`` which indicates
+# if the current object has data loaded.
+#
+
+###################################################################################################
+
+# Check if the object has data loaded
+print('Has data loaded: ', fm.data.has_data)
 
 ###################################################################################################
 #
@@ -207,26 +202,19 @@ fm.fit()
 # Recall that by convention, any attributes that contain model results are
 # indicated by a trailing underscore.
 #
-# The model results stored by the object are:
+# The model parameter results stored by the object include:
 #
-# - ``aperiodic_params_``: a list of aperiodic parameters, stored as [Offset, (Knee), Exponent]
-# - ``peak_params_``: all periodic parameters, where each row is a peak, as [CF, PW, BW]
-# - ``r_squared_``: the r-squared of the model, as compared to the original data
-# - ``error_``: the error of the model, as compared to the original data
+# - ``aperiodic_params``: a list of aperiodic parameters, stored as [Offset, (Knee), Exponent]
+# - ``peak_params``: all periodic parameters, where each row is a peak, as [CF, PW, BW]
 #
-# Other attributes which store outputs from the model are:
+# The model object also computes and stores metrics to assess the model:
 #
-# - ``modeled_spectrum_``: the full model reconstruction
-# - ``n_peaks_``: a helper attribute which indicates how many peaks were fit in the model
+# - ``gof``: goodness of fit measures of the model, as compared to the original data
+# - ``error``: the error measures of the model, as compared to the original data
 #
-# The :class:`~specparam.SpectralModel` object also has an indicator attribute, ``has_model``
-# which indicates if the current object has model results available.
+# Note that these are all stored in a results object that is stored as a component of the
+# overall model object (``SpectralModel.results``).
 #
-
-###################################################################################################
-
-# Check if the object has model results
-print('Has model results: ', fm.results.has_model)
 
 ###################################################################################################
 
@@ -237,6 +225,17 @@ print('peak params: \t', fm.results.params.periodic.params)
 # Print out metrics model fit results parameters
 print('fit error: \t', fm.results.metrics.results['error_mae'])
 print('r-squared: \t', fm.results.metrics.results['gof_rsquared'])
+
+###################################################################################################
+#
+# The :class:`~specparam.SpectralModel` object also has an indicator attribute, ``has_model``
+# which indicates if the current object has model results available.
+#
+
+###################################################################################################
+
+# Check if the object has model results
+print('Has model results: ', fm.results.has_model)
 
 ###################################################################################################
 # 4) Methods

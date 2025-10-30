@@ -261,12 +261,10 @@ print(exps)
 # page.
 #
 
+
 ###################################################################################################
-# Conclusion
-# ----------
 #
-# This is the end of the main tutorial materials!
+# That concludes this brief discussion of further analyses.
 #
-# If you are having any troubles, please submit an issue on Github
-# `here <https://github.com/fooof-tools/fooof>`_.
+# See the Examples page for more overviews of analyses ideas and utilities.
 #
