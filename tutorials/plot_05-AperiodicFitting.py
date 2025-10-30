@@ -10,43 +10,46 @@ Choosing and using different modes for fitting the aperiodic component.
 # Import the model object
 from specparam import SpectralModel
 
+# Import function to check available list of modes
+from specparam.modes.definitions import check_modes
+
 # Import a utility to download and load example data
 from specparam.utils.download import load_example_data
 
 ###################################################################################################
-# Aperiodic Fit Modes
+# Component Fit Modes
 # -------------------
 #
-# There are currently two approaches for fitting the aperiodic component:
+# Just like for the periodic mode, the aperiodic component has different fit modes that
+# can be applied to the data.
 #
-# - Fitting with just an offset and a exponent, equivalent to a linear fit in log-log space
+
+###################################################################################################
+
+# Check the available aperiodic fit modes
+check_modes('aperiodic')
+
+###################################################################################################
+# Aperiodic Fit Mode: fixed
+# -------------------------
 #
-#   - `aperiodic_mode` = 'fixed'
-# - Including a 'knee' parameter, reflecting a fit with a bend, in log-log space
-#
-#   - `aperiodic_mode` = 'knee'
+# The 'fixed' aperiodic mode fits the aperiodic component with an offset and a exponent,
 #
 # Fitting in the 'fixed' mode assumes a single 1/f like characteristic to the aperiodic
 # component, meaning it looks linear across all frequencies in log-log space.
 #
-# Though this assumption is true across *some* frequency ranges in neural data, it generally
-# does not hold up across broad frequency ranges. If fitting is done in the 'fixed' mode,
-# but the assumption of a single 1/f is violated, then fitting will go wrong.
-#
-# Broad frequency ranges (typically ranges greater than ~40 Hz range) typically do not
-# have a single 1/f, as assumed by 'fixed' mode, as they typically exhibit a 'bend' in
-# the aperiodic component. This indicates that there is not a single 1/f property across
-# all frequencies, but rather a 'bend' in the aperiodic component. For these cases, fitting
-# should be done using an extra parameter to capture this, using the 'knee' mode.
+# This is the default aperiodic fit mode, and the one we have been using in the previous examples.
 #
 
+###################################################################################################
 
-
-
+fm1 = SpectralModel(aperiodic_mode='fixed')
 
 ###################################################################################################
 # Relating Exponents to Power Spectrum Slope
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# The 'fixed' mode is equivalent to a linear fit in log-log space
 #
 # Another way to measure 1/f properties in neural power spectra is to measure the slope
 # of the spectrum in log-log spacing, fitting a linear equation as:
@@ -72,8 +75,31 @@ from specparam.utils.download import load_example_data
 #
 
 
+###################################################################################################
+# Aperiodic Fit Mode: knee
+# ------------------------
+#
+# Another available aperiodic fit mode is the 'knee' mode, which includes a 'knee' parameter,
+# reflecting a fit with a bend, in log-log space.
+#
+# Adding a knee is done because
+#
 
+#
+# Though this assumption is true across *some* frequency ranges in neural data, it generally
+# does not hold up across broad frequency ranges. If fitting is done in the 'fixed' mode,
+# but the assumption of a single 1/f is violated, then fitting will go wrong.
+#
+# Broad frequency ranges (typically ranges greater than ~40 Hz range) typically do not
+# have a single 1/f, as assumed by 'fixed' mode, as they typically exhibit a 'bend' in
+# the aperiodic component. This indicates that there is not a single 1/f property across
+# all frequencies, but rather a 'bend' in the aperiodic component. For these cases, fitting
+# should be done using an extra parameter to capture this, using the 'knee' mode.
+#
 
+###################################################################################################
+
+fm2 = SpectralModel(aperiodic_mode='knee')
 
 ###################################################################################################
 # Mathematical Description of the Aperiodic Component
@@ -110,24 +136,6 @@ from specparam.utils.download import load_example_data
 #
 # .. math::
 #    AP(F) = 10^b * \frac{1}{(k + F^\chi)}
-#
-
-
-
-
-
-
-
-
-
-
-
-
-
-###################################################################################################
-#
-#
-#
 #
 
 ###################################################################################################
