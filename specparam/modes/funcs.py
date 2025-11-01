@@ -35,8 +35,8 @@ def gaussian_function(xs, *params):
     return ys
 
 
-def skewnorm_function(xs, *params):
-    """Skewed normal distribution fitting function.
+def skewed_gaussian_function(xs, *params):
+    """Skewed gaussian fitting function.
 
     Parameters
     ----------
