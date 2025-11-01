@@ -5,7 +5,7 @@ from collections import OrderedDict
 from specparam.modes.mode import Mode
 from specparam.modes.params import ParamDefinition
 from specparam.modes.funcs import (expo_function, expo_nk_function, double_expo_function,
-                                   gaussian_function, skewnorm_function, cauchy_function)
+                                   gaussian_function, skewed_gaussian_function, cauchy_function)
 from specparam.modes.jacobians import jacobian_gauss
 
 ###################################################################################################
@@ -118,7 +118,7 @@ pe_skewed_gaussian = Mode(
     name='skewed_gaussian',
     component='periodic',
     description='Skewed Gaussian peak fit function.',
-    func=skewnorm_function,
+    func=skewed_gaussian_function,
     jacobian=None,
     params=params_skewed_gaussian,
     ndim=2,
