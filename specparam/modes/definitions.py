@@ -11,7 +11,8 @@ from specparam.modes.jacobians import jacobian_gauss
 ###################################################################################################
 ## APERIODIC MODES
 
-# Fixed
+## AP - Fixed Mode
+
 params_fixed = ParamDefinition(OrderedDict({
     'offset' : 'Offset of the aperiodic component.',
     'exponent' : 'Exponent of the aperiodic component.',
@@ -30,7 +31,8 @@ ap_fixed = Mode(
 )
 
 
-# Knee
+## AP - Knee Mode
+
 params_knee = ParamDefinition(OrderedDict({
     'offset' : 'Offset of the aperiodic component.',
     'knee' : 'Knee of the aperiodic component.',
@@ -50,8 +52,9 @@ ap_knee = Mode(
 )
 
 
-# Double exponent
-params_double_exp = ParamDefinition(OrderedDict({
+## AP - Double Exponent Mode
+
+params_doublexp = ParamDefinition(OrderedDict({
     'offset' : 'Offset of the aperiodic component.',
     'exponent0' : 'Exponent of the aperiodic component, before the knee.',
     'knee' : 'Knee of the aperiodic component.',
@@ -64,7 +67,7 @@ ap_doublexp = Mode(
     description='Fit an function with 2 exponents and a knee.',
     func=double_expo_function,
     jacobian=None,
-    params=params_double_exp,
+    params=params_doublexp,
     ndim=1,
     freq_space='linear',
     powers_space='log10',
@@ -81,7 +84,8 @@ AP_MODES = {
 ###################################################################################################
 ## PERIODIC MODES
 
-# Gaussian
+## PE - Gaussian Mode
+
 params_gauss = ParamDefinition(OrderedDict({
     'cf' : 'Center frequency of the peak.',
     'pw' : 'Power of the peak, over and above the aperiodic component.',
@@ -101,28 +105,30 @@ pe_gaussian = Mode(
 )
 
 
-# Skewed Gaussian
-params_skew = ParamDefinition(OrderedDict({
+## PE - Skewed Gaussian Mode
+
+params_skewed_gaussian = ParamDefinition(OrderedDict({
     'cf' : 'Center frequency of the peak.',
     'pw' : 'Power of the peak, over and above the aperiodic component.',
     'bw' : 'Bandwidth of the peak.',
     'skew' : 'Skewness of the peak.',
 }))
 
-pe_skewnorm = Mode(
-    name='skewnorm',
+pe_skewed_gaussian = Mode(
+    name='skewed_gaussian',
     component='periodic',
     description='Skewed Gaussian peak fit function.',
     func=skewnorm_function,
     jacobian=None,
-    params=params_skew,
+    params=params_skewed_gaussian,
     ndim=2,
     freq_space='linear',
     powers_space='log10',
 )
 
 
-# Cauchy
+## PE - Cauchy Mode
+
 params_cauchy = ParamDefinition(OrderedDict({
     'cf' : 'Center frequency of the peak.',
     'pw' : 'Power of the peak, over and above the aperiodic component.',
@@ -145,7 +151,7 @@ pe_cauchy = Mode(
 # Collect available periodic modes
 PE_MODES = {
     'gaussian' : pe_gaussian,
-    'skewed_gaussian' : pe_skewnorm,
+    'skewed_gaussian' : pe_skewed_gaussian,
     'cauchy' : pe_cauchy,
 }
 
