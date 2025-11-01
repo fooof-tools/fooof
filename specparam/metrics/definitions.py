@@ -51,8 +51,7 @@ gof_adjrsquared = Metric(
     measure='adjrsquared',
     description='Adjusted R-squared between the model fit and the data.',
     func=compute_adj_r_squared,
-    kwargs={'n_params' : lambda data, results: \
-            results.params.periodic.params.size + results.params.aperiodic.params.size},
+    kwargs={'n_params' : lambda data, results: results.n_params},
 )
 
 ###################################################################################################
