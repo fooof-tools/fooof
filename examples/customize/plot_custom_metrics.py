@@ -75,6 +75,7 @@ def compute_total_error(power_spectrum, modeled_spectrum):
 # information the :class:`~specparam.metrics.metric` object is used to define a metric.
 #
 # The Metric object requires the following information:
+#
 # - `category`: a description of what kind of metric it is
 # - `measure`: a label for the specific measure that is defined
 # - `description`: a description of the custom metric

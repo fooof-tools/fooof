@@ -111,6 +111,15 @@ An object for defining fit modes.
 
    Mode
 
+Associated objects allow for defining mode parameters.
+
+.. currentmodule:: specparam.modes.params
+
+.. autosummary::
+   :toctree: generated/
+
+   ParamDefinition
+
 Metrics
 ~~~~~~~
 

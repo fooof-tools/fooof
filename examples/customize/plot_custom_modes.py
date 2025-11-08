@@ -7,6 +7,8 @@ This example covers defining and using custom fit modes.
 
 # sphinx_gallery_thumbnail_number = 3
 
+# Import functionality used to define custom fit modes
+from collections import OrderedDict
 import numpy as np
 
 # Import the model object
@@ -14,9 +16,6 @@ from specparam import SpectralModel
 
 # Import function to simulate a power spectrum
 from specparam.sim import sim_power_spectrum
-
-# Import OrderedDict, used in mode definition
-from collections import OrderedDict
 
 # Import objects used to define a custom mode
 from specparam.modes.mode import Mode
