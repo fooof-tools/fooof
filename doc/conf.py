@@ -4,6 +4,7 @@
 #
 # For a full list of documentation options, see:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
+#
 
 
 # ----------------------------------------------------------------------------
@@ -80,6 +81,7 @@ pygments_style = 'sphinx'
 # Settings for sphinx_copybutton
 copybutton_prompt_text = "$ "
 
+
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.
@@ -126,6 +128,7 @@ html_static_path = ["_static"]
 def setup(app):
    app.add_css_file("my-styles.css")
 
+
 # -- Extension configuration -------------------------------------------------
 
 # Configurations for sphinx gallery
@@ -136,6 +139,7 @@ sphinx_gallery_conf = {
                                         '../examples/manage',
                                         '../examples/models',
                                         '../examples/plots',
+                                        '../examples/customize',
                                         '../examples/sims',
                                         '../examples/analyses',
                                         '../motivations/concepts',
