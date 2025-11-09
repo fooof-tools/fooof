@@ -43,6 +43,8 @@ class SpectralModel(BaseModel):
         Which approach to take for fitting the periodic component.
     algorithm : {'spectral_fit'} or Algorithm
         The fitting algorithm to use.
+    algorithm_settings : dict
+        Setting for the algorithm.
     metrics : Metrics or list of Metric or list or str
         Metrics definition(s) to use to evaluate the model.
     bands : Bands or dict or int or None, optional
@@ -77,7 +79,8 @@ class SpectralModel(BaseModel):
       as this will give better model fits.
     """
 
-    def __init__(self, aperiodic_mode='fixed', periodic_mode='gaussian', algorithm='spectral_fit',
+    def __init__(self, aperiodic_mode='fixed', periodic_mode='gaussian',
+                 algorithm='spectral_fit', algorithm_settings=None,
                  metrics=None, bands=None, debug=False, verbose=True, **model_kwargs):
         """Initialize model object."""
 
@@ -87,8 +90,10 @@ class SpectralModel(BaseModel):
 
         self.results = Results(modes=self.modes, metrics=metrics, bands=bands)
 
+        algorithm_settings = {} if algorithm_settings is None else algorithm_settings
         self.algorithm = check_algorithm_definition(algorithm, ALGORITHMS)(
-            **model_kwargs, modes=self.modes, data=self.data, results=self.results, debug=debug)
+            **algorithm_settings, modes=self.modes, data=self.data,
+            results=self.results, debug=debug, **model_kwargs)
 
 
     @replace_docstring_sections([docs_get_section(Data.add_data.__doc__, 'Parameters'),

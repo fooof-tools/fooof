@@ -66,7 +66,7 @@ class Algorithm():
         self.set_debug(debug)
 
 
-    def _fit_prechecks(self):
+    def _fit_prechecks(self, verbose):
         """Pre-checks to run before the fit function - if are some, overload this function."""
 
 
