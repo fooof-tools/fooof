@@ -9,5 +9,10 @@ from specparam.metrics.definitions import *
 
 def test_metrics_library():
 
-    for key in METRICS:
-        assert isinstance(METRICS[key], Metric)
+    for key, metric in METRICS.items():
+        assert isinstance(metric, Metric)
+        assert metric.label == key
+
+def test_check_metrics():
+
+    check_metrics()

@@ -1,9 +1,18 @@
 """Tests for specparam.algorithms.definitions."""
 
+from specparam.algorithms.algorithm import Algorithm
+
 from specparam.algorithms.definitions import *
 
 ###################################################################################################
 ###################################################################################################
+
+def test_algorithms_library():
+
+    for key, algorithm in ALGORITHMS.items():
+        algorithm = algorithm()
+        assert isinstance(algorithm, Algorithm)
+        assert algorithm.name == key
 
 def test_check_algorithms():
 
