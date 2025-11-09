@@ -67,16 +67,18 @@ Functions to manipulate, examine, and analyze model objects.
    average_reconstructions
    fit_models_3d
 
+Component Objects
+-----------------
 
-Data Objects
-------------
+The model object combines multiple sub-objects that define and store different
+elements of the model definition, data, and results.
 
-Objects to manage frequency bands, model information, and simulation parameters.
+Here, the main sub-objects are listed, some of which can also be used independently.
 
-Bands Object
-~~~~~~~~~~~~
+Bands
+~~~~~
 
-An object to handle frequency band definitions.
+An object for defining frequency band definitions.
 
 .. currentmodule:: specparam
 
@@ -84,6 +86,98 @@ An object to handle frequency band definitions.
    :toctree: generated/
 
    Bands
+
+Algorithm
+~~~~~~~~~
+
+An object for defining fit algorithms.
+
+.. currentmodule:: specparam.algorithms.algorithm
+
+.. autosummary::
+   :toctree: generated/
+
+   Algorithm
+
+Modes
+~~~~~
+
+An object for defining fit modes.
+
+.. currentmodule:: specparam.modes.mode
+
+.. autosummary::
+   :toctree: generated/
+
+   Mode
+
+Associated objects allow for defining mode parameters.
+
+.. currentmodule:: specparam.modes.params
+
+.. autosummary::
+   :toctree: generated/
+
+   ParamDefinition
+
+Utility to check for available fit modes.
+
+.. currentmodule:: specparam.modes.definitions
+
+.. autosummary::
+   :toctree: generated/
+
+   check_modes
+
+Metrics
+~~~~~~~
+
+An object for defining metrics.
+
+.. currentmodule:: specparam.metrics.metric
+
+.. autosummary::
+   :toctree: generated/
+
+   Metric
+
+Utility to check for available metrics.
+
+.. currentmodule:: specparam.metrics.definitions
+
+.. autosummary::
+   :toctree: generated/
+
+   check_metrics
+
+Data
+~~~~
+
+An object for managing data to be modeled.
+
+.. currentmodule:: specparam.data.data
+
+.. autosummary::
+   :toctree: generated/
+
+   Data
+
+Results
+~~~~~~~
+
+An object for managing model results.
+
+.. currentmodule:: specparam.results.results
+
+.. autosummary::
+   :toctree: generated/
+
+   Results
+
+Data Objects
+------------
+
+Objects to manage model information, and simulation parameters.
 
 Model Information
 ~~~~~~~~~~~~~~~~~

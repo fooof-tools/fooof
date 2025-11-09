@@ -1,6 +1,6 @@
 """
-08: Fitting group of spectra
-============================
+08: Fitting Groups of Spectra
+=============================
 
 Using the group model object to run fit models across multiple power spectra.
 """
