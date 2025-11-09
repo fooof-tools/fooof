@@ -186,12 +186,12 @@ fg.results.drop(fg.get_metrics('error') > 0.01)
 ###################################################################################################
 
 # Check information on null models (dropped models)
-print('Number of Null models  : \t', fg.results.n_null)
-print('Indices of Null models : \t', fg.results.null_inds)
+print('Number of Null models  :\t', fg.results.n_null)
+print('Indices of Null models :\t', fg.results.null_inds)
 
 # Despite the dropped model, the total number of models in the object is the same
 #   This means that the indices are still the same as before dropping models
-print('Number of model fits: ', len(fg.results))
+print('Number of model fits   :\t', len(fg.results))
 
 ###################################################################################################
 

@@ -1,5 +1,5 @@
 """
-07: Exploring the model object
+07: Exploring the Model Object
 ==============================
 
 Further exploring the SpectralModel object, including algorithm settings and available methods.
