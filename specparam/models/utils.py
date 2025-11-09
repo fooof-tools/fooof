@@ -237,7 +237,8 @@ def combine_model_objs(model_objs):
                                         "or meta data, and so cannot be combined.")
 
     # Initialize group model object, with settings derived from input objects
-    group = SpectralGroupModel(*model_objs[0].algorithm.get_settings(),
+    group = SpectralGroupModel(**model_objs[0].modes.get_modes()._asdict(),
+                               **model_objs[0].algorithm.get_settings()._asdict(),
                                verbose=model_objs[0].verbose)
 
     # Use a temporary store to collect spectra, as we'll only add it if it is consistently present

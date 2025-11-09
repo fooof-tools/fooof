@@ -11,7 +11,10 @@ from specparam.models.base import BaseModel
 from specparam.data.data import Data
 from specparam.data.conversions import model_to_dataframe
 from specparam.results.results import Results
+
 from specparam.algorithms.spectral_fit import SpectralFitAlgorithm, SPECTRAL_FIT_SETTINGS_DEF
+from specparam.algorithms.definitions import ALGORITHMS, check_algorithm_definition
+
 from specparam.reports.save import save_model_report
 from specparam.reports.strings import gen_model_results_str
 from specparam.modutils.errors import NoDataError, FitError
@@ -34,10 +37,12 @@ class SpectralModel(BaseModel):
     Parameters
     ----------
     % copied in from Spectral Fit Algorithm Settings
-    aperiodic_mode : {'fixed', 'knee'}
+    aperiodic_mode : {'fixed', 'knee'} or Mode
         Which approach to take for fitting the aperiodic component.
-    periodic_mode : {'gaussian', 'skewed_gaussian', 'cauchy'}
+    periodic_mode : {'gaussian', 'skewed_gaussian', 'cauchy'} or Mode
         Which approach to take for fitting the periodic component.
+    algorithm : {'spectral_fit'} or Algorithm
+        The fitting algorithm to use.
     metrics : Metrics or list of Metric or list or str
         Metrics definition(s) to use to evaluate the model.
     bands : Bands or dict or int or None, optional
@@ -49,6 +54,7 @@ class SpectralModel(BaseModel):
         Verbosity mode. If True, prints out warnings and general status updates.
     **model_kwargs
         Additional model fitting related keyword arguments.
+        These are passed into the algorithm object.
 
     Attributes
     ----------
@@ -71,25 +77,18 @@ class SpectralModel(BaseModel):
       as this will give better model fits.
     """
 
-    def __init__(self, peak_width_limits=(0.5, 12.0), max_n_peaks=np.inf, min_peak_height=0.0,
-                 peak_threshold=2.0, aperiodic_mode='fixed', periodic_mode='gaussian',
+    def __init__(self, aperiodic_mode='fixed', periodic_mode='gaussian', algorithm='spectral_fit',
                  metrics=None, bands=None, debug=False, verbose=True, **model_kwargs):
         """Initialize model object."""
 
-        BaseModel.__init__(self,
-                           aperiodic_mode=aperiodic_mode,
-                           periodic_mode=periodic_mode,
-                           verbose=verbose)
+        BaseModel.__init__(self, aperiodic_mode, periodic_mode, verbose)
 
         self.data = Data()
 
         self.results = Results(modes=self.modes, metrics=metrics, bands=bands)
 
-        self.algorithm = SpectralFitAlgorithm(
-            peak_width_limits=peak_width_limits, max_n_peaks=max_n_peaks,
-            min_peak_height=min_peak_height, peak_threshold=peak_threshold,
-            modes=self.modes, data=self.data, results=self.results,
-            debug=debug, **model_kwargs)
+        self.algorithm = check_algorithm_definition(algorithm, ALGORITHMS)(
+            **model_kwargs, modes=self.modes, data=self.data, results=self.results, debug=debug)
 
 
     @replace_docstring_sections([docs_get_section(Data.add_data.__doc__, 'Parameters'),
