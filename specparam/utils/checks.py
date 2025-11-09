@@ -73,12 +73,16 @@ def check_selection(selection, options, definition):
         selection = options[selection]
 
     # If None, pass back out as None
-    if selection is None:
+    elif selection is None:
         selection = None
 
-    # If other input, check matches expected type
-    elif not isinstance(selection, definition):
-        raise ValueError(selmsg + 'input not understood.')
+    # If other input, check matches expected type - covering case input is class or instance
+    elif isinstance(selection, type):
+        if not issubclass(selection, definition):
+            raise ValueError(selmsg + 'input not understood.')
+    else:
+        if not isinstance(selection, definition):
+            raise ValueError(selmsg + 'input not understood.')
 
     return selection
 

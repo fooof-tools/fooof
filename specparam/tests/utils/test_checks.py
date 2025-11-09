@@ -36,11 +36,17 @@ def test_check_selection():
     with raises(ValueError):
         out = check_selection('c', opts, int)
 
+    # Check valid & invalid instance input
     out = check_selection(5, opts, int)
     assert out == 5
-
     with raises(ValueError):
         out = check_selection(5.5, opts, int)
+
+    # Check valid & invalid class input
+    out = check_selection(int, opts, int)
+    assert out == int
+    with raises(ValueError):
+        out = check_selection(float, opts, int)
 
 def test_check_array_dim():
 
