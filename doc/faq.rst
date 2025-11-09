@@ -3,9 +3,8 @@ Frequently Asked Questions
 
 The following is a collection of frequently asked questions and answers about spectral parameterization.
 
-These answers focus on the ideas and concepts relating to parameterizing neural power spectra.
-
-For code related questions, check out the API listing, tutorials, and examples.
+The questions and answers here focus on the key ideas and concept relating to the approach.
+For code related questions and examples, check out the API listing and tutorials.
 
 Table of Contents
 -----------------
@@ -16,23 +15,46 @@ Table of Contents
 What is spectral parameterization?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Spectral parameterization means fitting a model to describe power spectra.
-A particular algorithm and implementation for doing this is available in `specparam`,
-an open-source Python module for parameterizing neural power spectra.
+Spectral parameterization means fitting a model to describe a power spectrum.
+The `specparam` module implements a framework for fitting models to power spectra,
+available in an open-source Python module.
 
-Spectral parameterization uses a model-driven approach that assumes that neurophysiological time
-series are comprised of two separable components, reflecting periodic (or oscillatory) and
-aperiodic activity. This approach relies on the assumption that these two components are indeed separable
-components of the underlying data, though it is agnostic to their physiological origin and
-putative functional roles.
+How does spectral parameterization work?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Spectral parameterization operates on frequency representations of neurophysiological times
-series (power spectra). At it's core, the module contains an algorithm to measure these two
-components - the periodic and aperiodic components - in power spectra. The final model
-of the neural power spectrum consists of quantifications of each of the two components, as well as
-a combined model fit of the whole power spectrum.
+Spectral parameterization operates on frequency representations (power spectra) of digital
+signals (time series). Broadly speaking, the module contains model definitions for how to
+characterize each component (periodic and aperiodic) and algorithms to fit these definitions
+to power spectra. The resulting model of the power spectrum consists of quantifications of
+each of the two components, as well as a combined model fit of the whole power spectrum.
+For more information on the approach, including descriptions of the model definitions
+and algorithms, see the Tutorials.
 
-The full mathematical description of the model is described in the tutorials.
+What was spectral parameterization originally designed for?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The original use case of spectral parameterization was for analyzing
+neuro-electrophysiological data. Due to this, across the documentation,
+the vast majority of the discussion of the use of spectral parameterization
+refers to the use case of neuro-electrophysiological data.
+
+What data can this be applied to? Can it be used on non-neural data?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Spectral parameterization can, in theory, be applied to any power spectra,
+including non-neural power spectra. Following developments and generalizations of the module,
+starting with the specparam 2.0 release version, the module should now be more easily
+customizable and applicable to other data types. In practice, any application of spectral
+parameterization needs to evaluate if the model fitting procedures are well posed
+for the specific use case (see Tutorials for more details).
+
+What is needed to parameterize a power spectrum?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In order for spectral parameterization to work for a given application, the chosen
+model definition has to be appropriate for the data under study, and the chosen fitting
+algorithm has to be appropriate for fitting this model to the data. See discussions throughout
+the tutorials on choosing model forms and fit algorithms.
 
 What is meant by 'aperiodic' activity?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -58,12 +80,26 @@ and detectable by the fitting algorithm if they exhibit as band-limited power ov
 the aperiodic component in the power spectrum. This 'peak' of power over the aperiodic is taken as
 evidence of frequency specific power, distinct from the aperiodic component.
 
-Note that this periodic activity need not be continuous, as oscillatory activity often
-exhibits as 'bursts' in the time series, nor sinusoidal, as rhythmic neural activity is
-often non-sinusoidal.
+Note that, in the time domain, this periodic activity need not strictly be continuous nor
+completely sinusoidal, as variability in oscillatory activity is still typically reflected
+as peaks of power in the spectral domain.
 
-Why should I parameterize power spectra?
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+For example, in neural data, oscillatory activity often exhibits as 'bursts' in the time series,
+which are often at least somewhat non-sinusoidal, which can still be seen as peaks in the power
+spectrum (though see notes on interpreting peaks of power).
+
+What are the assumptions of spectral parameterization?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Spectral parameterization uses a model-driven approach that assumes that the data under study
+are comprised of two separately measure-able components, reflecting periodic (or oscillatory)
+and aperiodic activity. This approach therefore relies on the assumption that these two components
+are indeed separable components of the power spectrum as observed by the model. The model is
+broadly agnostic to the relationship(s) between the components, their origin(s) in the generative
+process that created the data, and their putative functional roles.
+
+Why should I parameterize neural power spectra?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Though research often focuses on periodic (rhythmic or oscillatory) components, neurophysiological
 recordings of electrophysiological neural activity contain not only periodic, but also aperiodic
@@ -90,8 +126,8 @@ For more discussion and examples of the conceptual and methodological factors th
 motivate parameterizing neural power spectra, see the
 `motivations page <https://fooof-tools.github.io/fooof/auto_motivations/index.html>`_
 
-Why is it important to measure aperiodic activity?
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Why is it important to measure aperiodic neural activity?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Aperiodic activity has long known to be present in neural data, but has been less of a
 research focus (as compared to periodic activity). Recent work has demonstrated
@@ -207,20 +243,22 @@ is a Python tool for analyzing neural oscillations and their waveform shape prop
 Why is parameterizing neural power spectra different from other methods?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-There are many existing methods for analyzing periodic activity, and also other methods for
-analyzing aperiodic activity. Most existing methods are designed to measure one or the other
-signal component. Few methods attempt to explicitly separate and quantify both the periodic
-and aperiodic components of the signal. This combined approach is a key factor that we
-consider to be important for getting the measurements to work well. By jointly measuring
-both components, the method is more capable of quantifying which aspects of the data
-are changing and in what ways.
+Within neuroscience, there are many existing methods for analyzing periodic activity,
+and also other methods for analyzing aperiodic activity. Historically, fewer methods have
+been developed that attempt to explicitly separate and quantify both the periodic and
+aperiodic components of the signal. As such, at the time of the original development of specparam,
+most existing methods were designed to measure one pre-specified signal component
+(periodic or aperiodic). Using the combined approach of spectral parameterization (considering
+and measuring both components together) is therefore a key factor that is different from
+many other approaches. The goal is that by jointly measuring both components, the method should be
+more capable of quantifying which aspects of the data are changing and in what ways.
 
-More in depth analyses of the properties of the fitting algorithm, and systematic comparisons
-with other methods (through simulations) are are also ongoing, to clarify when and how
-this approach compares to different methods.
+Since the original development of the method, there has been significant development of other
+methods (partially summarized here: [7_]) and work comparing between different methods.
+Check the current literature for more discussion of these topics.
 
-What data modalities can be used for parameterizing neural power spectra?
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+What neuroscience modalities can be analyzed with spectral parameterization?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The power spectrum model can theoretically be applied to power spectra derived from any
 electrophysiological or magnetophysiological signal of neural origin. In practice, this
@@ -369,15 +407,18 @@ one or the other might be more appropriate.
 Is there a time resolved version?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Since it operates on frequency representations (power spectra) the power spectrum model is not,
-by construction, a time resolved method.
+Yes, as of the specparam 2.0 version, the module includes functionality to fit models across
+time (across spectrograms).
 
-However, similar to other frequency estimation approaches that are used in a time-resolved manner,
-it can, in theory, be applied in a sliding window fashion. This approach could be used to estimate
-spectral features across time, somewhat analogous to a spectrogram.
+Note that as it operates in the frequency domain, in order to be able to analyze data over time,
+the model is applied to individual windows over data, whereby each window reflects a time-segment
+of data. By fitting models across a series of windows, spectral parameterization results
+can be examined across time (across windows). In doing so, it is therefore important to
+consider the spectral estimation, in terms of key details such as window size, method of
+estimation, window overlap, etc, in order to make sure the models are well fit and to
+appropriately interpret the results.
 
-This functionality is not currently available or described in the current module, but is a focus
-off current work. We hope to add information, guidelines, and tooling to do this once this soon.
+See more information on this functionality in the tutorials.
 
 What is the 'FOOOF' name?
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -388,6 +429,13 @@ This was a working title for the project that stuck as the name of the code and 
 we have moved away from using these terms in the module and algorithm, now preferring terms such
 as 'periodic' and 'aperiodic' activity, the module has been renamed to the more general name
 of 'spectral parameterization'.
+
+In addition, the generalizability of the approach has changed with the different versions of the
+code. The `fooof` versions of the module can be though of as implementing a particular model
+definition and specific algorithm for parameterizing neural power spectra. By comparison, the
+`specparam`  versions of the module are designed to enable flexible model definition and application
+to power spectra across different contexts (while still also including the original
+specific functionality from fooof).
 
 How do I cite this method?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -424,3 +472,8 @@ References
 - [6_] He (2014). Scale-free Brain Activity: Past, Present and Future. DOI: 10.1016/j.tics.2014.04.003
 
 .. _6 : https://doi.org/10.1016/j.tics.2014.04.003
+
+- [7_] Donoghue & Watrous (2023). How Can We Differentiate Narrow-Band Oscillations from Aperiodic Activity?
+  DOI: 10.1007/978-3-031-20910-9_22
+
+.. _7 : https://doi.org/10.1007/978-3-031-20910-9_22

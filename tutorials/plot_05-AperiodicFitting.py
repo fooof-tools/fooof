@@ -163,7 +163,7 @@ fm.report(freqs, spectrum, [2, 70], plt_log=True)
 
 ###################################################################################################
 # A note on interpreting the 'knee' parameter
-# -------------------------------------------
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # The aperiodic fit has the form:
 #
@@ -215,6 +215,35 @@ fm.report(freqs, spectrum, [2, 70], plt_log=True)
 #
 
 ###################################################################################################
+# Aperiodic Fit Mode: doublexp
+# ----------------------------
+#
+# Returning to our exploration of the available fit modes for the aperiodic component,
+# another avaible fit mode is the 'double exponent' or 'doublexp'.
+#
+# In the above 'knee' mode, you might have noticed that even though the knee is described as
+# a change in the value of the aperiodic exponent, implying there are two different
+# exponent values, we still only fit one exponent value. In the above case, the exponent
+# above the knee is fit, whereas the exponent below the knee is assumed to be zero.
+#
+# By comparison, the double exponent model fits two different exponent values, above and
+# below the knee.
+#
+
+###################################################################################################
+
+# Create and fit a power spectrum model in doublexp aperiodic fit mode
+fm = SpectralModel(peak_width_limits=[2, 8], aperiodic_mode='doublexp')
+fm.report(freqs, spectrum, [2, 70], plt_log=True)
+
+###################################################################################################
+#
+# In the above example model fit, we can see that the aperiodic mode now includes 4 fit parameters,
+# including two different exponent values (exponent1, reflecting below the knee, and exponent2,
+# reflecting above the knee), as well as the offset and knee value.
+#
+
+###################################################################################################
 # Choosing an Aperiodic Fit Mode
 # ------------------------------
 #
@@ -233,7 +262,7 @@ fm.report(freqs, spectrum, [2, 70], plt_log=True)
 #
 #     - This is likely across smaller frequency ranges, such as 3-30.
 #     - Do not perform no-knee fits across a range in which this does not hold.
-#   - If there is a clear knee, then use knee fits.
+#   - If there is a clear knee, then use a fit mode that includes a knee.
 #
 #     - This is likely across larger fitting ranges such as 1-150 Hz.
 # - Be wary of ambiguous ranges, where there may or may not be a knee.
