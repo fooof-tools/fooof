@@ -1,5 +1,6 @@
 """Define fitting modes."""
 
+from functools import partial
 from collections import OrderedDict
 
 from specparam.modes.mode import Mode
@@ -7,6 +8,7 @@ from specparam.modes.params import ParamDefinition
 from specparam.modes.funcs import (expo_function, expo_nk_function, double_expo_function,
                                    gaussian_function, skewed_gaussian_function, cauchy_function)
 from specparam.modes.jacobians import jacobian_gauss
+from specparam.utils.checks import check_selection
 
 ###################################################################################################
 ## APERIODIC MODES
@@ -184,3 +186,6 @@ def check_modes(component, check_params=False):
             print('\n{:s}'.format(mode.name))
             print('    {:s}'.format(mode.description))
             mode.check_params()
+
+
+check_mode_definition = partial(check_selection, definition=Mode)
