@@ -120,6 +120,15 @@ Associated objects allow for defining mode parameters.
 
    ParamDefinition
 
+Utility to check for available fit modes.
+
+.. currentmodule:: specparam.modes.definitions
+
+.. autosummary::
+   :toctree: generated/
+
+   check_modes
+
 Metrics
 ~~~~~~~
 
@@ -131,6 +140,15 @@ An object for defining metrics.
    :toctree: generated/
 
    Metric
+
+Utility to check for available metrics.
+
+.. currentmodule:: specparam.metrics.definitions
+
+.. autosummary::
+   :toctree: generated/
+
+   check_metrics
 
 Data
 ~~~~
