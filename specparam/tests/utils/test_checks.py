@@ -23,6 +23,25 @@ def test_check_input_options():
     with raises(ValueError):
         out2 = check_input_options('d', options, 'tinput')
 
+def test_check_selection():
+
+    opts = {'a' : 1, 'b' : 2}
+
+    out = check_selection('a', opts, int)
+    assert out == 1
+
+    out = check_selection(None, opts, int)
+    assert out is None
+
+    with raises(ValueError):
+        out = check_selection('c', opts, int)
+
+    out = check_selection(5, opts, int)
+    assert out == 5
+
+    with raises(ValueError):
+        out = check_selection(5.5, opts, int)
+
 def test_check_array_dim():
 
     out = check_array_dim(np.array([]))

@@ -39,6 +39,50 @@ def check_input_options(value, options, parameter):
     return value
 
 
+def check_selection(selection, options, definition):
+    """Check a selection for a requested instance of an object type.
+
+    Parameters
+    ----------
+    selection : str or None or object
+        Requested option.
+        If str, should be a label corresponding to an entry in `options`.
+        If object, should be of type `definition`.
+    options : dict
+        Available options.
+    definition : object
+        Object to check type against.
+
+    Returns
+    -------
+    selection : object or None
+        Requested selection, if defined, or None if not defined.
+
+    Raises
+    ------
+    ValueError
+        If the requested definition is not found / understood.
+    """
+
+    selmsg = 'Selection for {} '.format(definition.__name__)
+
+    # If string input, check and access selected option
+    if isinstance(selection, str):
+        if selection not in list(options.keys()):
+            raise ValueError(selmsg + 'not found in available options.')
+        selection = options[selection]
+
+    # If None, pass back out as None
+    if selection is None:
+        selection = None
+
+    # If other input, check matches expected type
+    elif not isinstance(selection, definition):
+        raise ValueError(selmsg + 'input not understood.')
+
+    return selection
+
+
 def check_array_dim(arr):
     """Check if an array has 2D shape, and replace with an empty 2d array if not.
 
