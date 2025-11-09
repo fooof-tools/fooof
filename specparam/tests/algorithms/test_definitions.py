@@ -5,6 +5,10 @@ from specparam.algorithms.definitions import *
 ###################################################################################################
 ###################################################################################################
 
+def test_check_algorithms():
+
+    check_algorithms()
+
 def test_check_algorithm_definition():
 
     for algorithm in ALGORITHMS.keys():
