@@ -111,7 +111,7 @@ class SpectralFitAlgorithm(AlgorithmCF):
 
         # Initialize base algorithm object with algorithm metadata
         super().__init__(
-            name='spectral fit',
+            name='spectral_fit',
             description='Original parameterizing neural power spectra algorithm.',
             public_settings=SPECTRAL_FIT_SETTINGS_DEF,
             private_settings=SPECTRAL_FIT_PRIVATE_SETTINGS_DEF,

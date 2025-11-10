@@ -125,17 +125,18 @@ class Results():
 
         Parameters
         ----------
-        metrics : Metrics or list of Metric or list or str
+        metrics : Metrics or list of Metric or list of str or None
             Metrics definition(s) to add to object.
+            If None, initialized with default metrics.
         """
+
+        if metrics is None:
+            metrics = DEFAULT_METRICS
 
         if isinstance(metrics, Metrics):
             self.metrics = deepcopy(metrics)
-        elif isinstance(metrics, list):
-            self.metrics = Metrics(\
-                [METRICS[metric] if isinstance(metric, str) else metric for metric in metrics])
         else:
-            self.metrics = Metrics([METRICS[metric] for metric in DEFAULT_METRICS])
+            self.metrics = Metrics(metrics)
 
 
     def add_results(self, results):

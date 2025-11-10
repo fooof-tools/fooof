@@ -66,7 +66,7 @@ class Algorithm():
         self.set_debug(debug)
 
 
-    def _fit_prechecks(self):
+    def _fit_prechecks(self, verbose):
         """Pre-checks to run before the fit function - if are some, overload this function."""
 
 
@@ -195,10 +195,16 @@ class AlgorithmCF(Algorithm):
              [high_bound_param1, high_bound_param2])
         """
 
-        n_params = getattr(self.modes, mode).n_params
+        # If modes defined, get number of params - otherwise set stores as empty
+        if self.modes is not None:
+            n_params = getattr(self.modes, mode).n_params
+        else:
+            n_params = 0
+
         bounds = (np.array([-np.inf] * n_params), np.array([np.inf] * n_params))
 
         return bounds
+
 
     def _initialize_guess(self, mode):
         """Initialize a guess definition.

@@ -1,9 +1,12 @@
 """Collect together library of available built in metrics."""
 
+from functools import partial
+
 from specparam.metrics.metrics import Metric
 from specparam.metrics.error import (compute_mean_abs_error, compute_mean_squared_error,
                                      compute_root_mean_squared_error, compute_median_abs_error)
 from specparam.metrics.gof import compute_r_squared, compute_adj_r_squared
+from specparam.utils.checks import check_selection
 
 ###################################################################################################
 ## ERROR METRICS
@@ -79,3 +82,6 @@ def check_metrics():
     print('Available metrics:')
     for metric in METRICS.values():
         print('    {:8s} {:12s} : {:s}'.format(metric.category, metric.measure, metric.description))
+
+
+check_metric_definition = partial(check_selection, definition=Metric)

@@ -60,8 +60,8 @@ class SpectralTimeEventModel(SpectralTimeModel):
         self.data = Data3D()
 
         self.results = Results3D(modes=self.modes,
-                                     metrics=kwargs.pop('metrics', None),
-                                     bands=kwargs.pop('bands', None))
+                                 metrics=kwargs.pop('metrics', None),
+                                 bands=kwargs.pop('bands', None))
 
         self.algorithm._reset_subobjects(data=self.data, results=self.results)
 
