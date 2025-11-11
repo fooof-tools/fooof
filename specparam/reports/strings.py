@@ -1,5 +1,7 @@
 """Formatted strings for printing out model and fit related information."""
 
+from itertools import chain
+
 import numpy as np
 
 from specparam.utils.array import compute_arr_desc
@@ -246,7 +248,7 @@ def gen_metrics_str(metrics, description=False, concise=False):
     """
 
     if description:
-        prints = [(metric.label, metric.description) for metric in fm.results.metrics.metrics]
+        prints = [(metric.label, metric.description) for metric in metrics.metrics]
         prints = list(chain(*prints))
     else:
         prints = [metric.label for metric in metrics.metrics]
