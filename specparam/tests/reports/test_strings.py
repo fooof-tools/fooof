@@ -20,7 +20,11 @@ def test_gen_modes_str(tfm):
 
 def test_gen_settings_str(tfm):
 
-    assert gen_settings_str(tfm)
+    assert gen_settings_str(tfm.algorithm)
+
+def test_gen_metrics_str(tfm):
+
+    assert gen_metrics_str(tfm.results.metrics)
 
 def test_gen_freq_range_str(tfm):
 

@@ -183,13 +183,13 @@ def gen_modes_str(modes, description=False, concise=False):
     return output
 
 
-def gen_settings_str(model, description=False, concise=False):
-    """Generate a string representation of current fit settings.
+def gen_settings_str(algorithm, description=False, concise=False):
+    """Generate a string representation of algorithm and fit settings.
 
     Parameters
     ----------
-    model : SpectralModel or Spectral*Model or ModelSettings
-        Object to access settings from.
+    algorithm : Algorithm
+        Algorithm object.
     description : bool, optional, default: False
         Whether to also print out a description of the settings.
     concise : bool, optional, default: False
@@ -206,21 +206,60 @@ def gen_settings_str(model, description=False, concise=False):
         '=',
         '',
         'ALGORITHM SETTINGS',
-        '(algorithm: {})'.format(model.algorithm.name),
+        '(algorithm: {})'.format(algorithm.name),
         '',
     ]
 
     # Loop through algorithm settings, and add information
-    for name in model.algorithm.settings.names:
-        str_lst.append(name + ' : ' + str(getattr(model.algorithm.settings, name)))
+    for name in algorithm.settings.names:
+        str_lst.append(name + ' : ' + str(getattr(algorithm.settings, name)))
         if description:
-            str_lst.append(model.algorithm.public_settings.descriptions[name].split('\n ')[0])
+            str_lst.append(algorithm.public_settings.descriptions[name].split('\n ')[0])
 
     # Add footer to string
     str_lst.extend([
         '',
         '='
     ])
+
+    output = _format(str_lst, concise)
+
+    return output
+
+
+def gen_metrics_str(metrics, description=False, concise=False):
+    """Generate a string representation of a set of metrics.
+
+    Parameters
+    ----------
+    metrics : Metrics
+        Metrics object.
+    description : bool, optional, default: False
+        Whether to also print out a description of the settings.
+    concise : bool, optional, default: False
+        Whether to print the report in concise mode.
+
+    Returns
+    -------
+    output : str
+        Formatted string of metrics.
+    """
+
+    if description:
+        prints = [(metric.label, metric.description) for metric in fm.results.metrics.metrics]
+        prints = list(chain(*prints))
+    else:
+        prints = [metric.label for metric in metrics.metrics]
+
+    str_lst = [
+        '=',
+        '',
+        'CURRENT METRICS',
+        '',
+        *[el for el in prints],
+        '',
+        '='
+    ]
 
     output = _format(str_lst, concise)
 
