@@ -114,7 +114,7 @@ def gen_version_str(concise=False):
         # Header
         '=',
         '',
-        'specparam - VERSION',
+        'specparam - CODE VERSION',
         '',
 
         # Version information
@@ -164,7 +164,7 @@ def gen_modes_str(model, description=False, concise=False):
         # Header
         '=',
         '',
-        'specparam - MODES',
+        'FIT MODES',
         '',
 
         # Settings - include descriptions if requested
@@ -205,7 +205,8 @@ def gen_settings_str(model, description=False, concise=False):
     str_lst = [
         '=',
         '',
-        'specparam - SETTINGS',
+        'ALGORITHM SETTINGS',
+        '(algorithm: {})'.format(model.algorithm.name),
         '',
     ]
 
@@ -248,7 +249,7 @@ def gen_freq_range_str(model, concise=False):
         # Header
         '=',
         '',
-        'specparam - FIT RANGE',
+        'FIT RANGE',
         '',
 
         # Frequency range information information
@@ -284,7 +285,7 @@ def gen_methods_report_str(concise=False):
         # Header
         '=',
         '',
-        'specparam - REPORTING',
+        'REPORTING',
         '',
 
         # Methods report information
