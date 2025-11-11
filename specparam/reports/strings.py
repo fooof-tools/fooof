@@ -131,13 +131,13 @@ def gen_version_str(concise=False):
     return output
 
 
-def gen_modes_str(model, description=False, concise=False):
+def gen_modes_str(modes, description=False, concise=False):
     """Generate a string representation of fit modes.
 
     Parameters
     ----------
-    model : SpectralModel or Spectral*Model or ModelModes
-        Object to access fit modes from.
+    modes : Modes
+        Modes definition.
     description : bool, optional, default: False
         Whether to also print out a description of the fit modes.
     concise : bool, optional, default: False
@@ -168,9 +168,9 @@ def gen_modes_str(model, description=False, concise=False):
         '',
 
         # Settings - include descriptions if requested
-        *[el for el in ['Periodic Mode : {}'.format(model.modes.periodic.name),
+        *[el for el in ['Periodic Mode : {}'.format(modes.periodic.name),
                         '{}'.format(desc['aperiodic_mode']),
-                        'Aperiodic Mode : {}'.format(model.modes.aperiodic.name),
+                        'Aperiodic Mode : {}'.format(modes.aperiodic.name),
                         '{}'.format(desc['aperiodic_mode'])] if el != ''],
 
         # Footer
