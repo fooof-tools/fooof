@@ -6,7 +6,7 @@ from specparam.utils.array import unlog
 from specparam.utils.checks import check_array_dim
 from specparam.modes.modes import Modes
 from specparam.modutils.errors import NoDataError
-from specparam.reports.strings import gen_settings_str, gen_issue_str
+from specparam.reports.strings import gen_issue_str
 
 ###################################################################################################
 ###################################################################################################
@@ -138,7 +138,7 @@ class BaseModel():
             Whether to print the report in a concise mode, or not.
         """
 
-        print(gen_settings_str(self, description, concise))
+        self.algorithm.print()
 
 
     @staticmethod

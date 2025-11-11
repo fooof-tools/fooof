@@ -5,6 +5,7 @@ import numpy as np
 from specparam.utils.checks import check_input_options
 from specparam.algorithms.settings import SettingsDefinition, SettingsValues
 from specparam.modutils.docs import docs_get_section, replace_docstring_sections
+from specparam.reports.strings import gen_settings_str
 
 ###################################################################################################
 ###################################################################################################
@@ -116,6 +117,20 @@ class Algorithm():
         """
 
         self._debug = debug
+
+
+    def print(self, description=False, concise=False):
+        """Print out the algorithm name and fit settings.
+
+        Parameters
+        ----------
+        description : bool, optional, default: False
+            Whether to print out a description with current settings.
+        concise : bool, optional, default: False
+            Whether to print the report in a concise mode, or not.
+        """
+
+        print(gen_settings_str(self, description, concise))
 
 
     def _reset_subobjects(self, modes=None, data=None, results=None):
