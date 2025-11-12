@@ -116,7 +116,7 @@ def gen_version_str(concise=False):
         # Header
         '=',
         '',
-        'specparam - CODE VERSION',
+        'CODE VERSION',
         '',
 
         # Version information
@@ -207,10 +207,17 @@ def gen_settings_str(algorithm, description=False, concise=False):
     str_lst = [
         '=',
         '',
-        'ALGORITHM SETTINGS',
-        '(algorithm: {})'.format(algorithm.name),
-        '',
+        'ALGORITHM: {}'.format(algorithm.name),
     ]
+
+    if description:
+        str_lst.append(algorithm.description)
+
+    str_lst.extend([
+        '',
+        'ALGORITHM SETTINGS',
+        '',
+    ])
 
     # Loop through algorithm settings, and add information
     for name in algorithm.settings.names:
@@ -334,7 +341,7 @@ def gen_methods_report_str(concise=False):
         '',
         '- the code version that was used',
         '- the fit modes that were used',
-        '- the algorithm settings that were used',
+        '- the algorithm & settings that were used',
         '- the frequency range that was fit',
 
         # Footer
