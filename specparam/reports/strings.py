@@ -7,15 +7,7 @@ import numpy as np
 from specparam.utils.array import compute_arr_desc
 from specparam.measures.properties import compute_presence
 from specparam.version import __version__ as MODULE_VERSION
-
-###################################################################################################
-###################################################################################################
-
-## Settings & Globals
-# Centering Value - Long & Short options
-#   Note: Long CV of 98 is so that the max line length plays nice with notebook rendering
-LCV = 98
-SCV = 70
+from specparam.reports.settings import LCV, SCV, DIVIDER
 
 ###################################################################################################
 ###################################################################################################
@@ -36,8 +28,7 @@ def gen_issue_str(concise=False):
 
     str_lst = [
 
-        # Header
-        '=',
+        DIVIDER,
         '',
         'specparam - ISSUE REPORTING',
         '',
@@ -58,8 +49,7 @@ def gen_issue_str(concise=False):
         'You can attach the generated files to a Github issue.',
         '',
 
-        # Footer
-        '='
+        DIVIDER,
     ]
 
     output = _format(str_lst, concise)
@@ -113,18 +103,13 @@ def gen_version_str(concise=False):
 
     str_lst = [
 
-        # Header
-        '=',
+        DIVIDER,
         '',
         'CODE VERSION',
         '',
-
-        # Version information
         '{}'.format(MODULE_VERSION),
-
-        # Footer
         '',
-        '='
+        DIVIDER,
 
     ]
 
@@ -163,21 +148,17 @@ def gen_modes_str(modes, description=False, concise=False):
     # Create output string
     str_lst = [
 
-        # Header
-        '=',
+        DIVIDER,
         '',
         'FIT MODES',
         '',
-
         # Settings - include descriptions if requested
         *[el for el in ['Periodic Mode : {}'.format(modes.periodic.name),
                         '{}'.format(desc['aperiodic_mode']),
                         'Aperiodic Mode : {}'.format(modes.aperiodic.name),
                         '{}'.format(desc['aperiodic_mode'])] if el != ''],
-
-        # Footer
         '',
-        '='
+        DIVIDER,
     ]
 
     output = _format(str_lst, concise)
@@ -205,7 +186,7 @@ def gen_settings_str(algorithm, description=False, concise=False):
 
     # Create output string - header
     str_lst = [
-        '=',
+        DIVIDER,
         '',
         'ALGORITHM: {}'.format(algorithm.name),
     ]
@@ -225,10 +206,9 @@ def gen_settings_str(algorithm, description=False, concise=False):
         if description:
             str_lst.append(algorithm.public_settings.descriptions[name].split('\n ')[0])
 
-    # Add footer to string
     str_lst.extend([
         '',
-        '='
+        DIVIDER,
     ])
 
     output = _format(str_lst, concise)
@@ -261,13 +241,13 @@ def gen_metrics_str(metrics, description=False, concise=False):
         prints = [metric.label for metric in metrics.metrics]
 
     str_lst = [
-        '=',
+        DIVIDER,
         '',
         'CURRENT METRICS',
         '',
         *[el for el in prints],
         '',
-        '='
+        DIVIDER,
     ]
 
     output = _format(str_lst, concise)
@@ -294,19 +274,13 @@ def gen_freq_range_str(model, concise=False):
 
     str_lst = [
 
-        # Header
-        '=',
+        DIVIDER,
         '',
         'FIT RANGE',
         '',
-
-        # Frequency range information information
         'The model was fit from {} to {} Hz.'.format(*freq_range),
-
-        # Footer
         '',
-        '='
-
+        DIVIDER,
     ]
 
     output = _format(str_lst, concise)
@@ -330,23 +304,18 @@ def gen_methods_report_str(concise=False):
 
     str_lst = [
 
-        # Header
-        '=',
+        DIVIDER,
         '',
         'REPORTING',
         '',
-
-        # Methods report information
         'Reports using spectral parameterization should include (at minimum):',
         '',
         '- the code version that was used',
         '- the fit modes that were used',
         '- the algorithm & settings that were used',
         '- the frequency range that was fit',
-
-        # Footer
         '',
-        '='
+        DIVIDER,
     ]
 
     output = _format(str_lst, concise)
@@ -422,8 +391,7 @@ def gen_model_results_str(model, concise=False):
     # Create the formatted strings for printing
     str_lst = [
 
-        # Header
-        '=',
+        DIVIDER,
         '',
         'POWER SPECTRUM MODEL',
         '',
@@ -452,8 +420,7 @@ def gen_model_results_str(model, concise=False):
             for key, res in model.results.metrics.results.items()],
         '',
 
-        # Footer
-        '='
+        DIVIDER,
     ]
 
     output = _format(str_lst, concise)
@@ -482,8 +449,7 @@ def gen_group_results_str(group, concise=False):
 
     str_lst = [
 
-        # Header
-        '=',
+        DIVIDER,
         '',
         'GROUP SPECTRAL MODEL RESULTS ({} spectra)'.format(len(group.results.group_results)),
         *_report_str_n_null(group),
@@ -514,9 +480,7 @@ def gen_group_results_str(group, concise=False):
             *compute_arr_desc(group.results.get_metrics(label))) \
                 for label in group.results.metrics.labels],
         '',
-
-        # Footer
-        '='
+        DIVIDER,
     ]
 
     output = _format(str_lst, concise)
@@ -550,8 +514,7 @@ def gen_time_results_str(time, concise=False):
 
     str_lst = [
 
-        # Header
-        '=',
+        DIVIDER,
         '',
         'TIME SPECTRAL MODEL RESULTS ({} time windows)'.format(time.data.n_time_windows),
         *_report_str_n_null(time),
@@ -588,8 +551,7 @@ def gen_time_results_str(time, concise=False):
                 for key in time.results.metrics.results],
         '',
 
-        # Footer
-        '='
+        DIVIDER,
     ]
 
     output = _format(str_lst, concise)
@@ -623,8 +585,7 @@ def gen_event_results_str(event, concise=False):
 
     str_lst = [
 
-        # Header
-        '=',
+        DIVIDER,
         '',
         'EVENT SPECTRAL MODEL RESULTS ({} events with {} time windows)'.format(\
             event.data.n_events, event.data.n_time_windows),
@@ -662,10 +623,7 @@ def gen_event_results_str(event, concise=False):
             *compute_arr_desc(np.mean(event.results.event_time_results[key], 1))) \
                 for key in event.results.metrics.results],
         '',
-
-
-        # Footer
-        '='
+        DIVIDER,
     ]
 
     output = _format(str_lst, concise)
@@ -715,11 +673,11 @@ def _no_model_str(concise=False):
     """
 
     str_lst = [
-        '=',
+        DIVIDER,
         '',
         'Model fit has not been run, or fitting was unsuccessful.',
         '',
-        '='
+        DIVIDER,
     ]
 
     output = _format(str_lst, concise)
