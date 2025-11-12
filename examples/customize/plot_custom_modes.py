@@ -161,15 +161,17 @@ expo_only_mode = Mode(
 # The use this fit mode, we can initialize a model object and pass in the custom fit mode
 # to use for fitting.
 #
-# Note that in this example, we will use the :class:`~specparam.SpectralModel` object for our
-# example, but you can also take the same approach to define custom fit modes with other
-# model object (e.g. for groups of spectra or across time).
+# Note that in this example, we will use :class:`~specparam.SpectralModel` for our example,
+# but you can also take the same approach to define custom fit modes with other model objects.
 #
 
 ###################################################################################################
 
 # Initialize model object, passing in custom aperiodic mode definition
 fm = SpectralModel(aperiodic_mode=expo_only_mode)
+
+# Check the defined modes of the object
+fm.modes.print()
 
 ###################################################################################################
 #
@@ -249,6 +251,7 @@ def rectangular_function(xs, *params):
 
 ###################################################################################################
 
+# Define the parameter definition for a new periodic fit mode
 rectangular_params = ParamDefinition(OrderedDict({
     'cf' : 'Center frequency of the rectangle.',
     'pw' : 'Power of the rectangle, over and above the aperiodic component.',
@@ -285,6 +288,9 @@ rectangular_mode = Mode(
 
 # Initialize model object, passing in custom periodic mode definition
 fm = SpectralModel(periodic_mode=rectangular_mode, max_n_peaks=2)
+
+# Check the defined modes of the object
+fm.modes.print()
 
 ###################################################################################################
 
@@ -323,6 +329,11 @@ fm.report(freqs, powers)
 
 # Initialize model object, passing in custom aperiodic & periodic mode definitions
 fm = SpectralModel(aperiodic_mode=expo_only_mode, periodic_mode=rectangular_mode, max_n_peaks=2)
+
+# Check the defined modes of the object
+fm.modes.print()
+
+###################################################################################################
 
 # Fit model and report results
 fm.report(freqs, powers)

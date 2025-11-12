@@ -144,15 +144,17 @@ class DummyAlgorithm(Algorithm):
 #
 # Now that our custom fit algorithm is defined, we can use it by passing it into a model object.
 #
-# Note that in this example, we will use the :class:`~specparam.SpectralModel` object for our
-# example, but you can also take the same approach to define custom fit modes with other
-# model object (e.g. for groups of spectra or across time).
+# Note that in this example, we will use :class:`~specparam.SpectralModel` for our example, but
+# you can also take the same approach to define custom fit algorithms with other model objects.
 #
 
 ###################################################################################################
 
 # Initialize a model object, passing in our custom dummy algorithm
 fm = SpectralModel(algorithm=DummyAlgorithm)
+
+# Check the defined fit algorithm
+fm.algorithm.print()
 
 ###################################################################################################
 
@@ -257,6 +259,9 @@ class CustomAlgorithm(Algorithm):
 
 # Initialize a model object, passing in a custom fit algorithm and settings for this algorithm
 fm = SpectralModel(algorithm=CustomAlgorithm, guess_cf=10)
+
+# Check the defined fit algorithm
+fm.algorithm.print()
 
 ###################################################################################################
 
