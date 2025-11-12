@@ -113,20 +113,6 @@ class BaseModel():
         return output
 
 
-    def print_modes(self, description=False, concise=False):
-        """Print out the current fit modes.
-
-        Parameters
-        ----------
-        description : bool, optional, default: False
-            Whether to print out a description with current fit modes.
-        concise : bool, optional, default: False
-            Whether to print the report in a concise mode, or not.
-        """
-
-        self.modes.print()
-
-
     def print_settings(self, description=False, concise=False):
         """Print out the current settings.
 

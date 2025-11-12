@@ -286,10 +286,9 @@ def test_get_component(tfm):
 def test_prints(tfm):
     """Test methods that print (alias and pass through methods).
 
-    Checks: print_modes, print_settings, print_results, print_report_issue.
+    Checks: print_settings, print_results, print_report_issue.
     """
 
-    tfm.print_modes()
     tfm.print_settings()
     tfm.print_results()
     tfm.print_report_issue()
