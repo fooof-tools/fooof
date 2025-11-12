@@ -93,6 +93,18 @@ total_error_metric = Metric(
 )
 
 ###################################################################################################
+#
+# Our custom metric is now defined!
+#
+# The use this metric, we can initialize a model object and pass in the custom metric
+# to use for fitting.
+#
+# Note that in this example, we will use the :class:`~specparam.SpectralModel` object for our
+# example, but you can also take the same approach to define custom fit modes with other
+# model object (e.g. for groups of spectra or across time).
+#
+
+###################################################################################################
 
 # Initialize a spectral model, passing in our custom metric definition
 fm = SpectralModel(min_peak_height=0.25, metrics=[total_error_metric])

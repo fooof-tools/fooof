@@ -156,10 +156,14 @@ expo_only_mode = Mode(
 
 ###################################################################################################
 #
-# Our custom fit mode if now defined!
+# Our custom fit mode is now defined!
 #
-# The use this fit mode, we initialize a model object, passing the fit mode in as the specified
-# component mode.
+# The use this fit mode, we can initialize a model object and pass in the custom fit mode
+# to use for fitting.
+#
+# Note that in this example, we will use the :class:`~specparam.SpectralModel` object for our
+# example, but you can also take the same approach to define custom fit modes with other
+# model object (e.g. for groups of spectra or across time).
 #
 
 ###################################################################################################
