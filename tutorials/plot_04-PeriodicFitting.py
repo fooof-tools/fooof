@@ -68,7 +68,12 @@ spectrum = load_example_data('spectrum.npy', folder='data')
 # Initialize a model object, explicitly specifying periodic fit to 'gaussian'
 fm1 = SpectralModel(periodic_mode='gaussian')
 
-# Fit the model
+# Check the defined fit modes of the model object
+fm1.modes.print()
+
+###################################################################################################
+
+# Fit the model and report results
 fm1.report(freqs, spectrum)
 
 ###################################################################################################
@@ -160,7 +165,12 @@ fm1.results.get_params('periodic', version='converted')
 # Initialize a model object, explicitly specifying periodic fit to 'gaussian'
 fm2 = SpectralModel(periodic_mode='skewed_gaussian')
 
-# Fit the model
+# Check the defined fit modes of the model object
+fm2.modes.print()
+
+###################################################################################################
+
+# Fit the model and report results
 fm2.report(freqs, spectrum)
 
 ###################################################################################################
@@ -182,7 +192,12 @@ fm2.report(freqs, spectrum)
 # Initialize a model object, explicitly specifying periodic fit to 'gaussian'
 fm3 = SpectralModel(periodic_mode='cauchy')
 
-# Fit the model
+# Check the defined fit modes of the model object
+fm3.modes.print()
+
+###################################################################################################
+
+# Fit the model and report results
 fm3.report(freqs, spectrum)
 
 ###################################################################################################

@@ -68,8 +68,15 @@ spectrum = load_example_data('spectrum.npy', folder='data')
 # Define a set of metrics to use
 metrics1 = ['error_mae', 'gof_rsquared']
 
-# Initialize model with metric specification & fit model
+# Initialize model with metric specification
 fm1 = SpectralModel(metrics=metrics1)
+
+# Check the defined metrics from the model object
+fm1.results.metrics.print()
+
+###################################################################################################
+
+# Fit the model and report results
 fm1.report(freqs, spectrum)
 
 ###################################################################################################
@@ -118,8 +125,15 @@ print(fm1.results.metrics.results)
 # Define a new set of metrics to use
 metrics2 = ['error_mse', 'gof_adjrsquared']
 
-# Initialize model with metric specification & fit model
+# Initialize model with metric specification
 fm2 = SpectralModel(metrics=metrics2)
+
+# Check the defined metrics from the model object
+fm2.results.metrics.print()
+
+###################################################################################################
+
+# Fit the model and report results
 fm2.report(freqs, spectrum)
 
 ###################################################################################################
@@ -137,6 +151,13 @@ metrics3 = ['error_mae', 'error_mse', 'gof_rsquared', 'gof_adjrsquared']
 
 # Initialize model with metric specification & fit model
 fm3 = SpectralModel(metrics=metrics3)
+
+# Check the defined metrics from the model object
+fm3.results.metrics.print()
+
+###################################################################################################
+
+# Fit the model and report results
 fm3.report(freqs, spectrum)
 
 ###################################################################################################
