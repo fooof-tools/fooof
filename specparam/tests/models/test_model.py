@@ -110,7 +110,7 @@ def test_fit_knee():
         assert np.allclose(gauss, tfm.results.params.periodic.get_params('fit')[ii], [2.0, 0.5, 1.0])
 
 def test_fit_default_metrics():
-    """Test goodness of fit & error metrics, post model fitting."""
+    """Test computing metrics, post model fitting."""
 
     tfm = SpectralModel(verbose=False)
 
@@ -118,7 +118,7 @@ def test_fit_default_metrics():
     tfm.data.power_spectrum = np.array([1, 2, 3, 4, 5])
     tfm.results.model.modeled_spectrum = np.array([1, 2, 5, 4, 5])
 
-    # Check default goodness of fit and error measures
+    # Check default metrics
     tfm.results.metrics.compute_metrics(tfm.data, tfm.results)
     assert np.isclose(tfm.results.metrics.results['error_mae'], 0.4)
     assert np.isclose(tfm.results.metrics.results['gof_rsquared'], 0.75757575)

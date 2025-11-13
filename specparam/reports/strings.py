@@ -323,7 +323,6 @@ def gen_methods_report_str(concise=False):
     return output
 
 
-# TODO: UPDATE
 def gen_methods_text_str(model=None):
     """Generate a string representation of a template methods report.
 
@@ -334,32 +333,43 @@ def gen_methods_text_str(model=None):
         If None, the text is returned as a template, without values.
     """
 
-    template = (
+    if model:
+        settings_names = list(model.algorithm.settings.values.keys())
+        settings_values = list(model.algorithm.settings.values.values())
+    else:
+        settings_names = []
+        settings_values = []
+
+    template = [
         "The periodic & aperiodic spectral parameterization algorithm (version {}) "
         "was used to parameterize neural power spectra. "
         "The model was fit with {} aperiodic mode and {} periodic mode. "
         "Settings for the algorithm were set as: "
-        "peak width limits : {}; "
-        "max number of peaks : {}; "
-        "minimum peak height : {}; "
-        "peak threshold : {}; ."
+    ]
+
+    if settings_names:
+        settings_strs = [el + ' : {}, ' for el in settings_names]
+        settings_strs[-1] = settings_strs[-1][:-2] + '. '
+        template.extend(settings_strs)
+    else:
+        template.extend('XX. ')
+
+    template.extend([
         "Power spectra were parameterized across the frequency range "
         "{} to {} Hz."
-    )
+    ])
 
-    if model:
-        freq_range = model.data.freq_range if model.data.has_data else ('XX', 'XX')
+    if model and model.data.has_data:
+        freq_range = model.data.freq_range
     else:
         freq_range = ('XX', 'XX')
 
-    methods_str = template.format(MODULE_VERSION,
-                                  model.modes.aperiodic.name if model else 'XX',
-                                  model.modes.periodic.name if model else 'XX',
-                                  model.algorithm.settings.peak_width_limits if model else 'XX',
-                                  model.algorithm.settings.max_n_peaks if model else 'XX',
-                                  model.algorithm.settings.min_peak_height if model else 'XX',
-                                  model.algorithm.settings.peak_threshold if model else 'XX',
-                                  *freq_range)
+    methods_str = ''.join(template).format(\
+        MODULE_VERSION,
+        model.modes.aperiodic.name if model else 'XX',
+        model.modes.periodic.name if model else 'XX',
+        *settings_values,
+        *freq_range)
 
     return methods_str
 
@@ -401,21 +411,18 @@ def gen_model_results_str(model, concise=False):
         _report_str_model(model),
         '',
 
-        # Aperiodic parameters
         'Aperiodic Parameters (\'{}\' mode)'.format(model.modes.aperiodic.name),
         '(' + ', '.join(model.modes.aperiodic.params.labels) + ')',
         ', '.join(['{:2.4f}'] * \
             len(model.results.params.aperiodic.params)).format(*model.results.params.aperiodic.params),
         '',
 
-        # Peak parameters
         'Peak Parameters (\'{}\' mode) {} peaks found'.format(\
             model.modes.periodic.name, model.results.n_peaks),
         *[peak_str.format(*op) for op in model.results.params.periodic.params],
         '',
 
-        # Metrics
-        'Model fit quality metrics:',
+        'Model metrics:',
         *['{:>18s} is {:1.4f} {:8s}'.format('{:s} ({:s})'.format(*key.split('_')), res, ' ') \
             for key, res in model.results.metrics.results.items()],
         '',
@@ -460,7 +467,6 @@ def gen_group_results_str(group, concise=False):
         _report_str_model(group),
         '',
 
-        # Aperiodic parameters
         'Aperiodic Parameters (\'{}\' mode)'.format(group.modes.aperiodic.name),
         *[el for el in [\
             '{:8s} - Min: {:6.2f}, Max: {:6.2f}, Mean: {:5.2f}'.format(label, \
@@ -468,20 +474,24 @@ def gen_group_results_str(group, concise=False):
                     for label in group.modes.aperiodic.params.labels]],
         '',
 
-        # Peak Parameters
         'Peak Parameters (\'{}\' mode) {} total peaks found'.format(\
             group.modes.periodic.name, sum(group.results.n_peaks)),
         '',
-
-        # Metrics
-        'Model fit quality metrics:',
-        *['{:>18s} -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'.format(\
-            '{:s} ({:s})'.format(*label.split('_')),
-            *compute_arr_desc(group.results.get_metrics(label))) \
-                for label in group.results.metrics.labels],
-        '',
-        DIVIDER,
     ]
+
+    if len(group.results.metrics) > 0:
+        str_lst.extend([
+            'Model metrics:',
+            *['{:>18s} -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'.format(\
+                '{:s} ({:s})'.format(*label.split('_')),
+                *compute_arr_desc(group.results.get_metrics(label))) \
+                    for label in group.results.metrics.labels],
+            '',
+            ])
+
+    str_lst.extend([
+        DIVIDER,
+    ])
 
     output = _format(str_lst, concise)
 
@@ -525,7 +535,6 @@ def gen_time_results_str(time, concise=False):
         _report_str_model(time),
         '',
 
-        # Aperiodic parameters
         'Aperiodic Parameters (\'{}\' mode)'.format(time.modes.aperiodic.name),
         *[el for el in [\
             '{:8s} - Min: {:6.2f}, Max: {:6.2f}, Mean: {:5.2f}'.format(label, \
@@ -533,7 +542,6 @@ def gen_time_results_str(time, concise=False):
                     for label in time.modes.aperiodic.params.labels]],
         '',
 
-        # Peak Parameters
         'Peak Parameters (\'{}\' mode) - mean values across windows'.format(\
             time.modes.periodic.name),
         *[peak_str.format(*[band_label] + \
@@ -543,8 +551,7 @@ def gen_time_results_str(time, concise=False):
             for band_label in time.results.bands.labels],
         '',
 
-        # Metrics
-        'Model fit quality metrics (values across windows):',
+        'Model metrics (values across windows):',
         *['{:>18s} -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'.format(\
             '{:s} ({:s})'.format(*key.split('_')),
             *compute_arr_desc(time.results.time_results[key])) \
@@ -597,7 +604,6 @@ def gen_event_results_str(event, concise=False):
         _report_str_model(event),
         '',
 
-        # Aperiodic parameters
         'Aperiodic Parameters (\'{}\' mode)'.format(event.modes.aperiodic.name),
         *[el for el in [\
             '{:8s} - Min: {:6.2f}, Max: {:6.2f}, Mean: {:5.2f}'.format(label, \
@@ -605,7 +611,6 @@ def gen_event_results_str(event, concise=False):
                     for label in event.modes.aperiodic.params.labels]],
         '',
 
-        # Peak Parameters
         'Peak Parameters (\'{}\' mode) - mean values across windows'.format(\
             event.modes.periodic.name),
         *[peak_str.format(*[band_label] + \
@@ -616,8 +621,7 @@ def gen_event_results_str(event, concise=False):
             for band_label in event.results.bands.labels],
         '',
 
-        # Metrics
-        'Model fit quality metrics (values across events):',
+        'Model metrics (values across events):',
         *['{:>18s} -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'.format(\
             '{:s} ({:s})'.format(*key.split('_')),
             *compute_arr_desc(np.mean(event.results.event_time_results[key], 1))) \

@@ -53,7 +53,7 @@ def plot_group_model(group, **plot_kwargs):
 
     # Goodness of fit plot
     ax1 = plt.subplot(gs[0, 1])
-    plot_group_goodness(group, ax1, **scatter_kwargs, custom_styler=None)
+    plot_group_metrics(group, ax1, **scatter_kwargs, custom_styler=None)
 
     # Center frequencies plot
     ax2 = plt.subplot(gs[1, :])
@@ -79,17 +79,17 @@ def plot_group_aperiodic(group, ax=None, **plot_kwargs):
     if group.modes.aperiodic.name == 'knee':
         plot_scatter_2(group.results.get_params('aperiodic', 'exponent'), 'Exponent',
                        group.results.get_params('aperiodic', 'knee'), 'Knee',
-                       'Aperiodic Fit', ax=ax)
+                       'Aperiodic Parameters', ax=ax)
     else:
         plot_scatter_1(group.results.get_params('aperiodic', 'exponent'), 'Exponent',
-                       'Aperiodic Fit', ax=ax)
+                       'Aperiodic Parameters', ax=ax)
 
 
 @savefig
 @style_plot
 @check_dependency(plt, 'matplotlib')
-def plot_group_goodness(group, ax=None, **plot_kwargs):
-    """Plot goodness of fit results, in a scatter plot.
+def plot_group_metrics(group, ax=None, **plot_kwargs):
+    """Plot metrics results, in a scatter plot.
 
     Parameters
     ----------
@@ -101,17 +101,26 @@ def plot_group_goodness(group, ax=None, **plot_kwargs):
         Additional plot related keyword arguments, with styling options managed by ``style_plot``.
     """
 
-    # Get indices of metrics to plot
-    err_ind = find_first_ind(group.results.metrics.labels, 'error')
-    err_label = group.results.metrics.labels[err_ind]
-    gof_ind = find_first_ind(group.results.metrics.labels, 'gof')
-    gof_label = group.results.metrics.labels[gof_ind]
+    if len(group.results.metrics) == 0:
+        ax.set(xticks=[], yticks=[])
 
-    plot_scatter_2(group.results.get_metrics(err_label),
-                   group.results.metrics.flabels[err_ind],
-                   group.results.get_metrics(gof_label),
-                   group.results.metrics.flabels[gof_ind],
-                   'Fit Quality', ax=ax)
+    if len(group.results.metrics) == 1:
+        plot_scatter_1(group.results.get_metrics(group.results.metrics.labels[0]),
+                       group.results.metrics.flabels[0],
+                       'Metrics', ax=ax)
+
+    elif len(group.results.metrics) >= 2:
+        ind1 = 0
+        ind2 = 1
+        if 'error' in group.results.metrics.categories:
+            ind1 = find_first_ind(group.results.metrics.labels, 'error')
+        if 'gof' in group.results.metrics.categories:
+            ind2 = find_first_ind(group.results.metrics.labels, 'gof')
+        plot_scatter_2(group.results.get_metrics(group.results.metrics.labels[ind1]),
+                       group.results.metrics.flabels[ind1],
+                       group.results.get_metrics(group.results.metrics.labels[ind2]),
+                       group.results.metrics.flabels[ind2],
+                       'Metrics', ax=ax)
 
 
 @savefig
@@ -130,5 +139,5 @@ def plot_group_peak_frequencies(group, ax=None, **plot_kwargs):
         Additional plot related keyword arguments, with styling options managed by ``style_plot``.
     """
 
-    plot_hist(group.results.get_params('peak', 0)[:, 0], 'Center Frequency',
-              'Peaks - Center Frequencies', x_lims=group.data.freq_range, ax=ax)
+    plot_hist(group.results.get_params('peak', 'cf')[:, 0], 'Center Frequency',
+              'Peak Parameters - Center Frequencies', x_lims=group.data.freq_range, ax=ax)

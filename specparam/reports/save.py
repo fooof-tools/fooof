@@ -3,7 +3,7 @@
 from specparam.io.utils import create_file_path
 from specparam.modutils.dependencies import safe_import, check_dependency
 from specparam.plts.templates import plot_text
-from specparam.plts.group import (plot_group_aperiodic, plot_group_goodness,
+from specparam.plts.group import (plot_group_aperiodic, plot_group_metrics,
                                   plot_group_peak_frequencies)
 from specparam.reports.strings import (gen_settings_str, gen_model_results_str,
                                        gen_group_results_str, gen_time_results_str,
@@ -99,7 +99,7 @@ def save_group_report(group, file_name, file_path=None, add_settings=True):
 
     # Goodness of fit plot
     ax2 = plt.subplot(grid[1, 1])
-    plot_group_goodness(group, ax2, custom_styler=None)
+    plot_group_metrics(group, ax2, custom_styler=None)
 
     # Peak center frequencies plot
     ax3 = plt.subplot(grid[2, :])
