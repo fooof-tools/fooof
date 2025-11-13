@@ -57,7 +57,7 @@ def save_model_report(model, file_name, file_path=None, add_settings=True, **plo
 
     # Third - model settings
     if add_settings:
-        plot_text(gen_settings_str(model, False), 0.5, 0.1, ax=plt.subplot(grid[2]))
+        plot_text(gen_settings_str(model.algorithm, False), 0.5, 0.1, ax=plt.subplot(grid[2]))
 
     # Save out the report
     plt.savefig(create_file_path(file_name, file_path, SAVE_FORMAT))
@@ -107,7 +107,7 @@ def save_group_report(group, file_name, file_path=None, add_settings=True):
 
     # Third - Model settings
     if add_settings:
-        plot_text(gen_settings_str(group, False), 0.5, 0.1, ax=plt.subplot(grid[3, :]))
+        plot_text(gen_settings_str(group.algorithm, False), 0.5, 0.1, ax=plt.subplot(grid[3, :]))
 
     # Save out the report
     plt.savefig(create_file_path(file_name, file_path, SAVE_FORMAT))
@@ -146,7 +146,7 @@ def save_time_report(time, file_name, file_path=None, add_settings=True):
 
     # Third - Model settings
     if add_settings:
-        plot_text(gen_settings_str(time, False), 0.5, 0.1, ax=axes[-1])
+        plot_text(gen_settings_str(time.algorithm, False), 0.5, 0.1, ax=axes[-1])
 
     # Save out the report
     plt.savefig(create_file_path(file_name, file_path, SAVE_FORMAT))
@@ -187,7 +187,7 @@ def save_event_report(event, file_name, file_path=None, add_settings=True):
 
     # Third - Model settings
     if add_settings:
-        plot_text(gen_settings_str(event, False), 0.5, 0.1, ax=axes[-1])
+        plot_text(gen_settings_str(event.algorithm, False), 0.5, 0.1, ax=axes[-1])
 
     # Save out the report
     plt.savefig(create_file_path(file_name, file_path, SAVE_FORMAT))

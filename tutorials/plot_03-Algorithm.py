@@ -64,6 +64,9 @@ spectrum = load_example_data('spectrum_2.npy', folder='data')
 #   These settings will be more fully described later in the tutorials
 fm = SpectralModel(peak_width_limits=[1, 8], max_n_peaks=6, min_peak_height=0.15)
 
+# Check the defined algorithm & settings
+fm.algorithm.print()
+
 ###################################################################################################
 #
 # Note that data can be added to a SpectralModel object independent of fitting the model, using

@@ -6,6 +6,7 @@ import numpy as np
 
 from specparam.metrics.metric import Metric
 from specparam.metrics.definitions import METRICS, check_metric_definition
+from specparam.reports.strings import gen_metrics_str
 
 ###################################################################################################
 ###################################################################################################
@@ -175,6 +176,20 @@ class Metrics():
 
         for key, value in results.items():
             self[key].result = value
+
+
+    def print(self, description=False, concise=False):
+        """Print out the current metrics.
+
+        Parameters
+        ----------
+        description : bool, optional, default: False
+            Whether to print out a description with current metrics.
+        concise : bool, optional, default: False
+            Whether to print the report in a concise mode, or not.
+        """
+
+        print(gen_metrics_str(self, description, concise))
 
 
     def reset(self):

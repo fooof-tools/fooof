@@ -16,11 +16,18 @@ def test_gen_version_str():
 
 def test_gen_modes_str(tfm):
 
-    assert gen_modes_str(tfm)
+    assert gen_modes_str(tfm.modes)
+    assert gen_modes_str(tfm.modes, True)
 
 def test_gen_settings_str(tfm):
 
-    assert gen_settings_str(tfm)
+    assert gen_settings_str(tfm.algorithm)
+    assert gen_settings_str(tfm.algorithm, True)
+
+def test_gen_metrics_str(tfm):
+
+    assert gen_metrics_str(tfm.results.metrics)
+    assert gen_metrics_str(tfm.results.metrics, True)
 
 def test_gen_freq_range_str(tfm):
 

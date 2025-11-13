@@ -6,7 +6,7 @@ from specparam.utils.array import unlog
 from specparam.utils.checks import check_array_dim
 from specparam.modes.modes import Modes
 from specparam.modutils.errors import NoDataError
-from specparam.reports.strings import gen_modes_str, gen_settings_str, gen_issue_str
+from specparam.reports.strings import gen_issue_str
 
 ###################################################################################################
 ###################################################################################################
@@ -113,20 +113,6 @@ class BaseModel():
         return output
 
 
-    def print_modes(self, description=False, concise=False):
-        """Print out the current fit modes.
-
-        Parameters
-        ----------
-        description : bool, optional, default: False
-            Whether to print out a description with current fit modes.
-        concise : bool, optional, default: False
-            Whether to print the report in a concise mode, or not.
-        """
-
-        print(gen_modes_str(self, description, concise))
-
-
     def print_settings(self, description=False, concise=False):
         """Print out the current settings.
 
@@ -138,7 +124,7 @@ class BaseModel():
             Whether to print the report in a concise mode, or not.
         """
 
-        print(gen_settings_str(self, description, concise))
+        self.algorithm.print()
 
 
     @staticmethod

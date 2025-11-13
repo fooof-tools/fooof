@@ -26,7 +26,7 @@ def methods_report_info(model_obj=None, concise=False):
 
     if model_obj:
         print(gen_version_str(concise))
-        print(gen_settings_str(model_obj, concise=concise))
+        print(gen_settings_str(model_obj.algorithm, concise=concise))
         print(gen_freq_range_str(model_obj, concise=concise))
 
 

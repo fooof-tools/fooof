@@ -48,7 +48,11 @@ check_modes('aperiodic')
 
 ###################################################################################################
 
+# Initialize a model object specifying a specific aperiodic fit mode
 fm1 = SpectralModel(aperiodic_mode='fixed')
+
+# Check the defined fit modes of the model object
+fm1.modes.print()
 
 ###################################################################################################
 # Relating Exponents to Power Spectrum Slope
@@ -103,6 +107,9 @@ fm1 = SpectralModel(aperiodic_mode='fixed')
 # Initialize a new spectral model with the knee aperiodic mode
 fm2 = SpectralModel(aperiodic_mode='knee')
 
+# Check the defined fit modes of the model object
+fm2.modes.print()
+
 ###################################################################################################
 # Mathematical Description of the Aperiodic Component
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -154,6 +161,9 @@ spectrum = load_example_data('spectrum_lfp.npy', folder='data')
 
 # Initialize a model object, setting the aperiodic mode to use a 'knee' fit
 fm = SpectralModel(peak_width_limits=[2, 8], aperiodic_mode='knee')
+
+# Check the defined fit modes of the model object
+fm.modes.print()
 
 ###################################################################################################
 

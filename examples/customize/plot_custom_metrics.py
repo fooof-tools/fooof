@@ -87,15 +87,31 @@ def compute_total_error(power_spectrum, modeled_spectrum):
 # Define Metric for the total error
 total_error_metric = Metric(
     category='error',
-    measure='total_error',
+    measure='total',
     description='Total absolute error.',
     func=compute_total_error,
 )
 
 ###################################################################################################
+#
+# Our custom metric is now defined!
+#
+# The use this metric, we can initialize a model object and pass in the custom metric
+# to use for fitting.
+#
+# Note that in this example, we will use :class:`~specparam.SpectralModel` for our example,
+# but you can also take the same approach to define custom metrics with other model objects.
+#
+
+###################################################################################################
 
 # Initialize a spectral model, passing in our custom metric definition
 fm = SpectralModel(min_peak_height=0.25, metrics=[total_error_metric])
+
+# Check the defined metrics
+fm.results.metrics.print()
+
+###################################################################################################
 
 # Fit the model and print a report
 fm.report(freqs, powers)
@@ -120,7 +136,7 @@ fm.report(freqs, powers)
 # Define the information for a custom metric, in a dictionary
 custom_metric_dict = {
     'category' : 'error',
-    'measure' : 'total_error',
+    'measure' : 'total',
     'description' : 'Total absolute error.',
     'func' : compute_total_error,
 }
@@ -129,6 +145,9 @@ custom_metric_dict = {
 
 # Initialize a model object, passing in the custom metric, defined as a dictionary
 fm = SpectralModel(min_peak_height=0.25, metrics=[custom_metric_dict])
+
+# Check the defined metrics
+fm.results.metrics.print()
 
 ###################################################################################################
 #
@@ -157,6 +176,11 @@ fm.get_metrics('total_error')
 
 # Initialize a spectral model, passing in multiple metrics (both internal and custom)
 fm = SpectralModel(min_peak_height=0.25, metrics=[total_error_metric, 'gof_rsquared'])
+
+# Check the defined metrics
+fm.results.metrics.print()
+
+###################################################################################################
 
 # Fit the model and print a report
 fm.report(freqs, powers)
@@ -245,6 +269,11 @@ lowfreq_error = Metric(
 # Initialize a spectral model, passing in custom metric with additional arguments
 fm = SpectralModel(metrics=[lowfreq_error])
 
+# Check the defined metrics
+fm.results.metrics.print()
+
+###################################################################################################
+
 # Fit the model and print a report
 fm.report(freqs, powers)
 
@@ -305,6 +334,11 @@ custom_measure = Metric(
 
 # Initialize a spectral model, passing in our new custom measure
 fm = SpectralModel(metrics=[custom_measure])
+
+# Check the defined metrics of the object
+fm.results.metrics.print()
+
+###################################################################################################
 
 # Fit the model and print a report
 fm.report(freqs, powers)
