@@ -467,15 +467,21 @@ def gen_group_results_str(group, concise=False):
         'Peak Parameters (\'{}\' mode) {} total peaks found'.format(\
             group.modes.periodic.name, sum(group.results.n_peaks)),
         '',
-
-        'Model metrics:',
-        *['{:>18s} -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'.format(\
-            '{:s} ({:s})'.format(*label.split('_')),
-            *compute_arr_desc(group.results.get_metrics(label))) \
-                for label in group.results.metrics.labels],
-        '',
-        DIVIDER,
     ]
+
+    if len(group.results.metrics) > 0:
+        str_lst.extend([
+            'Model metrics:',
+            *['{:>18s} -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'.format(\
+                '{:s} ({:s})'.format(*label.split('_')),
+                *compute_arr_desc(group.results.get_metrics(label))) \
+                    for label in group.results.metrics.labels],
+            '',
+            ])
+
+    str_lst.extend([
+        DIVIDER,
+    ])
 
     output = _format(str_lst, concise)
 
