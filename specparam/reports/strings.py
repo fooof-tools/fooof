@@ -323,7 +323,6 @@ def gen_methods_report_str(concise=False):
     return output
 
 
-# TODO: UPDATE
 def gen_methods_text_str(model=None):
     """Generate a string representation of a template methods report.
 
@@ -334,32 +333,43 @@ def gen_methods_text_str(model=None):
         If None, the text is returned as a template, without values.
     """
 
-    template = (
+    if model:
+        settings_names = list(model.algorithm.settings.values.keys())
+        settings_values = list(model.algorithm.settings.values.values())
+    else:
+        settings_names = []
+        settings_values = []
+
+    template = [
         "The periodic & aperiodic spectral parameterization algorithm (version {}) "
         "was used to parameterize neural power spectra. "
         "The model was fit with {} aperiodic mode and {} periodic mode. "
         "Settings for the algorithm were set as: "
-        "peak width limits : {}; "
-        "max number of peaks : {}; "
-        "minimum peak height : {}; "
-        "peak threshold : {}; ."
+    ]
+
+    if settings_names:
+        settings_strs = [el + ' : {}, ' for el in settings_names]
+        settings_strs[-1] = settings_strs[-1][:-2] + '. '
+        template.extend(settings_strs)
+    else:
+        template.extend('XX. ')
+
+    template.extend([
         "Power spectra were parameterized across the frequency range "
         "{} to {} Hz."
-    )
+    ])
 
-    if model:
-        freq_range = model.data.freq_range if model.data.has_data else ('XX', 'XX')
+    if model and model.data.has_data:
+        freq_range = model.data.freq_range
     else:
         freq_range = ('XX', 'XX')
 
-    methods_str = template.format(MODULE_VERSION,
-                                  model.modes.aperiodic.name if model else 'XX',
-                                  model.modes.periodic.name if model else 'XX',
-                                  model.algorithm.settings.peak_width_limits if model else 'XX',
-                                  model.algorithm.settings.max_n_peaks if model else 'XX',
-                                  model.algorithm.settings.min_peak_height if model else 'XX',
-                                  model.algorithm.settings.peak_threshold if model else 'XX',
-                                  *freq_range)
+    methods_str = ''.join(template).format(\
+        MODULE_VERSION,
+        model.modes.aperiodic.name if model else 'XX',
+        model.modes.periodic.name if model else 'XX',
+        *settings_values,
+        *freq_range)
 
     return methods_str
 
