@@ -53,7 +53,7 @@ def plot_group_model(group, **plot_kwargs):
 
     # Goodness of fit plot
     ax1 = plt.subplot(gs[0, 1])
-    plot_group_goodness(group, ax1, **scatter_kwargs, custom_styler=None)
+    plot_group_metrics(group, ax1, **scatter_kwargs, custom_styler=None)
 
     # Center frequencies plot
     ax2 = plt.subplot(gs[1, :])
@@ -88,8 +88,8 @@ def plot_group_aperiodic(group, ax=None, **plot_kwargs):
 @savefig
 @style_plot
 @check_dependency(plt, 'matplotlib')
-def plot_group_goodness(group, ax=None, **plot_kwargs):
-    """Plot goodness of fit results, in a scatter plot.
+def plot_group_metrics(group, ax=None, **plot_kwargs):
+    """Plot metrics results, in a scatter plot.
 
     Parameters
     ----------
@@ -111,7 +111,7 @@ def plot_group_goodness(group, ax=None, **plot_kwargs):
                    group.results.metrics.flabels[err_ind],
                    group.results.get_metrics(gof_label),
                    group.results.metrics.flabels[gof_ind],
-                   'Fit Quality', ax=ax)
+                   'Metrics', ax=ax)
 
 
 @savefig

@@ -78,7 +78,7 @@ def plot_event_model(event, **plot_kwargs):
             color=PARAM_COLORS['presence'], ax=next(axes))
         next(axes).axis('off')
 
-    # 03: goodness of fit
+    # 03: metrics
     for ind, glabel in enumerate(event.results.metrics.labels):
         plot_param_over_time_yshade(\
             None, event.results.event_time_results[glabel],

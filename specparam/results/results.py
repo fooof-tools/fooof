@@ -160,7 +160,7 @@ class Results():
 
 
     def get_results(self):
-        """Return model fit parameters and goodness of fit metrics.
+        """Return model fit parameters and metrics.
 
         Returns
         -------

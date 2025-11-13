@@ -31,10 +31,10 @@ def test_plot_group_aperiodic(tfg, skip_if_no_mpl):
                          file_name='test_plot_group_aperiodic.png')
 
 @plot_test
-def test_plot_group_goodness(tfg, skip_if_no_mpl):
+def test_plot_group_metrics(tfg, skip_if_no_mpl):
 
-    plot_group_goodness(tfg, file_path=TEST_PLOTS_PATH,
-                        file_name='test_plot_group_goodness.png')
+    plot_group_metrics(tfg, file_path=TEST_PLOTS_PATH,
+                       file_name='test_plot_group_metrics.png')
 
 @plot_test
 def test_plot_group_peak_frequencies(tfg, skip_if_no_mpl):

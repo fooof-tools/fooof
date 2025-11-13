@@ -401,21 +401,18 @@ def gen_model_results_str(model, concise=False):
         _report_str_model(model),
         '',
 
-        # Aperiodic parameters
         'Aperiodic Parameters (\'{}\' mode)'.format(model.modes.aperiodic.name),
         '(' + ', '.join(model.modes.aperiodic.params.labels) + ')',
         ', '.join(['{:2.4f}'] * \
             len(model.results.params.aperiodic.params)).format(*model.results.params.aperiodic.params),
         '',
 
-        # Peak parameters
         'Peak Parameters (\'{}\' mode) {} peaks found'.format(\
             model.modes.periodic.name, model.results.n_peaks),
         *[peak_str.format(*op) for op in model.results.params.periodic.params],
         '',
 
-        # Metrics
-        'Model fit quality metrics:',
+        'Model metrics:',
         *['{:>18s} is {:1.4f} {:8s}'.format('{:s} ({:s})'.format(*key.split('_')), res, ' ') \
             for key, res in model.results.metrics.results.items()],
         '',
@@ -460,7 +457,6 @@ def gen_group_results_str(group, concise=False):
         _report_str_model(group),
         '',
 
-        # Aperiodic parameters
         'Aperiodic Parameters (\'{}\' mode)'.format(group.modes.aperiodic.name),
         *[el for el in [\
             '{:8s} - Min: {:6.2f}, Max: {:6.2f}, Mean: {:5.2f}'.format(label, \
@@ -468,13 +464,11 @@ def gen_group_results_str(group, concise=False):
                     for label in group.modes.aperiodic.params.labels]],
         '',
 
-        # Peak Parameters
         'Peak Parameters (\'{}\' mode) {} total peaks found'.format(\
             group.modes.periodic.name, sum(group.results.n_peaks)),
         '',
 
-        # Metrics
-        'Model fit quality metrics:',
+        'Model metrics:',
         *['{:>18s} -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'.format(\
             '{:s} ({:s})'.format(*label.split('_')),
             *compute_arr_desc(group.results.get_metrics(label))) \
@@ -525,7 +519,6 @@ def gen_time_results_str(time, concise=False):
         _report_str_model(time),
         '',
 
-        # Aperiodic parameters
         'Aperiodic Parameters (\'{}\' mode)'.format(time.modes.aperiodic.name),
         *[el for el in [\
             '{:8s} - Min: {:6.2f}, Max: {:6.2f}, Mean: {:5.2f}'.format(label, \
@@ -533,7 +526,6 @@ def gen_time_results_str(time, concise=False):
                     for label in time.modes.aperiodic.params.labels]],
         '',
 
-        # Peak Parameters
         'Peak Parameters (\'{}\' mode) - mean values across windows'.format(\
             time.modes.periodic.name),
         *[peak_str.format(*[band_label] + \
@@ -543,8 +535,7 @@ def gen_time_results_str(time, concise=False):
             for band_label in time.results.bands.labels],
         '',
 
-        # Metrics
-        'Model fit quality metrics (values across windows):',
+        'Model metrics (values across windows):',
         *['{:>18s} -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'.format(\
             '{:s} ({:s})'.format(*key.split('_')),
             *compute_arr_desc(time.results.time_results[key])) \
@@ -597,7 +588,6 @@ def gen_event_results_str(event, concise=False):
         _report_str_model(event),
         '',
 
-        # Aperiodic parameters
         'Aperiodic Parameters (\'{}\' mode)'.format(event.modes.aperiodic.name),
         *[el for el in [\
             '{:8s} - Min: {:6.2f}, Max: {:6.2f}, Mean: {:5.2f}'.format(label, \
@@ -605,7 +595,6 @@ def gen_event_results_str(event, concise=False):
                     for label in event.modes.aperiodic.params.labels]],
         '',
 
-        # Peak Parameters
         'Peak Parameters (\'{}\' mode) - mean values across windows'.format(\
             event.modes.periodic.name),
         *[peak_str.format(*[band_label] + \
@@ -616,8 +605,7 @@ def gen_event_results_str(event, concise=False):
             for band_label in event.results.bands.labels],
         '',
 
-        # Metrics
-        'Model fit quality metrics (values across events):',
+        'Model metrics (values across events):',
         *['{:>18s} -  Min: {:6.3f}, Max: {:6.3f}, Mean: {:5.3f}'.format(\
             '{:s} ({:s})'.format(*key.split('_')),
             *compute_arr_desc(np.mean(event.results.event_time_results[key], 1))) \

@@ -66,7 +66,7 @@ def plot_time_model(time, **plot_kwargs):
             colors=[PARAM_COLORS[plabel] for plabel in time.modes.periodic.params.labels],
             title='Periodic Parameters - ' + blabel, ax=next(axes))
 
-    # 03: goodness of fit
+    # 03: metrics
     err_ind = find_first_ind(time.results.metrics.labels, 'error')
     gof_ind = find_first_ind(time.results.metrics.labels, 'gof')
     plot_params_over_time(None, \
