@@ -20,8 +20,8 @@ def test_mode():
     }))
 
     tmode = Mode(name='tmode', component='periodic', description='test_desc',
-                 func=tfit, jacobian=None, params=params, ndim=1,
-                 freq_space='linear', powers_space='linear')
+                 formula='tformula', func=tfit, jacobian=None, params=params,
+                 ndim=1, freq_space='linear', powers_space='linear')
     assert tmode
     assert tmode.n_params == params.n_params
     tmode.check_params()
@@ -37,7 +37,7 @@ def test_mode_params_dict():
     }
 
     tmode = Mode(name='tmode', component='aperiodic', description='test_desc2',
-                 func=tfit2, jacobian=None, params=params, ndim=2,
-                 freq_space='linear', powers_space='linear')
+                 formula='tformula', func=tfit2, jacobian=None, params=params,
+                 ndim=2, freq_space='linear', powers_space='linear')
     assert tmode
     assert isinstance(tmode.params, ParamDefinition)
