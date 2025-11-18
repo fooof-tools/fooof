@@ -53,9 +53,7 @@ def skewed_gaussian_function(xs, *params):
 
     ys = np.zeros_like(xs)
 
-    for ii in range(0, len(params), 4):
-
-        ctr, hgt, wid, skew = params[ii:ii+4]
+    for ctr, hgt, wid, skew in zip(*[iter(params)] * 4):
 
         ts = (xs - ctr) / wid
         temp = 2 / wid * (1 / np.sqrt(2 * np.pi) * np.exp(-ts**2 / 2)) * \
@@ -98,7 +96,7 @@ def triangle_function(xs, *params):
     xs : 1d array
         Input x-axis values.
     *params : float
-        Parameters that define a cauchy function.
+        Parameters that define a triangle function.
 
     Returns
     -------
@@ -110,8 +108,9 @@ def triangle_function(xs, *params):
     fs = xs[1] - xs[0]
 
     for ctr, hgt, wid in zip(*[iter(params)] * 3):
-        ys[np.abs(xs - ctr) <= (wid * fs)] += \
-            hgt * (np.arccos(np.cos(np.linspace(0, 2 * np.pi, int(np.ceil(wid / fs)) + 1))) / np.pi)
+
+        temp = np.arccos(np.cos(np.linspace(0, 2 * np.pi, int(np.ceil(wid / fs)) + 1)))
+        ys[np.abs(xs - ctr) <= (wid * fs)] += hgt * normalize(temp)
 
     return ys
 
