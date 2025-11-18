@@ -13,10 +13,8 @@ from specparam.modes.funcs import *
 def test_gaussian_function():
 
     ctr, hgt, wid = 50, 5, 10
-
     xs = np.arange(1, 100)
     ys = gaussian_function(xs, ctr, hgt, wid)
-
     assert np.all(ys)
 
     # Check distribution matches generated gaussian from scipy
@@ -46,9 +44,16 @@ def test_skewed_gaussian_function():
 def test_cauchy_function():
 
     ctr, hgt, wid = 50, 5, 10
-
     xs = np.arange(1, 100)
     ys = cauchy_function(xs, ctr, hgt, wid)
+
+    assert np.all(ys)
+
+def test_triangle_function():
+
+    ctr, hgt, wid = 50, 5, 10
+    xs = np.arange(1, 100)
+    ys = triangle_function(xs, ctr, hgt, wid)
 
     assert np.all(ys)
 

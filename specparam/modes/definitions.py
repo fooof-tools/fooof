@@ -6,7 +6,8 @@ from collections import OrderedDict
 from specparam.modes.mode import Mode
 from specparam.modes.params import ParamDefinition
 from specparam.modes.funcs import (expo_function, expo_nk_function, double_expo_function,
-                                   gaussian_function, skewed_gaussian_function, cauchy_function)
+                                   gaussian_function, skewed_gaussian_function,
+                                   cauchy_function, triangle_function)
 from specparam.modes.jacobians import jacobian_gauss
 from specparam.utils.checks import check_selection
 
@@ -149,12 +150,33 @@ pe_cauchy = Mode(
     powers_space='log10',
 )
 
+## PE - Triangle Mode
+
+params_triangle = ParamDefinition(OrderedDict({
+    'cf' : 'Center frequency of the peak.',
+    'pw' : 'Power of the peak, over and above the aperiodic component.',
+    'bw' : 'Bandwidth of the peak.',
+}))
+
+pe_triangle = Mode(
+    name='triangle',
+    component='periodic',
+    description='Triangle peak fit function.',
+    func=triangle_function,
+    jacobian=None,
+    params=params_triangle,
+    ndim=2,
+    freq_space='linear',
+    powers_space='log10',
+)
+
 
 # Collect available periodic modes
 PE_MODES = {
     'gaussian' : pe_gaussian,
     'skewed_gaussian' : pe_skewed_gaussian,
     'cauchy' : pe_cauchy,
+    'triangle' : pe_triangle,
 }
 
 ###################################################################################################

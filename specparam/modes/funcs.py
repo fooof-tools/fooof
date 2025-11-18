@@ -90,6 +90,32 @@ def cauchy_function(xs, *params):
     return ys
 
 
+def triangle_function(xs, *params):
+    """Triangle fitting function.
+
+    Parameters
+    ----------
+    xs : 1d array
+        Input x-axis values.
+    *params : float
+        Parameters that define a cauchy function.
+
+    Returns
+    -------
+    ys : 1d array
+        Output values for triangle function.
+    """
+
+    ys = np.zeros_like(xs)
+    fs = xs[1] - xs[0]
+
+    for ctr, hgt, wid in zip(*[iter(params)] * 3):
+        ys[np.abs(xs - ctr) <= (wid * fs)] += \
+            hgt * (np.arccos(np.cos(np.linspace(0, 2 * np.pi, int(np.ceil(wid / fs)) + 1))) / np.pi)
+
+    return ys
+
+
 ## APERIODIC FUNCTIONS
 
 def expo_function(xs, *params):
