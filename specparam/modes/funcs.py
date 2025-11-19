@@ -109,8 +109,10 @@ def triangle_function(xs, *params):
 
     for ctr, hgt, wid in zip(*[iter(params)] * 3):
 
-        temp = np.arccos(np.cos(np.linspace(0, 2 * np.pi, int(np.ceil(wid / fs)) + 1)))
-        ys[np.abs(xs - ctr) <= (wid * fs)] += hgt * normalize(temp)
+        n_samples = int(np.ceil(wid / fs))
+        n_samples += 1 if n_samples % 2 == 0 else 0
+        temp = np.arccos(np.cos(np.linspace(0, 2 * np.pi, n_samples)))
+        ys[np.abs(xs - ctr) <= (n_samples / 2) * fs] += hgt * normalize(temp)
 
     return ys
 
