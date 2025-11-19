@@ -105,14 +105,14 @@ def triangle_function(xs, *params):
     """
 
     ys = np.zeros_like(xs)
-    fs = xs[1] - xs[0]
+    fres = xs[1] - xs[0]
 
     for ctr, hgt, wid in zip(*[iter(params)] * 3):
 
-        n_samples = int(np.ceil(2 * wid / fs))
+        n_samples = int(np.ceil(2 * wid / fres))
         n_samples += 1 if n_samples % 2 == 0 else 0
         temp = np.arccos(np.cos(np.linspace(0, 2 * np.pi, n_samples)))
-        ys[np.abs(xs - ctr) <= (n_samples / 2) * fs] += hgt * normalize(temp)
+        ys[np.abs(xs - ctr) <= (n_samples / 2) * fres] += hgt * normalize(temp)
 
     return ys
 
