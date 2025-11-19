@@ -6,7 +6,8 @@ from collections import OrderedDict
 from specparam.modes.mode import Mode
 from specparam.modes.params import ParamDefinition
 from specparam.modes.funcs import (expo_function, expo_nk_function, double_expo_function,
-                                   gaussian_function, skewed_gaussian_function, cauchy_function)
+                                   gaussian_function, skewed_gaussian_function,
+                                   cauchy_function, gamma_function)
 from specparam.modes.jacobians import jacobian_gauss
 from specparam.utils.checks import check_selection
 
@@ -150,11 +151,34 @@ pe_cauchy = Mode(
 )
 
 
+## PE - Gamma Mode
+
+params_gamma = ParamDefinition(OrderedDict({
+    'cf' : 'Center frequency of the peak.',
+    'pw' : 'Power of the peak, over and above the aperiodic component.',
+    'shape' : 'Shape parameter of the gamma function.',
+    'scale' : 'Scale parameter of the gamma function.',
+}))
+
+pe_gamma = Mode(
+    name='gamma',
+    component='periodic',
+    description='Fit a gamma peak function.',
+    func=gamma_function,
+    jacobian=None,
+    params=params_gamma,
+    ndim=2,
+    freq_space='linear',
+    powers_space='log10',
+)
+
+
 # Collect available periodic modes
 PE_MODES = {
     'gaussian' : pe_gaussian,
     'skewed_gaussian' : pe_skewed_gaussian,
     'cauchy' : pe_cauchy,
+    'gamma' : pe_gamma,
 }
 
 ###################################################################################################
