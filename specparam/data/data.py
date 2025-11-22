@@ -163,7 +163,7 @@ class Data():
                      log_powers=False, **data_kwargs)
 
 
-    def print(self, concise):
+    def print(self, concise=False):
         """Print out a data summary.
 
         Parameters
