@@ -3,24 +3,21 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>‘Oscillations’ as Peaks &#8212; fooof 1.1.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
-    <script src="../../_static/clipboard.min.js"></script>
-    <script src="../../_static/copybutton.js"></script>
+    <title>‘Oscillations’ as Peaks &#8212; fooof 1.1.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css?v=284a2d1d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=af026a1d"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=a56c686a"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 
@@ -58,7 +55,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.1</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -116,19 +113,19 @@
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
 <p><a class="reference internal" href="#sphx-glr-download-auto-motivations-concepts-plot-wigglypeaks-py"><span class="std std-ref">Go to the end</span></a>
-to download the full example code</p>
+to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="oscillations-as-peaks">
 <span id="sphx-glr-auto-motivations-concepts-plot-wigglypeaks-py"></span><h1>‘Oscillations’ as Peaks<a class="headerlink" href="#oscillations-as-peaks" title="Permalink to this heading">¶</a></h1>
 <p>Exploring the idea of oscillations as peaks of power.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Imports from NeuroDSP to simulate &amp; plot time series</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Imports from NeuroDSP to simulate &amp; plot time series</span>
 <span class="kn">from</span> <span class="nn">neurodsp.sim</span> <span class="kn">import</span> <span class="n">sim_powerlaw</span><span class="p">,</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.sim.sim_oscillation.html#neurodsp.sim.sim_oscillation" title="neurodsp.sim.sim_oscillation" class="sphx-glr-backref-module-neurodsp-sim sphx-glr-backref-type-py-function"><span class="n">sim_oscillation</span></a><span class="p">,</span> <span class="n">sim_combined</span><span class="p">,</span> <span class="n">set_random_seed</span>
 <span class="kn">from</span> <span class="nn">neurodsp.spectral</span> <span class="kn">import</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.spectral.compute_spectrum.html#neurodsp.spectral.compute_spectrum" title="neurodsp.spectral.compute_spectrum" class="sphx-glr-backref-module-neurodsp-spectral sphx-glr-backref-type-py-function"><span class="n">compute_spectrum</span></a>
 <span class="kn">from</span> <span class="nn">neurodsp.plts</span> <span class="kn">import</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.plts.plot_time_series.html#neurodsp.plts.plot_time_series" title="neurodsp.plts.plot_time_series" class="sphx-glr-backref-module-neurodsp-plts sphx-glr-backref-type-py-function"><span class="n">plot_time_series</span></a><span class="p">,</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.plts.plot_power_spectra.html#neurodsp.plts.plot_power_spectra" title="neurodsp.plts.plot_power_spectra" class="sphx-glr-backref-module-neurodsp-plts sphx-glr-backref-type-py-function"><span class="n">plot_power_spectra</span></a>
 <span class="kn">from</span> <span class="nn">neurodsp.utils</span> <span class="kn">import</span> <span class="n">create_times</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define simulation settings</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define simulation settings</span>
 <span class="n">n_seconds</span> <span class="o">=</span> <span class="mi">30</span>
 <span class="n">fs</span> <span class="o">=</span> <span class="mi">1000</span>
 
@@ -145,7 +142,7 @@ of power in the power spectrum, which can be detected and measured.</p>
 <p>In this exploration, we will use simulated time series to examine how rhythmic signals
 do display as ‘peaks’ of power in frequency domain representations. We will also
 explore some limitations of this idea.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate an ongoing sine wave</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate an ongoing sine wave</span>
 <span class="n">sine_wave</span> <span class="o">=</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.sim.sim_oscillation.html#neurodsp.sim.sim_oscillation" title="neurodsp.sim.sim_oscillation" class="sphx-glr-backref-module-neurodsp-sim sphx-glr-backref-type-py-function"><span class="n">sim_oscillation</span></a><span class="p">(</span><span class="n">n_seconds</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 
 <span class="c1"># Visualize the sine wave</span>
@@ -153,7 +150,7 @@ explore some limitations of this idea.</p>
 </pre></div>
 </div>
 <img src="../../_images/sphx_glr_plot_WigglyPeaks_001.png" srcset="../../_images/sphx_glr_plot_WigglyPeaks_001.png" alt="plot WigglyPeaks" class = "sphx-glr-single-img"/><p>In the above, we simulated a pure sinusoid, at 10 Hz.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the power spectrum of the sine wave</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the power spectrum of the sine wave</span>
 <span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.spectral.compute_spectrum.html#neurodsp.spectral.compute_spectrum" title="neurodsp.spectral.compute_spectrum" class="sphx-glr-backref-module-neurodsp-spectral sphx-glr-backref-type-py-function"><span class="n">compute_spectrum</span></a><span class="p">(</span><span class="n">sine_wave</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
 
 <span class="c1"># Visualize the power spectrum</span>
@@ -165,7 +162,7 @@ the simulated rhythm, with close to zero power at all other frequencies.</p>
 <p>This is characteristic of a sine wave, and demonstrates the basic idea of considering
 oscillations as peaks of power in the power spectrum.</p>
 <p>Next lets examine a more complicated signal, with multiple components.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define components for a combined signal</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define components for a combined signal</span>
 <span class="n">components</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;sim_oscillation&#39;</span> <span class="p">:</span> <span class="p">{</span><span class="s1">&#39;freq&#39;</span> <span class="p">:</span> <span class="mi">10</span><span class="p">},</span>
     <span class="s1">&#39;sim_powerlaw&#39;</span> <span class="p">:</span> <span class="p">{</span><span class="s1">&#39;exponent&#39;</span> <span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">},</span>
@@ -180,7 +177,7 @@ oscillations as peaks of power in the power spectrum.</p>
 </div>
 <img src="../../_images/sphx_glr_plot_WigglyPeaks_003.png" srcset="../../_images/sphx_glr_plot_WigglyPeaks_003.png" alt="plot WigglyPeaks" class = "sphx-glr-single-img"/><p>Here we see a simply simulation meant to be closer to neural data, reflecting an oscillatory
 component, as well as an aperiodic component, which contributes power across all frequencies.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the power spectrum of the sine wave</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the power spectrum of the sine wave</span>
 <span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.spectral.compute_spectrum.html#neurodsp.spectral.compute_spectrum" title="neurodsp.spectral.compute_spectrum" class="sphx-glr-backref-module-neurodsp-spectral sphx-glr-backref-type-py-function"><span class="n">compute_spectrum</span></a><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
 
 <span class="c1"># Visualize the power spectrum</span>
@@ -205,7 +202,7 @@ likely reflect aperiodic activity.</p>
 <p>In the this section, we will further explore peaks of power in the frequency domain,
 showing that not every peak necessarily reflect an independent oscillation.</p>
 <p>To do so, we will start by simulating a non-sinusoidal oscillation.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate a sawtooth wave</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate a sawtooth wave</span>
 <span class="n">sawtooth</span> <span class="o">=</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.sim.sim_oscillation.html#neurodsp.sim.sim_oscillation" title="neurodsp.sim.sim_oscillation" class="sphx-glr-backref-module-neurodsp-sim sphx-glr-backref-type-py-function"><span class="n">sim_oscillation</span></a><span class="p">(</span><span class="n">n_seconds</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;sawtooth&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 
 <span class="c1"># Visualize the sine wave</span>
@@ -213,7 +210,7 @@ showing that not every peak necessarily reflect an independent oscillation.</p>
 </pre></div>
 </div>
 <img src="../../_images/sphx_glr_plot_WigglyPeaks_005.png" srcset="../../_images/sphx_glr_plot_WigglyPeaks_005.png" alt="plot WigglyPeaks" class = "sphx-glr-single-img"/><p>In the above, we can see that there is again an oscillation, although it is not sinusoidal.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the power spectrum of the sine wave</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the power spectrum of the sine wave</span>
 <span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.spectral.compute_spectrum.html#neurodsp.spectral.compute_spectrum" title="neurodsp.spectral.compute_spectrum" class="sphx-glr-backref-module-neurodsp-spectral sphx-glr-backref-type-py-function"><span class="n">compute_spectrum</span></a><span class="p">(</span><span class="n">sawtooth</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
 
 <span class="c1"># Visualize the power spectrum</span>
@@ -222,7 +219,7 @@ showing that not every peak necessarily reflect an independent oscillation.</p>
 </div>
 <img src="../../_images/sphx_glr_plot_WigglyPeaks_006.png" srcset="../../_images/sphx_glr_plot_WigglyPeaks_006.png" alt="plot WigglyPeaks" class = "sphx-glr-single-img"/><p>Note the 10 Hz peak, as well as the additional peaks in the frequency domain.</p>
 <p>Before further discussing this, let’s create an example with an aperiodic component.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define components for a combined signal</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define components for a combined signal</span>
 <span class="n">components</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;sim_oscillation&#39;</span> <span class="p">:</span> <span class="p">{</span><span class="s1">&#39;freq&#39;</span> <span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;cycle&#39;</span> <span class="p">:</span> <span class="s1">&#39;sawtooth&#39;</span><span class="p">,</span> <span class="s1">&#39;width&#39;</span> <span class="p">:</span> <span class="mf">0.25</span><span class="p">},</span>
     <span class="s1">&#39;sim_powerlaw&#39;</span> <span class="p">:</span> <span class="p">{</span><span class="s1">&#39;exponent&#39;</span> <span class="p">:</span> <span class="o">-</span><span class="mf">1.</span><span class="p">},</span>
@@ -235,7 +232,7 @@ showing that not every peak necessarily reflect an independent oscillation.</p>
 <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.plts.plot_time_series.html#neurodsp.plts.plot_time_series" title="neurodsp.plts.plot_time_series" class="sphx-glr-backref-module-neurodsp-plts sphx-glr-backref-type-py-function"><span class="n">plot_time_series</span></a><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">sig</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_plot_WigglyPeaks_007.png" srcset="../../_images/sphx_glr_plot_WigglyPeaks_007.png" alt="plot WigglyPeaks" class = "sphx-glr-single-img"/><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the power spectrum of the sine wave</span>
+<img src="../../_images/sphx_glr_plot_WigglyPeaks_007.png" srcset="../../_images/sphx_glr_plot_WigglyPeaks_007.png" alt="plot WigglyPeaks" class = "sphx-glr-single-img"/><div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the power spectrum of the sine wave</span>
 <span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.spectral.compute_spectrum.html#neurodsp.spectral.compute_spectrum" title="neurodsp.spectral.compute_spectrum" class="sphx-glr-backref-module-neurodsp-spectral sphx-glr-backref-type-py-function"><span class="n">compute_spectrum</span></a><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
 
 <span class="c1"># Visualize the power spectrum</span>
@@ -250,13 +247,13 @@ the non-sinusoidality of the time domain signal.</p>
 independent oscillation, this need not be the case, as a given peak could simply be the harmonic
 of an asymmetric oscillation at a different frequency. For this reason, the number of peaks in
 a model can not be interpreted as the number of oscillations in a signal.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.406 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.690 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-motivations-concepts-plot-wigglypeaks-py">
-<div class="sphx-glr-download sphx-glr-download-python docutils container">
-<p><a class="reference download internal" download="" href="../../_downloads/ec180706d849ba370152a1a7a5a30b46/plot_WigglyPeaks.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_WigglyPeaks.py</span></code></a></p>
-</div>
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/fecff9e7a6734e3ad683b96c3c92b484/plot_WigglyPeaks.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_WigglyPeaks.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/ec180706d849ba370152a1a7a5a30b46/plot_WigglyPeaks.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_WigglyPeaks.py</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -275,8 +272,8 @@ a model can not be interpreted as the number of oscillations in a signal.</p>
       
     </p>
     <p>
-        &copy; Copyright 2018-2023, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
+        &copy; Copyright 2018-2025, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.1.2.<br/>
     </p>
   </div>
 </footer>

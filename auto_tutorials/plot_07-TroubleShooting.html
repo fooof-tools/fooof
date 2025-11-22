@@ -3,24 +3,21 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>07: Tuning &amp; Troubleshooting &#8212; fooof 1.1.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
+    <title>07: Tuning &amp; Troubleshooting &#8212; fooof 1.1.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css?v=284a2d1d" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=af026a1d"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=a56c686a"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
 
@@ -58,7 +55,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.1</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -116,12 +113,12 @@
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
 <p><a class="reference internal" href="#sphx-glr-download-auto-tutorials-plot-07-troubleshooting-py"><span class="std std-ref">Go to the end</span></a>
-to download the full example code</p>
+to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="tuning-troubleshooting">
 <span id="sphx-glr-auto-tutorials-plot-07-troubleshooting-py"></span><h1>07: Tuning &amp; Troubleshooting<a class="headerlink" href="#tuning-troubleshooting" title="Permalink to this heading">¶</a></h1>
 <p>Tips &amp; tricks for choosing algorithm settings, tuning fits, and troubleshooting.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># General imports</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># General imports</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="c1"># Import the FOOOF and FOOOFGroup objects</span>
@@ -213,7 +210,7 @@ for a given modality / dataset / application.</p>
 for creating simulated power-spectra. To do so, we can use the <a class="reference internal" href="../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum"><code class="xref py py-func docutils literal notranslate"><span class="pre">gen_power_spectrum()</span></code></a>
 function to simulate individual power spectra, following the power spectrum model.</p>
 <p>First, we will start by generating a noisy simulated power spectrum</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the frequency range to generate the power spectrum</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the frequency range to generate the power spectrum</span>
 <span class="n">f_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">]</span>
 <span class="c1"># Set aperiodic component parameters, as [offset, exponent]</span>
 <span class="n">ap_params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
@@ -229,7 +226,7 @@ function to simulate individual power spectra, following the power spectrum mode
 <span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span> <span class="o">=</span> <a href="../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">ap_params</span><span class="p">,</span> <span class="n">gauss_params</span><span class="p">,</span> <span class="n">nlv</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit an (unconstrained) model, liable to overfit</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit an (unconstrained) model, liable to overfit</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">()</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.report" title="fooof.FOOOF.report" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">report</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
 </pre></div>
@@ -251,11 +248,11 @@ function to simulate individual power spectra, following the power spectrum mode
 
                                        7 peaks were found:
                                 CF:   9.83, PW:  0.908, BW:  4.90
-                                CF:  19.92, PW:  0.826, BW:  3.59
-                                CF:  22.68, PW:  0.524, BW:  0.52
+                                CF:  19.92, PW:  0.826, BW:  3.60
+                                CF:  22.69, PW:  0.525, BW:  0.50
                                 CF:  31.85, PW:  0.566, BW:  2.22
-                                CF:  38.60, PW:  0.262, BW:  0.56
-                                CF:  39.44, PW:  0.240, BW:  0.60
+                                CF:  38.65, PW:  0.262, BW:  0.59
+                                CF:  39.50, PW:  0.239, BW:  0.54
                                 CF:  49.46, PW:  0.209, BW:  0.50
 
                                      Goodness of fit metrics:
@@ -270,7 +267,7 @@ been overzealous in fitting peaks, and is therefore overfitting.</p>
 <p>This is also suggested by the model r-squared, which is suspiciously
 high, given the amount of noise we in the simulated power spectrum.</p>
 <p>To reduce this kind of overfitting, we can update the algorithm settings.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Update settings to fit a more constrained model, to reduce overfitting</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Update settings to fit a more constrained model, to reduce overfitting</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">min_peak_height</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.report" title="fooof.FOOOF.report" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">report</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
 </pre></div>
@@ -302,7 +299,7 @@ ground truth of the simulated spectrum.</p>
 <p>Note that the simulation parameters are defined in terms of Gaussian parameters,
 which are slightly different from the peak parameters (see the note in tutorial 02),
 which is why we compare to the model gaussian parameters here.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare ground truth simulated parameters to model fit results</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare ground truth simulated parameters to model fit results</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Ground Truth </span><span class="se">\t\t</span><span class="s1"> Model Parameters&#39;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">sy</span><span class="p">,</span> <span class="n">fi</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">gauss_params</span><span class="p">),</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">gaussian_params_</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="se">\t</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">sy</span><span class="p">,</span> <span class="o">*</span><span class="n">fi</span><span class="p">))</span>
@@ -340,7 +337,7 @@ allowing you to define an absolute threshold for extracting peaks.</p>
 </li>
 </ul>
 <p>Next we will simulate a much smoother power spectrum, and update settings accordingly.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the frequency range to generate the power spectrum</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the frequency range to generate the power spectrum</span>
 <span class="n">f_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">]</span>
 <span class="c1"># Define aperiodic parameters, as [offset, exponent]</span>
 <span class="n">ap_params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
@@ -353,7 +350,7 @@ allowing you to define an absolute threshold for extracting peaks.</p>
 <span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span> <span class="o">=</span> <a href="../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="n">ap_params</span><span class="p">,</span> <span class="n">gauss_params</span><span class="p">,</span> <span class="n">nlv</span><span class="o">=</span><span class="n">nlv</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Update settings to make sure they are sensitive to smaller peaks in smoother power spectra</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Update settings to make sure they are sensitive to smaller peaks in smoother power spectra</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">min_peak_height</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.report" title="fooof.FOOOF.report" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">report</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">)</span>
 </pre></div>
@@ -380,7 +377,7 @@ allowing you to define an absolute threshold for extracting peaks.</p>
 ==================================================================================================
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check reconstructed parameters compared to the simulated parameters</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check reconstructed parameters compared to the simulated parameters</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Ground Truth </span><span class="se">\t\t</span><span class="s1"> Model Parameters&#39;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">sy</span><span class="p">,</span> <span class="n">fi</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">gauss_params</span><span class="p">),</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">gaussian_params_</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="se">\t</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">sy</span><span class="p">,</span> <span class="o">*</span><span class="n">fi</span><span class="p">))</span>
@@ -409,7 +406,7 @@ in combination with called <a class="reference internal" href="../generated/fooo
 possible parameters.</p>
 <p>For more and descriptions and example of how the simulations work, check out the
 <a class="reference external" href="https://fooof-tools.github.io/fooof/auto_examples/index.html">examples</a> section.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulation settings for a group of power spectra</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulation settings for a group of power spectra</span>
 <span class="n">n_spectra</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">sim_freq_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">50</span><span class="p">]</span>
 <span class="n">nlv</span> <span class="o">=</span> <span class="mf">0.010</span>
@@ -423,11 +420,11 @@ possible parameters.</p>
                                                <span class="n">ap_opts</span><span class="p">,</span> <span class="n">gauss_opts</span><span class="p">,</span> <span class="n">nlv</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOFGroup object</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOFGroup object</span>
 <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOFGroup</span></a><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit power spectrum models and report on the group</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit power spectrum models and report on the group</span>
 <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.report" title="fooof.FOOOFGroup.report" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">report</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">power_spectra</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -463,14 +460,14 @@ they don’t necessarily indicate the source of any problems.</p>
 <p>To do so, we will typically still want to visualize some example fits, to see
 what is happening. To do so, next we will find which fits have the most error,
 and select these fits from the <a class="reference internal" href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a> object to visualize.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find the index of the worst model fit from the group</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find the index of the worst model fit from the group</span>
 <span class="n">worst_fit_ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">))</span>
 
 <span class="c1"># Extract this model fit from the group</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_fooof" title="fooof.FOOOFGroup.get_fooof" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_fooof</span></a><span class="p">(</span><span class="n">worst_fit_ind</span><span class="p">,</span> <span class="n">regenerate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check results and visualize the extracted model</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check results and visualize the extracted model</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.print_results" title="fooof.FOOOF.print_results" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">print_results</span></a><span class="p">()</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">plot</span></a><span class="p">()</span>
 </pre></div>
@@ -502,7 +499,7 @@ all fits that meet some criterion that makes them worth checking.</p>
 that you may also want to do a similar procedure to examine fits with the lowest
 error, to check if the model may be overfitting, or perhaps fits with a particularly
 large number of gaussians.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract all fits that are above some error threshold, for further examination.</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract all fits that are above some error threshold, for further examination.</span>
 <span class="c1">#  You could also do a similar analysis for particularly low errors</span>
 <span class="n">error_threshold</span> <span class="o">=</span> <span class="mf">0.010</span>
 <span class="n">to_check</span> <span class="o">=</span> <span class="p">[]</span>
@@ -514,7 +511,7 @@ large number of gaussians.</p>
 <span class="c1">#to_check = [fg.get_fooof(ind, True) for ind, res in enumerate(fg) if res.error &gt; error_threshold]</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Loop through the problem fits, checking the plots, and saving out reports, to check later.</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Loop through the problem fits, checking the plots, and saving out reports, to check later.</span>
 <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">to_check</span><span class="p">):</span>
     <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">plot</span></a><span class="p">()</span>
     <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.save_report" title="fooof.FOOOF.save_report" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">save_report</span></a><span class="p">(</span><span class="s1">&#39;Report_ToCheck_#&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ind</span><span class="p">))</span>
@@ -530,11 +527,13 @@ large number of gaussians.</p>
   plt.savefig(fpath(file_path, fname(file_name, SAVE_FORMAT)))
 /Users/tom/opt/anaconda3/lib/python3.8/site-packages/fooof/core/reports.py:72: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
   plt.savefig(fpath(file_path, fname(file_name, SAVE_FORMAT)))
+/Users/tom/opt/anaconda3/lib/python3.8/site-packages/fooof/core/reports.py:72: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+  plt.savefig(fpath(file_path, fname(file_name, SAVE_FORMAT)))
 </pre></div>
 </div>
 <p>Another thing that can be worth keeping an eye on is the average number of fit
 peaks per model. A particularly high value can indicate overfitting.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check the average number of fit peaks, per model</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check the average number of fit peaks, per model</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Average number of fit peaks: &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.n_peaks_" title="fooof.FOOOFGroup.n_peaks_" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-property"><span class="n">fg</span><span class="o">.</span><span class="n">n_peaks_</span></a><span class="p">))</span>
 </pre></div>
 </div>
@@ -552,7 +551,7 @@ and why model fitting fails, so that we can continue to make it better.</p>
 <p>You can report issues on Github <cite>here &lt;https://github.com/fooof-tools/fooof&gt;</cite>.</p>
 <p>There is also a helper method to print out instructions for reporting
 bad fits / bugs back to us, as demonstrated below.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print out instructions to report bad fits</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print out instructions to report bad fits</span>
 <span class="c1">#  Note you can also call this from FOOOFGroup, and from instances (ex: `fm.print_report_issue()`)</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.print_report_issue" title="fooof.FOOOF.print_report_issue" class="sphx-glr-backref-module-fooof-FOOOF sphx-glr-backref-type-py-method"><span class="n">FOOOF</span><span class="o">.</span><span class="n">print_report_issue</span></a><span class="p">()</span>
 </pre></div>
@@ -585,13 +584,13 @@ bad fits / bugs back to us, as demonstrated below.</p>
 <p>We have now stepped through the full work-flow of fitting power spectrum models, using
 FOOOF objects, picking settings, and troubleshooting model fits. In the next
 and final tutorial, we will introduce how to start analyzing FOOOF results.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.357 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 3.095 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-07-troubleshooting-py">
-<div class="sphx-glr-download sphx-glr-download-python docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/e1323effd79464d1bc2f041025d82065/plot_07-TroubleShooting.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_07-TroubleShooting.py</span></code></a></p>
-</div>
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/28df5779df9b7bb1ab24dde234f2e071/plot_07-TroubleShooting.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_07-TroubleShooting.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/e1323effd79464d1bc2f041025d82065/plot_07-TroubleShooting.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_07-TroubleShooting.py</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -610,8 +609,8 @@ and final tutorial, we will introduce how to start analyzing FOOOF results.</p>
       
     </p>
     <p>
-        &copy; Copyright 2018-2023, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
+        &copy; Copyright 2018-2025, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.1.2.<br/>
     </p>
   </div>
 </footer>

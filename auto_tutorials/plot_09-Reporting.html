@@ -3,24 +3,21 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>09: Reporting &amp; Referencing &#8212; fooof 1.1.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
+    <title>09: Reporting &amp; Referencing &#8212; fooof 1.1.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css?v=284a2d1d" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=af026a1d"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=a56c686a"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
 
@@ -58,7 +55,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.1</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -116,14 +113,14 @@
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
 <p><a class="reference internal" href="#sphx-glr-download-auto-tutorials-plot-09-reporting-py"><span class="std std-ref">Go to the end</span></a>
-to download the full example code</p>
+to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="reporting-referencing">
 <span id="sphx-glr-auto-tutorials-plot-09-reporting-py"></span><h1>09: Reporting &amp; Referencing<a class="headerlink" href="#reporting-referencing" title="Permalink to this heading">¶</a></h1>
 <p>This section covers how to access reporting info and reference use of the module.</p>
 <p>This page is a hands-on example of the reporting and referencing information on the
 <a class="reference external" href="https://fooof-tools.github.io/fooof/reference.html">Reference page</a>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import FOOOF model objects</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import FOOOF model objects</span>
 <span class="kn">from</span> <span class="nn">fooof</span> <span class="kn">import</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">,</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOFGroup</span></a>
 
 <span class="c1"># Import simulation functions to create some example data</span>
@@ -141,12 +138,12 @@ and to report this information when referencing use of the tool.</p>
 including checking what is installed in the Python environment you are using.</p>
 <p>From within Python, you can also check the version of the module by checking
 <cite>__version__</cite>, as shown below:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check the version of the module</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check the version of the module</span>
 <span class="kn">from</span> <span class="nn">fooof</span> <span class="kn">import</span> <span class="n">__version__</span> <span class="k">as</span> <span class="n">fooof_version</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Current fooof version:&#39;</span><span class="p">,</span> <span class="n">fooof_version</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Current fooof version: 1.1.0
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Current fooof version: 1.1.1
 </pre></div>
 </div>
 </section>
@@ -163,11 +160,11 @@ collect and return information related to the model fits.</p>
 to the current object. This means it is also important that if you use these functions,
 you use them with objects that match the settings and data used in the analysis to be reported.</p>
 <p>In the following, we will explore an example of using these functions for an example model fit.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize model object</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize model object</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fooof_obj</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print out all the methods information for reporting</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print out all the methods information for reporting</span>
 <a href="../generated/fooof.utils.reports.methods_report_info.html#fooof.utils.reports.methods_report_info" title="fooof.utils.reports.methods_report_info" class="sphx-glr-backref-module-fooof-utils-reports sphx-glr-backref-type-py-function"><span class="n">methods_report_info</span></a><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fooof_obj</span></a><span class="p">)</span>
 </pre></div>
 </div>
@@ -186,7 +183,7 @@ you use them with objects that match the settings and data used in the analysis 
 
                                          FOOOF - VERSION
 
-                                              1.1.0
+                                              1.1.1
 
 ==================================================================================================
 ==================================================================================================
@@ -214,11 +211,11 @@ some of which might look familiar.</p>
 <p>The settings information, for example, is the same as printed using the
 # - <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF.print_settings" title="fooof.FOOOF.print_settings"><code class="xref py py-meth docutils literal notranslate"><span class="pre">print_settings()</span></code></a> method.</p>
 <p>Next, let’s check out the text version of the methods report.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate methods text, with methods information inserted</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate methods text, with methods information inserted</span>
 <a href="../generated/fooof.utils.reports.methods_report_text.html#fooof.utils.reports.methods_report_text" title="fooof.utils.reports.methods_report_text" class="sphx-glr-backref-module-fooof-utils-reports sphx-glr-backref-type-py-function"><span class="n">methods_report_text</span></a><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fooof_obj</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>The FOOOF algorithm (version 1.1.0) was used to parameterize neural power spectra. Settings for the algorithm were set as: peak width limits : (0.5, 12.0); max number of peaks : inf; minimum peak height : 0.0; peak threshold : 2.0; and aperiodic mode : &#39;fixed&#39;. Power spectra were parameterized across the frequency range XX to XX Hz.
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>The FOOOF algorithm (version 1.1.1) was used to parameterize neural power spectra. Settings for the algorithm were set as: peak width limits : (0.5, 12.0); max number of peaks : inf; minimum peak height : 0.0; peak threshold : 2.0; and aperiodic mode : &#39;fixed&#39;. Power spectra were parameterized across the frequency range XX to XX Hz.
 </pre></div>
 </div>
 <section id="additional-examples">
@@ -226,7 +223,7 @@ some of which might look familiar.</p>
 <p>In the above examples, not all the information was printed, as not all information was
 available in the example object (for example, it had no data).</p>
 <p>In the next example, let’s see how the outputs look for an example object with model fit results.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate an example power spectrum</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate an example power spectrum</span>
 <span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">freq_res</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
 
 <span class="c1"># Initialize model object</span>
@@ -234,7 +231,7 @@ available in the example object (for example, it had no data).</p>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.fit" title="fooof.FOOOF.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate methods text, with methods information inserted</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate methods text, with methods information inserted</span>
 <a href="../generated/fooof.utils.reports.methods_report_info.html#fooof.utils.reports.methods_report_info" title="fooof.utils.reports.methods_report_info" class="sphx-glr-backref-module-fooof-utils-reports sphx-glr-backref-type-py-function"><span class="n">methods_report_info</span></a><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="p">)</span>
 </pre></div>
 </div>
@@ -253,7 +250,7 @@ available in the example object (for example, it had no data).</p>
 
                                          FOOOF - VERSION
 
-                                              1.1.0
+                                              1.1.1
 
 ==================================================================================================
 ==================================================================================================
@@ -276,11 +273,11 @@ available in the example object (for example, it had no data).</p>
 ==================================================================================================
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate methods text, with methods information inserted</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate methods text, with methods information inserted</span>
 <a href="../generated/fooof.utils.reports.methods_report_text.html#fooof.utils.reports.methods_report_text" title="fooof.utils.reports.methods_report_text" class="sphx-glr-backref-module-fooof-utils-reports sphx-glr-backref-type-py-function"><span class="n">methods_report_text</span></a><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>The FOOOF algorithm (version 1.1.0) was used to parameterize neural power spectra. Settings for the algorithm were set as: peak width limits : [1, 6]; max number of peaks : inf; minimum peak height : 0.1; peak threshold : 2.0; and aperiodic mode : &#39;knee&#39;. Power spectra were parameterized across the frequency range 1.0 to 50.0 Hz.
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>The FOOOF algorithm (version 1.1.1) was used to parameterize neural power spectra. Settings for the algorithm were set as: peak width limits : [1, 6]; max number of peaks : inf; minimum peak height : 0.1; peak threshold : 2.0; and aperiodic mode : &#39;knee&#39;. Power spectra were parameterized across the frequency range 1.0 to 50.0 Hz.
 </pre></div>
 </div>
 <p>The report text is meant as a template / example that could be added to a methods section.</p>
@@ -291,11 +288,11 @@ and you can and should consider this a template to be edited as needed.</p>
 <h3>Other Model Objects<a class="headerlink" href="#other-model-objects" title="Permalink to this heading">¶</a></h3>
 <p>Note that the reporting functions work with any model object.</p>
 <p>For example, next we will use them on a <a class="reference internal" href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a> object.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate an example group of power spectra</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate an example group of power spectra</span>
 <span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="fooof.sim.gen_group_power_spectra" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_group_power_spectra</span></a><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">75</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize and fit group model object</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize and fit group model object</span>
 <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOFGroup</span></a><span class="p">(</span><span class="n">max_n_peaks</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">peak_threshold</span><span class="o">=</span><span class="mf">1.75</span><span class="p">)</span>
 <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.fit" title="fooof.FOOOFGroup.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span>
 </pre></div>
@@ -308,7 +305,7 @@ FOOOF WARNING: Lower-bound peak width limit is &lt; or ~= the frequency resoluti
         We recommend a lower bound of approximately 2x the frequency resolution.
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate the methods report information</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate the methods report information</span>
 <a href="../generated/fooof.utils.reports.methods_report_info.html#fooof.utils.reports.methods_report_info" title="fooof.utils.reports.methods_report_info" class="sphx-glr-backref-module-fooof-utils-reports sphx-glr-backref-type-py-function"><span class="n">methods_report_info</span></a><span class="p">(</span><a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="p">)</span>
 </pre></div>
 </div>
@@ -327,7 +324,7 @@ FOOOF WARNING: Lower-bound peak width limit is &lt; or ~= the frequency resoluti
 
                                          FOOOF - VERSION
 
-                                              1.1.0
+                                              1.1.1
 
 ==================================================================================================
 ==================================================================================================
@@ -350,21 +347,21 @@ FOOOF WARNING: Lower-bound peak width limit is &lt; or ~= the frequency resoluti
 ==================================================================================================
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate the methods report text</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate the methods report text</span>
 <a href="../generated/fooof.utils.reports.methods_report_text.html#fooof.utils.reports.methods_report_text" title="fooof.utils.reports.methods_report_text" class="sphx-glr-backref-module-fooof-utils-reports sphx-glr-backref-type-py-function"><span class="n">methods_report_text</span></a><span class="p">(</span><a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>The FOOOF algorithm (version 1.1.0) was used to parameterize neural power spectra. Settings for the algorithm were set as: peak width limits : (0.5, 12.0); max number of peaks : 4; minimum peak height : 0.0; peak threshold : 1.75; and aperiodic mode : &#39;fixed&#39;. Power spectra were parameterized across the frequency range 1.0 to 75.0 Hz.
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>The FOOOF algorithm (version 1.1.1) was used to parameterize neural power spectra. Settings for the algorithm were set as: peak width limits : (0.5, 12.0); max number of peaks : 4; minimum peak height : 0.0; peak threshold : 1.75; and aperiodic mode : &#39;fixed&#39;. Power spectra were parameterized across the frequency range 1.0 to 75.0 Hz.
 </pre></div>
 </div>
 <p>That concludes the example of using the helper utilities for generating methods reports!</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.133 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.346 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-09-reporting-py">
-<div class="sphx-glr-download sphx-glr-download-python docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/eeacea3372c9b352efaf451aa65ffd36/plot_09-Reporting.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_09-Reporting.py</span></code></a></p>
-</div>
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/7cf9bac5ed0cb61d9ff9e816f3a60dce/plot_09-Reporting.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_09-Reporting.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/eeacea3372c9b352efaf451aa65ffd36/plot_09-Reporting.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_09-Reporting.py</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -384,8 +381,8 @@ FOOOF WARNING: Lower-bound peak width limit is &lt; or ~= the frequency resoluti
       
     </p>
     <p>
-        &copy; Copyright 2018-2023, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
+        &copy; Copyright 2018-2025, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.1.2.<br/>
     </p>
   </div>
 </footer>

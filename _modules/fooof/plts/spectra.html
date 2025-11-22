@@ -4,22 +4,19 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>fooof.plts.spectra &#8212; fooof 1.1.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/bootstrap-sphinx.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css" />
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-    <script src="../../../_static/jquery.js"></script>
-    <script src="../../../_static/underscore.js"></script>
-    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/sphinx_highlight.js"></script>
-    <script src="../../../_static/clipboard.min.js"></script>
-    <script src="../../../_static/copybutton.js"></script>
+    <title>fooof.plts.spectra &#8212; fooof 1.1.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/bootstrap-sphinx.css?v=284a2d1d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=af026a1d"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=a56c686a"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
 
@@ -57,7 +54,7 @@
         </button>
         <a class="navbar-brand" href="../../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.1</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -162,22 +159,21 @@
 <span class="sd">    ax : matplotlib.Axes, optional</span>
 <span class="sd">        Figure axes upon which to plot.</span>
 <span class="sd">    **plot_kwargs</span>
-<span class="sd">        Additional plot related keyword arguments, with styling options managed by ``style_plot``.</span>
-<span class="sd">        For spectra plots, boolean input `grid` can be used to control if the figure has a grid.</span>
+<span class="sd">        Additional plot related keyword arguments.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># Create the plot &amp; collect plot kwargs of interest</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">check_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">plot_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;figsize&#39;</span><span class="p">,</span> <span class="n">PLT_FIGSIZES</span><span class="p">[</span><span class="s1">&#39;spectral&#39;</span><span class="p">]))</span>
+
+    <span class="c1"># Create the plot</span>
     <span class="n">plot_kwargs</span> <span class="o">=</span> <span class="n">check_plot_kwargs</span><span class="p">(</span><span class="n">plot_kwargs</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;linewidth&#39;</span> <span class="p">:</span> <span class="mf">2.0</span><span class="p">})</span>
-    <span class="n">grid</span> <span class="o">=</span> <span class="n">plot_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;grid&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 
     <span class="c1"># Check for frequency range input, and log if x-axis is in log space</span>
     <span class="k">if</span> <span class="n">freq_range</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">freq_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">freq_range</span><span class="p">)</span> <span class="k">if</span> <span class="n">log_freqs</span> <span class="k">else</span> <span class="n">freq_range</span>
 
     <span class="c1"># Make inputs iterable if need to be passed multiple times to plot each spectrum</span>
-    <span class="n">plt_powers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">power_spectra</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="ow">and</span> \
-        <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">power_spectra</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">power_spectra</span>
+    <span class="n">plt_powers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">power_spectra</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">power_spectra</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> \
+        <span class="n">power_spectra</span>
     <span class="n">plt_freqs</span> <span class="o">=</span> <span class="n">repeat</span><span class="p">(</span><span class="n">freqs</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="ow">and</span> <span class="n">freqs</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">freqs</span>
 
     <span class="c1"># Set labels</span>
@@ -198,7 +194,7 @@
 
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">freq_range</span><span class="p">)</span>
 
-    <span class="n">style_spectrum_plot</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">log_freqs</span><span class="p">,</span> <span class="n">log_powers</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span></div>
+    <span class="n">style_spectrum_plot</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">log_freqs</span><span class="p">,</span> <span class="n">log_powers</span><span class="p">)</span></div>
 
 
 <span class="c1"># Alias `plot_spectrum` to `plot_spectra` for backwards compatibility</span>
@@ -226,9 +222,8 @@
 <span class="sd">    ax : matplotlib.Axes, optional</span>
 <span class="sd">        Figure axes upon which to plot.</span>
 <span class="sd">    **plot_kwargs</span>
-<span class="sd">        Additional plot related keyword arguments, with styling options managed by ``style_plot``.</span>
-<span class="sd">        For spectra plots, boolean input `grid` can be used to control if the figure has a grid.</span>
-<span class="sd">        This can also include additional inputs into :func:`~.plot_spectra`.</span>
+<span class="sd">        Additional plot related keyword arguments.</span>
+<span class="sd">        This can include additional inputs into :func:`~.plot_spectra`.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -244,12 +239,7 @@
     <span class="n">add_shades</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">shades</span><span class="p">,</span> <span class="n">shade_colors</span><span class="p">,</span> <span class="n">add_center</span><span class="p">,</span> <span class="n">plot_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;log_freqs&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
 
     <span class="n">style_spectrum_plot</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">plot_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;log_freqs&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
-                        <span class="n">plot_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;log_powers&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
-                        <span class="n">plot_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;grid&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span></div>
-
-
-<span class="c1"># Alias `plot_spectrum_shading` to `plot_spectra_shading` for backwards compatibility</span>
-<span class="n">plot_spectrum_shading</span> <span class="o">=</span> <span class="n">plot_spectra_shading</span>
+                        <span class="n">plot_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;log_powers&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="plot_spectra_yshade"><a class="viewcode-back" href="../../../generated/fooof.plts.spectra.plot_spectra_yshade.html#fooof.plts.plot_spectra_yshade">[docs]</a><span class="nd">@savefig</span>
@@ -283,16 +273,13 @@
 <span class="sd">    ax : matplotlib.Axes, optional</span>
 <span class="sd">        Figure axes upon which to plot.</span>
 <span class="sd">    **plot_kwargs</span>
-<span class="sd">        Additional plot related keyword arguments, with styling options managed by ``style_plot``.</span>
-<span class="sd">        For spectra plots, boolean input `grid` can be used to control if the figure has a grid.</span>
-<span class="sd">        This can also include additional inputs into :func:`~.plot_spectra`.</span>
+<span class="sd">        Additional plot related keyword arguments.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">shade</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="n">isfunction</span><span class="p">(</span><span class="n">shade</span><span class="p">))</span> <span class="ow">and</span> <span class="n">power_spectra</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Power spectra must be 2d if shade is not given.&#39;</span><span class="p">)</span>
 
     <span class="n">ax</span> <span class="o">=</span> <span class="n">check_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">plot_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;figsize&#39;</span><span class="p">,</span> <span class="n">PLT_FIGSIZES</span><span class="p">[</span><span class="s1">&#39;spectral&#39;</span><span class="p">]))</span>
-    <span class="n">grid</span> <span class="o">=</span> <span class="n">plot_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;grid&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 
     <span class="c1"># Set plot data &amp; labels, logging if requested</span>
     <span class="n">plt_freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">freqs</span><span class="p">)</span> <span class="k">if</span> <span class="n">log_freqs</span> <span class="k">else</span> <span class="n">freqs</span>
@@ -329,7 +316,7 @@
     <span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">plt_freqs</span><span class="p">,</span> <span class="n">lower_shade</span><span class="p">,</span> <span class="n">upper_shade</span><span class="p">,</span>
                     <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_kwargs</span><span class="p">)</span>
 
-    <span class="n">style_spectrum_plot</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">log_freqs</span><span class="p">,</span> <span class="n">log_powers</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span></div>
+    <span class="n">style_spectrum_plot</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">log_freqs</span><span class="p">,</span> <span class="n">log_powers</span><span class="p">)</span></div>
 </pre></div>
 
     </div>
@@ -343,8 +330,8 @@
       
     </p>
     <p>
-        &copy; Copyright 2018-2023, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
+        &copy; Copyright 2018-2025, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.1.2.<br/>
     </p>
   </div>
 </footer>

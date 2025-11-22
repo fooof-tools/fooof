@@ -3,24 +3,21 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>fooof.utils.params.compute_knee_frequency &#8212; fooof 1.1.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
+    <title>fooof.utils.params.compute_knee_frequency &#8212; fooof 1.1.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css?v=284a2d1d" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=af026a1d"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=a56c686a"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
 
@@ -58,7 +55,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.1</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -120,7 +117,7 @@
 <span class="sig-prename descclassname"><span class="pre">fooof.utils.params.</span></span><span class="sig-name descname"><span class="pre">compute_knee_frequency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">knee</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exponent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/utils/params.html#compute_knee_frequency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.utils.params.compute_knee_frequency" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the frequency value of the knee given the aperiodic parameter values.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>knee</strong><span class="classifier">float</span></dt><dd><p>Knee parameter value.</p>
 </dd>
@@ -128,29 +125,11 @@
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>float</dt><dd><p>Frequency value, in Hz, of the knee occurs.</p>
 </dd>
 </dl>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>The knee frequency is an estimate of the frequency in spectrum at which the spectrum
-moves from the plateau region to the exponential decay.</p>
-<p>This approach for estimating the knee frequency comes from <a class="reference internal" href="#r7cb26ca8caee-1" id="id1">[1]</a> (see <a class="reference internal" href="#r7cb26ca8caee-2" id="id2">[2]</a> for code).</p>
-<p>Note that this provides an estimate of the knee frequency, but is not, in the general case,
-a precisely defined value. In particular, this conversion is based on the case of a Lorentzian
-with exponent = 2, and for other exponent values provides a non-exact approximation.</p>
-<p class="rubric">References</p>
-<dl class="citation">
-<dt class="label" id="r7cb26ca8caee-1"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p>Gao, R., van den Brink, R. L., Pfeffer, T., &amp; Voytek, B. (2020). Neuronal timescales
-are functionally dynamic and shaped by cortical microarchitecture. Elife, 9, e61277.
-<a class="reference external" href="https://doi.org/10.7554/eLife.61277">https://doi.org/10.7554/eLife.61277</a></p>
-</dd>
-<dt class="label" id="r7cb26ca8caee-2"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
-<dd><p><a class="reference external" href="https://github.com/rdgao/field-echos/blob/master/echo_utils.py#L64">https://github.com/rdgao/field-echos/blob/master/echo_utils.py#L64</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -175,8 +154,8 @@ are functionally dynamic and shaped by cortical microarchitecture. Elife, 9, e61
       
     </p>
     <p>
-        &copy; Copyright 2018-2023, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
+        &copy; Copyright 2018-2025, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.1.2.<br/>
     </p>
   </div>
 </footer>

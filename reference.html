@@ -3,24 +3,21 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Reference and Reporting Information &#8212; fooof 1.1.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/bootstrap-sphinx.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <title>Reference and Reporting Information &#8212; fooof 1.1.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="_static/bootstrap-sphinx.css?v=284a2d1d" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=af026a1d"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=a56c686a"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
 
@@ -58,7 +55,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.1</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -118,7 +115,7 @@
 <p>This page describes how to reference and report on using this method for parameterizing neural power spectra, and related information.</p>
 <section id="table-of-contents">
 <h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this heading">¶</a></h2>
-<div class="contents local topic" id="contents">
+<nav class="contents local" id="contents">
 <ul class="simple">
 <li><p><a class="reference internal" href="#reference" id="id1">Reference</a></p></li>
 <li><p><a class="reference internal" href="#example-applications" id="id2">Example Applications</a></p></li>
@@ -127,16 +124,16 @@
 <li><p><a class="reference internal" href="#checking-module-version" id="id5">Checking module version</a></p></li>
 <li><p><a class="reference internal" href="#generating-methods-reports" id="id6">Generating Methods Reports</a></p></li>
 </ul>
-</div>
+</nav>
 <section id="reference">
 <h3>Reference<a class="headerlink" href="#reference" title="Permalink to this heading">¶</a></h3>
 <p>If you use this method, and/or want to refer to our approach, examples, and discussion points, please cite the following paper:</p>
-<div class="topic">
+<aside class="topic">
 <p class="topic-title">Reference</p>
 <p>Donoghue T, Haller M, Peterson EJ, Varma P, Sebastian P, Gao R, Noto T, Lara AH, Wallis JD,
 Knight RT, Shestyuk A, Voytek B (2020). Parameterizing neural power spectra into periodic and aperiodic
 components. Nature Neuroscience, 23, 1655-1665. DOI: 10.1038/s41593-020-00744-x</p>
-</div>
+</aside>
 <p>Direct link: <a class="reference external" href="https://doi.org/10.1038/s41593-020-00744-x">https://doi.org/10.1038/s41593-020-00744-x</a></p>
 </section>
 <section id="example-applications">
@@ -171,13 +168,13 @@ The code for the simulations and applications is indexed and available in the
 <h3>Reporting Template &amp; Example<a class="headerlink" href="#reporting-template-example" title="Permalink to this heading">¶</a></h3>
 <p>To assist in reporting on using FOOOF, we have created some templates for reporting on spectral parameterization methods. There are also some utilities included in the code to collect the required information.</p>
 <p>The following box is an example of what a methods report might look like (where all of the <em>X</em>’s should be filled in with the relevant information).</p>
-<div class="topic">
+<aside class="topic">
 <p class="topic-title">Methods Report Template</p>
 <p>The FOOOF algorithm (version <em>X.X.X</em>) was used to parameterize neural power spectra. Settings for the
 algorithm were set as: peak width limits : <em>XX</em>; max number of peaks : <em>XX</em>; minimum peak height : <em>XX</em>;
 peak threshold : <em>XX</em>; and aperiodic mode : <em>XX</em>. Power spectra were parameterized across
 the frequency range <em>XX</em> to <em>XX</em> Hz.</p>
-</div>
+</aside>
 </section>
 <section id="checking-module-version">
 <h3>Checking module version<a class="headerlink" href="#checking-module-version" title="Permalink to this heading">¶</a></h3>
@@ -225,8 +222,8 @@ check the <cite>__version__</cite> from Python, using the following code:</p>
       
     </p>
     <p>
-        &copy; Copyright 2018-2023, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
+        &copy; Copyright 2018-2025, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.1.2.<br/>
     </p>
   </div>
 </footer>

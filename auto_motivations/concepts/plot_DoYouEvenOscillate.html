@@ -3,24 +3,21 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Rhythmicity of Time Series &#8212; fooof 1.1.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
-    <script src="../../_static/clipboard.min.js"></script>
-    <script src="../../_static/copybutton.js"></script>
+    <title>Rhythmicity of Time Series &#8212; fooof 1.1.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css?v=284a2d1d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=af026a1d"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=a56c686a"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 
@@ -58,7 +55,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.1</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -116,7 +113,7 @@
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
 <p><a class="reference internal" href="#sphx-glr-download-auto-motivations-concepts-plot-doyouevenoscillate-py"><span class="std std-ref">Go to the end</span></a>
-to download the full example code</p>
+to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="rhythmicity-of-time-series">
 <span id="sphx-glr-auto-motivations-concepts-plot-doyouevenoscillate-py"></span><h1>Rhythmicity of Time Series<a class="headerlink" href="#rhythmicity-of-time-series" title="Permalink to this heading">¶</a></h1>
@@ -141,7 +138,7 @@ given signal, or any given aspect of a signal, for which a power spectrum can be
 should be conceptualized as being comprised of rhythmic components.</p>
 <p>The power spectrum is just a possible representation of the original data, not a
 descriptive claim of the actual components of the data.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import numpy</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import numpy</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="c1"># Use NeuroDSP for time series simulations &amp; analyses</span>
@@ -151,7 +148,7 @@ descriptive claim of the actual components of the data.</p>
 <span class="kn">from</span> <span class="nn">neurodsp.plts</span> <span class="kn">import</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.plts.plot_time_series.html#neurodsp.plts.plot_time_series" title="neurodsp.plts.plot_time_series" class="sphx-glr-backref-module-neurodsp-plts sphx-glr-backref-type-py-function"><span class="n">plot_time_series</span></a><span class="p">,</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.plts.plot_power_spectra.html#neurodsp.plts.plot_power_spectra" title="neurodsp.plts.plot_power_spectra" class="sphx-glr-backref-module-neurodsp-plts sphx-glr-backref-type-py-function"><span class="n">plot_power_spectra</span></a>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set random seed, for consistency generating simulated data</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set random seed, for consistency generating simulated data</span>
 <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.sim.set_random_seed.html#neurodsp.sim.set_random_seed" title="neurodsp.sim.set_random_seed" class="sphx-glr-backref-module-neurodsp-sim sphx-glr-backref-type-py-function"><span class="n">sim</span><span class="o">.</span><span class="n">set_random_seed</span></a><span class="p">(</span><span class="mi">21</span><span class="p">)</span>
 
 <span class="c1"># Simulation Settings</span>
@@ -173,21 +170,21 @@ signals are represented in the frequency domain.</p>
 <h3>The Dirac Delta<a class="headerlink" href="#the-dirac-delta" title="Permalink to this heading">¶</a></h3>
 <p>The Dirac delta is arguably the simplest signal, as it’s a signal of all zeros,
 except for a single value of 1.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate a delta function</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate a delta function</span>
 <span class="n">dirac_sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n_points</span><span class="p">])</span>
 <span class="n">dirac_sig</span><span class="p">[</span><span class="mi">500</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the time series of the delta signal</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the time series of the delta signal</span>
 <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.plts.plot_time_series.html#neurodsp.plts.plot_time_series" title="neurodsp.plts.plot_time_series" class="sphx-glr-backref-module-neurodsp-plts sphx-glr-backref-type-py-function"><span class="n">plot_time_series</span></a><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">dirac_sig</span><span class="p">)</span>
 </pre></div>
 </div>
 <img src="../../_images/sphx_glr_plot_DoYouEvenOscillate_001.png" srcset="../../_images/sphx_glr_plot_DoYouEvenOscillate_001.png" alt="plot DoYouEvenOscillate" class = "sphx-glr-single-img"/><p>Next, lets compute the frequency representation of the delta function.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute a power spectrum of the Dirac delta</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute a power spectrum of the Dirac delta</span>
 <span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.spectral.compute_spectrum_welch.html#neurodsp.spectral.compute_spectrum_welch" title="neurodsp.spectral.compute_spectrum_welch" class="sphx-glr-backref-module-neurodsp-spectral sphx-glr-backref-type-py-function"><span class="n">compute_spectrum_welch</span></a><span class="p">(</span><span class="n">dirac_sig</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the power spectrum of the Dirac delta</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the power spectrum of the Dirac delta</span>
 <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.plts.plot_power_spectra.html#neurodsp.plts.plot_power_spectra" title="neurodsp.plts.plot_power_spectra" class="sphx-glr-backref-module-neurodsp-plts sphx-glr-backref-type-py-function"><span class="n">plot_power_spectra</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -220,20 +217,20 @@ of the noise.</p>
 <p>A ‘white noise’ signal is one that is generated with uncorrelated samples drawn from
 a random distribution. Since each element of the signal is sampled randomly,
 there is no consistent rhythmic structure in the signal.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate a white noise time series signal</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate a white noise time series signal</span>
 <span class="n">white_sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n_points</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the white noise time series</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the white noise time series</span>
 <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.plts.plot_time_series.html#neurodsp.plts.plot_time_series" title="neurodsp.plts.plot_time_series" class="sphx-glr-backref-module-neurodsp-plts sphx-glr-backref-type-py-function"><span class="n">plot_time_series</span></a><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">white_sig</span><span class="p">)</span>
 </pre></div>
 </div>
 <img src="../../_images/sphx_glr_plot_DoYouEvenOscillate_003.png" srcset="../../_images/sphx_glr_plot_DoYouEvenOscillate_003.png" alt="plot DoYouEvenOscillate" class = "sphx-glr-single-img"/><p>As before, we can compute and visualize the power spectrum of this signal.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the power spectrum of the white noise signal</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the power spectrum of the white noise signal</span>
 <span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.spectral.compute_spectrum_welch.html#neurodsp.spectral.compute_spectrum_welch" title="neurodsp.spectral.compute_spectrum_welch" class="sphx-glr-backref-module-neurodsp-spectral sphx-glr-backref-type-py-function"><span class="n">compute_spectrum_welch</span></a><span class="p">(</span><span class="n">white_sig</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Visualize the power spectrum of the white noise signal</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Visualize the power spectrum of the white noise signal</span>
 <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.plts.plot_power_spectra.html#neurodsp.plts.plot_power_spectra" title="neurodsp.plts.plot_power_spectra" class="sphx-glr-backref-module-neurodsp-plts sphx-glr-backref-type-py-function"><span class="n">plot_power_spectra</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -248,19 +245,19 @@ frequencies is representing continuous aperiodic activity, rather than a single 
 in the power spectrum.</p>
 <p>For example, pink noise is a signal where power systematically decreases across
 frequencies in the power spectrum.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate a pink noise signal</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate a pink noise signal</span>
 <span class="n">pink_sig</span> <span class="o">=</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.sim.sim_powerlaw.html#neurodsp.sim.sim_powerlaw" title="neurodsp.sim.sim_powerlaw" class="sphx-glr-backref-module-neurodsp-sim sphx-glr-backref-type-py-function"><span class="n">sim</span><span class="o">.</span><span class="n">sim_powerlaw</span></a><span class="p">(</span><span class="n">n_seconds</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">,</span> <span class="n">exponent</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the pink noise time series</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the pink noise time series</span>
 <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.plts.plot_time_series.html#neurodsp.plts.plot_time_series" title="neurodsp.plts.plot_time_series" class="sphx-glr-backref-module-neurodsp-plts sphx-glr-backref-type-py-function"><span class="n">plot_time_series</span></a><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">pink_sig</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_plot_DoYouEvenOscillate_005.png" srcset="../../_images/sphx_glr_plot_DoYouEvenOscillate_005.png" alt="plot DoYouEvenOscillate" class = "sphx-glr-single-img"/><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the power spectrum of the pink noise signal</span>
+<img src="../../_images/sphx_glr_plot_DoYouEvenOscillate_005.png" srcset="../../_images/sphx_glr_plot_DoYouEvenOscillate_005.png" alt="plot DoYouEvenOscillate" class = "sphx-glr-single-img"/><div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the power spectrum of the pink noise signal</span>
 <span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.spectral.compute_spectrum_welch.html#neurodsp.spectral.compute_spectrum_welch" title="neurodsp.spectral.compute_spectrum_welch" class="sphx-glr-backref-module-neurodsp-spectral sphx-glr-backref-type-py-function"><span class="n">compute_spectrum_welch</span></a><span class="p">(</span><span class="n">pink_sig</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Visualize the power spectrum of the pink noise signal</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Visualize the power spectrum of the pink noise signal</span>
 <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.plts.plot_power_spectra.html#neurodsp.plts.plot_power_spectra" title="neurodsp.plts.plot_power_spectra" class="sphx-glr-backref-module-neurodsp-plts sphx-glr-backref-type-py-function"><span class="n">plot_power_spectra</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -285,19 +282,19 @@ rhythmic activity.</p>
 <p>There are many different rhythmic signals we could simulate, in terms of different
 rhythmic shapes, and or temporal properties (such as rhythmic bursts). For this
 example, we will stick to simulating continuous sinusoidal signals.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate an oscillating signal</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate an oscillating signal</span>
 <span class="n">osc_sig</span> <span class="o">=</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.sim.sim_oscillation.html#neurodsp.sim.sim_oscillation" title="neurodsp.sim.sim_oscillation" class="sphx-glr-backref-module-neurodsp-sim sphx-glr-backref-type-py-function"><span class="n">sim</span><span class="o">.</span><span class="n">sim_oscillation</span></a><span class="p">(</span><span class="n">n_seconds</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the oscillating time series</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the oscillating time series</span>
 <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.plts.plot_time_series.html#neurodsp.plts.plot_time_series" title="neurodsp.plts.plot_time_series" class="sphx-glr-backref-module-neurodsp-plts sphx-glr-backref-type-py-function"><span class="n">plot_time_series</span></a><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">osc_sig</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_plot_DoYouEvenOscillate_007.png" srcset="../../_images/sphx_glr_plot_DoYouEvenOscillate_007.png" alt="plot DoYouEvenOscillate" class = "sphx-glr-single-img"/><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the power spectrum of the oscillating signal</span>
+<img src="../../_images/sphx_glr_plot_DoYouEvenOscillate_007.png" srcset="../../_images/sphx_glr_plot_DoYouEvenOscillate_007.png" alt="plot DoYouEvenOscillate" class = "sphx-glr-single-img"/><div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the power spectrum of the oscillating signal</span>
 <span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.spectral.compute_spectrum_welch.html#neurodsp.spectral.compute_spectrum_welch" title="neurodsp.spectral.compute_spectrum_welch" class="sphx-glr-backref-module-neurodsp-spectral sphx-glr-backref-type-py-function"><span class="n">compute_spectrum_welch</span></a><span class="p">(</span><span class="n">osc_sig</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Visualize the power spectrum of the oscillating signal</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Visualize the power spectrum of the oscillating signal</span>
 <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.plts.plot_power_spectra.html#neurodsp.plts.plot_power_spectra" title="neurodsp.plts.plot_power_spectra" class="sphx-glr-backref-module-neurodsp-plts sphx-glr-backref-type-py-function"><span class="n">plot_power_spectra</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -317,7 +314,7 @@ components, for example one or more oscillations combined with an aperiodic comp
 <h3>Combined Aperiodic &amp; Periodic Signals<a class="headerlink" href="#combined-aperiodic-periodic-signals" title="Permalink to this heading">¶</a></h3>
 <p>To examine this, we will simulate combined signals, comprising both periodic and aperiodic
 components, and see what the frequency representations look like.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define component of a combined signal: an oscillation and an aperiodic component</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define component of a combined signal: an oscillation and an aperiodic component</span>
 <span class="n">components</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;sim_oscillation&#39;</span> <span class="p">:</span> <span class="p">{</span><span class="s1">&#39;freq&#39;</span> <span class="p">:</span> <span class="mi">10</span><span class="p">},</span>
     <span class="s1">&#39;sim_powerlaw&#39;</span> <span class="p">:</span> <span class="p">{</span><span class="s1">&#39;exponent&#39;</span> <span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">}</span>
@@ -327,15 +324,15 @@ components, and see what the frequency representations look like.</p>
 <span class="n">combined_sig</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">sim_combined</span><span class="p">(</span><span class="n">n_seconds</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">,</span> <span class="n">components</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the combined time series</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the combined time series</span>
 <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.plts.plot_time_series.html#neurodsp.plts.plot_time_series" title="neurodsp.plts.plot_time_series" class="sphx-glr-backref-module-neurodsp-plts sphx-glr-backref-type-py-function"><span class="n">plot_time_series</span></a><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">combined_sig</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_plot_DoYouEvenOscillate_009.png" srcset="../../_images/sphx_glr_plot_DoYouEvenOscillate_009.png" alt="plot DoYouEvenOscillate" class = "sphx-glr-single-img"/><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the power spectrum of the combined signal</span>
+<img src="../../_images/sphx_glr_plot_DoYouEvenOscillate_009.png" srcset="../../_images/sphx_glr_plot_DoYouEvenOscillate_009.png" alt="plot DoYouEvenOscillate" class = "sphx-glr-single-img"/><div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the power spectrum of the combined signal</span>
 <span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.spectral.compute_spectrum_welch.html#neurodsp.spectral.compute_spectrum_welch" title="neurodsp.spectral.compute_spectrum_welch" class="sphx-glr-backref-module-neurodsp-spectral sphx-glr-backref-type-py-function"><span class="n">compute_spectrum_welch</span></a><span class="p">(</span><span class="n">combined_sig</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Visualize the power spectrum of the combined signal</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Visualize the power spectrum of the combined signal</span>
 <a href="https://neurodsp-tools.github.io/neurodsp/generated/neurodsp.plts.plot_power_spectra.html#neurodsp.plts.plot_power_spectra" title="neurodsp.plts.plot_power_spectra" class="sphx-glr-backref-module-neurodsp-plts sphx-glr-backref-type-py-function"><span class="n">plot_power_spectra</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -366,13 +363,13 @@ do not tell us how to interpret neural power spectra. However, here we take them
 starting point that motivate why prominent rhythms in the time series can be measured
 as peaks in the power spectrum, but that absent a peak, we should not automatically
 interpret power at any given frequency as necessarily reflecting rhythmic activity.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.205 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 2.627 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-motivations-concepts-plot-doyouevenoscillate-py">
-<div class="sphx-glr-download sphx-glr-download-python docutils container">
-<p><a class="reference download internal" download="" href="../../_downloads/d82e87bb1616655889a497b5b2019172/plot_DoYouEvenOscillate.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_DoYouEvenOscillate.py</span></code></a></p>
-</div>
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/b5b2c9277c4315e5778cb46a8f532c69/plot_DoYouEvenOscillate.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_DoYouEvenOscillate.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/d82e87bb1616655889a497b5b2019172/plot_DoYouEvenOscillate.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_DoYouEvenOscillate.py</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -391,8 +388,8 @@ interpret power at any given frequency as necessarily reflecting rhythmic activi
       
     </p>
     <p>
-        &copy; Copyright 2018-2023, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
+        &copy; Copyright 2018-2025, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.1.2.<br/>
     </p>
   </div>
 </footer>

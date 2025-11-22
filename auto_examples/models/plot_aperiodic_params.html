@@ -3,24 +3,21 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Aperiodic Parameters &#8212; fooof 1.1.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
-    <script src="../../_static/clipboard.min.js"></script>
-    <script src="../../_static/copybutton.js"></script>
+    <title>Aperiodic Parameters &#8212; fooof 1.1.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css?v=284a2d1d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=af026a1d"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=a56c686a"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 
@@ -58,7 +55,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.1</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -116,12 +113,12 @@
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
 <p><a class="reference internal" href="#sphx-glr-download-auto-examples-models-plot-aperiodic-params-py"><span class="std std-ref">Go to the end</span></a>
-to download the full example code</p>
+to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="aperiodic-parameters">
 <span id="sphx-glr-auto-examples-models-plot-aperiodic-params-py"></span><h1>Aperiodic Parameters<a class="headerlink" href="#aperiodic-parameters" title="Permalink to this heading">¶</a></h1>
 <p>Exploring properties and topics related to aperiodic parameters.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">spearmanr</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">spearmanr</span>
 
 <span class="kn">from</span> <span class="nn">fooof</span> <span class="kn">import</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">,</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOFGroup</span></a>
 <span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="kn">import</span> <a href="../../generated/fooof.plts.plot_spectra.html#fooof.plts.plot_spectra" title="fooof.plts.plot_spectra" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectra</span></a>
@@ -136,23 +133,23 @@ to download the full example code</p>
 <h2>‘Fixed’ Model<a class="headerlink" href="#fixed-model" title="Permalink to this heading">¶</a></h2>
 <p>First, we will explore the ‘fixed’ model, which fits an offset and exponent value
 to characterize the 1/f-like aperiodic component of the data.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate an example power spectrum</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate an example power spectrum</span>
 <span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">freq_res</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize model object and fit power spectrum</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize model object and fit power spectrum</span>
 <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">min_peak_height</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
 <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.fit" title="fooof.FOOOF.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check the aperiodic parameters</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check the aperiodic parameters</span>
 <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">aperiodic_params_</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>array([0.00240135, 1.00098662])
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>array([0.00309291, 1.00148716])
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot annotated model of aperiodic parameters</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot annotated model of aperiodic parameters</span>
 <a href="../../generated/fooof.plts.annotate.plot_annotated_model.html#fooof.plts.annotate.plot_annotated_model" title="fooof.plts.annotate.plot_annotated_model" class="sphx-glr-backref-module-fooof-plts-annotate sphx-glr-backref-type-py-function"><span class="n">plot_annotated_model</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="p">,</span> <span class="n">annotate_peaks</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">annotate_aperiodic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">plt_log</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -162,21 +159,21 @@ to characterize the 1/f-like aperiodic component of the data.</p>
 <p>A common analysis of model fit parameters includes examining and comparing changes
 in the offset and/or exponent values of a set of models, which we will now explore.</p>
 <p>To do so, we will start by simulating a set of power spectra with different exponent values.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define simulation parameters, stepping across different exponent values</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define simulation parameters, stepping across different exponent values</span>
 <a href="../../generated/fooof.sim.params.Stepper.html#fooof.sim.params.Stepper" title="fooof.sim.params.Stepper" class="sphx-glr-backref-module-fooof-sim-params sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">exp_steps</span></a> <span class="o">=</span> <a href="../../generated/fooof.sim.params.Stepper.html#fooof.sim.params.Stepper" title="fooof.sim.params.Stepper" class="sphx-glr-backref-module-fooof-sim-params sphx-glr-backref-type-py-class"><span class="n">Stepper</span></a><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">)</span>
 <span class="n">ap_params</span> <span class="o">=</span> <a href="../../generated/fooof.sim.params.param_iter.html#fooof.sim.params.param_iter" title="fooof.sim.params.param_iter" class="sphx-glr-backref-module-fooof-sim-params sphx-glr-backref-type-py-function"><span class="n">param_iter</span></a><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <a href="../../generated/fooof.sim.params.Stepper.html#fooof.sim.params.Stepper" title="fooof.sim.params.Stepper" class="sphx-glr-backref-module-fooof-sim-params sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">exp_steps</span></a><span class="p">])</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate a group of power spectra</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate a group of power spectra</span>
 <span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="fooof.sim.gen_group_power_spectra" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_group_power_spectra</span></a><span class="p">(</span>\
     <span class="nb">len</span><span class="p">(</span><a href="../../generated/fooof.sim.params.Stepper.html#fooof.sim.params.Stepper" title="fooof.sim.params.Stepper" class="sphx-glr-backref-module-fooof-sim-params sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">exp_steps</span></a><span class="p">),</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span> <span class="n">ap_params</span><span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">freq_res</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">f_rotation</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the set of example power spectra</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the set of example power spectra</span>
 <a href="../../generated/fooof.plts.plot_spectra.html#fooof.plts.plot_spectra" title="fooof.plts.plot_spectra" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectra</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">,</span> <span class="n">log_powers</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_plot_aperiodic_params_002.png" srcset="../../_images/sphx_glr_plot_aperiodic_params_002.png" alt="plot aperiodic params" class = "sphx-glr-single-img"/><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a group mode object and parameterize the power spectra</span>
+<img src="../../_images/sphx_glr_plot_aperiodic_params_002.png" srcset="../../_images/sphx_glr_plot_aperiodic_params_002.png" alt="plot aperiodic params" class = "sphx-glr-single-img"/><div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a group mode object and parameterize the power spectra</span>
 <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOFGroup</span></a><span class="p">()</span>
 <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.fit" title="fooof.FOOOFGroup.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span>
 </pre></div>
@@ -184,19 +181,19 @@ in the offset and/or exponent values of a set of models, which we will now explo
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Running FOOOFGroup across 8 power spectra.
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract the aperiodic values of the model fits</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract the aperiodic values of the model fits</span>
 <span class="n">ap_values</span> <span class="o">=</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;aperiodic&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the aperiodic parameters</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the aperiodic parameters</span>
 <a href="../../generated/fooof.plts.aperiodic.plot_aperiodic_params.html#fooof.plts.aperiodic.plot_aperiodic_params" title="fooof.plts.aperiodic.plot_aperiodic_params" class="sphx-glr-backref-module-fooof-plts-aperiodic sphx-glr-backref-type-py-function"><span class="n">plot_aperiodic_params</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;aperiodic&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_plot_aperiodic_params_003.png" srcset="../../_images/sphx_glr_plot_aperiodic_params_003.png" alt="plot aperiodic params" class = "sphx-glr-single-img"/><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the correlation between the offset and exponent</span>
+<img src="../../_images/sphx_glr_plot_aperiodic_params_003.png" srcset="../../_images/sphx_glr_plot_aperiodic_params_003.png" alt="plot aperiodic params" class = "sphx-glr-single-img"/><div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the correlation between the offset and exponent</span>
 <span class="n">spearmanr</span><span class="p">(</span><span class="n">ap_values</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">ap_values</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:])</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>SpearmanrResult(correlation=-0.9999999999999999, pvalue=nan)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>SignificanceResult(statistic=0.9999999999999999, pvalue=nan)
 </pre></div>
 </div>
 <p>What we see above matches the common finding that that the offset and exponent are
@@ -214,24 +211,24 @@ two parameters are highly correlated and likely reflect the same change in the d
 <h2>Knee Model<a class="headerlink" href="#knee-model" title="Permalink to this heading">¶</a></h2>
 <p>Next, let’s explore the knee model, which parameterizes the aperiodic component with
 an offset, knee, and exponent value.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate a power spectrum with a knee</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate a power spectrum with a knee</span>
 <span class="n">freqs2</span><span class="p">,</span> <span class="n">powers2</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mf">0.125</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">],</span> <span class="n">freq_res</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize model object and fit power spectrum</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize model object and fit power spectrum</span>
 <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">min_peak_height</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">aperiodic_mode</span><span class="o">=</span><span class="s1">&#39;knee&#39;</span><span class="p">)</span>
 <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.fit" title="fooof.FOOOF.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs2</span><span class="p">,</span> <span class="n">powers2</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot annotated knee model</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot annotated knee model</span>
 <a href="../../generated/fooof.plts.annotate.plot_annotated_model.html#fooof.plts.annotate.plot_annotated_model" title="fooof.plts.annotate.plot_annotated_model" class="sphx-glr-backref-module-fooof-plts-annotate sphx-glr-backref-type-py-function"><span class="n">plot_annotated_model</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="p">,</span> <span class="n">annotate_peaks</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">annotate_aperiodic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">plt_log</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_plot_aperiodic_params_004.png" srcset="../../_images/sphx_glr_plot_aperiodic_params_004.png" alt="plot aperiodic params" class = "sphx-glr-single-img"/><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check the measured aperiodic parameters</span>
+<img src="../../_images/sphx_glr_plot_aperiodic_params_004.png" srcset="../../_images/sphx_glr_plot_aperiodic_params_004.png" alt="plot aperiodic params" class = "sphx-glr-single-img"/><div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check the measured aperiodic parameters</span>
 <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">aperiodic_params_</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>array([3.10275132e-03, 1.50249273e+01, 1.00225555e+00])
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>array([-1.28300678e-03,  1.50049197e+01,  9.98243157e-01])
 </pre></div>
 </div>
 <section id="knee-frequency">
@@ -242,12 +239,12 @@ formalization of the underlying fit function. A more intuitive measure that we m
 be interested in is the ‘knee frequency’, which is an estimate of the frequency value
 at which the knee occurs.</p>
 <p>The <a class="reference internal" href="../../generated/fooof.utils.params.compute_knee_frequency.html#fooof.utils.params.compute_knee_frequency" title="fooof.utils.params.compute_knee_frequency"><code class="xref py py-func docutils literal notranslate"><span class="pre">compute_knee_frequency()</span></code></a> function can be used to compute the knee frequency.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the knee frequency from aperiodic parameters</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the knee frequency from aperiodic parameters</span>
 <span class="n">knee_frequency</span> <span class="o">=</span> <a href="../../generated/fooof.utils.params.compute_knee_frequency.html#fooof.utils.params.compute_knee_frequency" title="fooof.utils.params.compute_knee_frequency" class="sphx-glr-backref-module-fooof-utils-params sphx-glr-backref-type-py-function"><span class="n">compute_knee_frequency</span></a><span class="p">(</span><span class="o">*</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">aperiodic_params_</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Knee frequency: &#39;</span><span class="p">,</span> <span class="n">knee_frequency</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Knee frequency:  14.933582118724882
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Knee frequency:  15.076612422295902
 </pre></div>
 </div>
 </section>
@@ -256,22 +253,22 @@ at which the knee occurs.</p>
 <p>Another interesting property of the knee parameter is that it has a direct relationship
 to the auto-correlation function, and from there to the empirical time constant of the data.</p>
 <p>The <code class="xref py py-func docutils literal notranslate"><span class="pre">compute_time_constant()</span></code> function can be used to compute the knee-derived
-time constant.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the characteristic time constant of a knee value</span>
-<span class="n">time_constant</span> <span class="o">=</span> <span class="n">compute_time_constant</span><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.get_params" title="fooof.FOOOF.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;aperiodic&#39;</span><span class="p">,</span> <span class="s1">&#39;knee&#39;</span><span class="p">))</span>
+time constant. It takes the knee frequency as the input and calculates the time constant from it.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the characteristic time constant of a knee value</span>
+<span class="n">time_constant</span> <span class="o">=</span> <span class="n">compute_time_constant</span><span class="p">(</span><span class="n">knee_frequency</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Knee derived time constant: &#39;</span><span class="p">,</span> <span class="n">time_constant</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Knee derived time constant:  0.010592726326428152
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Knee derived time constant:  0.010556412716196815
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.929 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.105 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-models-plot-aperiodic-params-py">
-<div class="sphx-glr-download sphx-glr-download-python docutils container">
-<p><a class="reference download internal" download="" href="../../_downloads/2576ce0dd0bb489e5f373a7ada2925ea/plot_aperiodic_params.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_aperiodic_params.py</span></code></a></p>
-</div>
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/db26135e85e3f8b4440c4fc4f5b0ad17/plot_aperiodic_params.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_aperiodic_params.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/2576ce0dd0bb489e5f373a7ada2925ea/plot_aperiodic_params.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_aperiodic_params.py</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -291,8 +288,8 @@ time constant.</p>
       
     </p>
     <p>
-        &copy; Copyright 2018-2023, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
+        &copy; Copyright 2018-2025, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.1.2.<br/>
     </p>
   </div>
 </footer>

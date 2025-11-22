@@ -3,24 +3,21 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>08: Further Analysis &#8212; fooof 1.1.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
+    <title>08: Further Analysis &#8212; fooof 1.1.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css?v=284a2d1d" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=af026a1d"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=a56c686a"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
 
@@ -58,7 +55,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.1</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -116,7 +113,7 @@
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
 <p><a class="reference internal" href="#sphx-glr-download-auto-tutorials-plot-08-furtheranalysis-py"><span class="std std-ref">Go to the end</span></a>
-to download the full example code</p>
+to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="further-analysis">
 <span id="sphx-glr-auto-tutorials-plot-08-furtheranalysis-py"></span><h1>08: Further Analysis<a class="headerlink" href="#further-analysis" title="Permalink to this heading">¶</a></h1>
@@ -133,7 +130,7 @@ to do after fitting power spectrum models, as it depends on your questions of in
 and explore some simple analyses that can be done with model parameters.</p>
 <p>To start, we will load and fit some example data, as well as simulate a group of
 power spectra to fit with power spectrum models, to use as examples for this tutorial.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># General imports</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># General imports</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="c1"># Import the FOOOF and FOOOFGroup objects</span>
@@ -157,12 +154,12 @@ power spectra to fit with power spectrum models, to use as examples for this tut
 <section id="load-and-fit-example-data">
 <h3>Load and Fit Example Data<a class="headerlink" href="#load-and-fit-example-data" title="Permalink to this heading">¶</a></h3>
 <p>First, let’s load and fit an example power spectrum.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load example data files needed for this example</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load example data files needed for this example</span>
 <span class="n">freqs</span> <span class="o">=</span> <span class="n">load_fooof_data</span><span class="p">(</span><span class="s1">&#39;freqs.npy&#39;</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
 <span class="n">spectrum</span> <span class="o">=</span> <span class="n">load_fooof_data</span><span class="p">(</span><span class="s1">&#39;spectrum.npy&#39;</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit a power spectrum model</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit a power spectrum model</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.fit" title="fooof.FOOOF.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">30</span><span class="p">])</span>
 </pre></div>
@@ -171,7 +168,7 @@ power spectra to fit with power spectrum models, to use as examples for this tut
 <section id="simulate-and-fit-group-data">
 <h3>Simulate and Fit Group Data<a class="headerlink" href="#simulate-and-fit-group-data" title="Permalink to this heading">¶</a></h3>
 <p>We will also simulate and fit some additional example data.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set random seed, for consistency generating simulated data</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set random seed, for consistency generating simulated data</span>
 <a href="../generated/fooof.sim.utils.set_random_seed.html#fooof.sim.utils.set_random_seed" title="fooof.sim.utils.set_random_seed" class="sphx-glr-backref-module-fooof-sim-utils sphx-glr-backref-type-py-function"><span class="n">set_random_seed</span></a><span class="p">(</span><span class="mi">21</span><span class="p">)</span>
 
 <span class="c1"># Generate some simulated power spectra</span>
@@ -181,7 +178,7 @@ power spectra to fit with power spectrum models, to use as examples for this tut
                                          <span class="n">periodic_params</span><span class="o">=</span><a href="../generated/fooof.sim.params.param_sampler.html#fooof.sim.params.param_sampler" title="fooof.sim.params.param_sampler" class="sphx-glr-backref-module-fooof-sim-params sphx-glr-backref-type-py-function"><span class="n">param_sampler</span></a><span class="p">([[],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]))</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOFGroup object with some settings</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOFGroup object with some settings</span>
 <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOFGroup</span></a><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">min_peak_height</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
                 <span class="n">max_n_peaks</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
@@ -208,7 +205,7 @@ to offer the most useful general utilities.</p>
 for example extracting peaks that fall within defined frequency bands.</p>
 <p>This also includes the <a class="reference internal" href="../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bands</span></code></a> object, which is a custom, dictionary-like object,
 that is provided to store frequency band definitions.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define frequency bands of interest</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define frequency bands of interest</span>
 <a href="../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a> <span class="o">=</span> <a href="../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">Bands</span></a><span class="p">({</span><span class="s1">&#39;theta&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span>
                <span class="s1">&#39;alpha&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span>
                <span class="s1">&#39;beta&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">30</span><span class="p">]})</span>
@@ -225,12 +222,12 @@ returned, or whether to return all peaks from within the band</p></li>
 <li><p>whether to apply a minimum threshold to extract peaks, for example, to extract
 peaks only above some minimum power threshold</p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract any alpha band peaks from the power spectrum model</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract any alpha band peaks from the power spectrum model</span>
 <span class="n">alpha</span> <span class="o">=</span> <a href="../generated/fooof.analysis.get_band_peak_fm.html#fooof.analysis.get_band_peak_fm" title="fooof.analysis.get_band_peak_fm" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">get_band_peak_fm</span></a><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="p">,</span> <a href="../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[9.48376672 0.91782115 2.        ]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[9.48375518 0.91782335 2.        ]
 </pre></div>
 </div>
 </section>
@@ -241,17 +238,17 @@ to select peaks from specified frequency ranges, from <a class="reference intern
 <p>Note that you can also apply a threshold to extract group peaks but, as discussed below,
 this approach will always only extract at most one peak per individual model fit from
 the FOOOFGroup object.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get all alpha peaks from a group of power spectrum models</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get all alpha peaks from a group of power spectrum models</span>
 <span class="n">alphas</span> <span class="o">=</span> <a href="../generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg" title="fooof.analysis.get_band_peak_fg" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">get_band_peak_fg</span></a><span class="p">(</span><a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="p">,</span> <a href="../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
 
 <span class="c1"># Check out some of the alpha parameters</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">alphas</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span> <span class="p">:])</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[[10.03970097  0.48627814  3.78823186]
- [10.03394843  0.48807386  3.82620803]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[[10.03969822  0.48627641  3.78825893]
+ [10.03394581  0.4880723   3.82623257]
  [        nan         nan         nan]
- [10.04095697  0.49087309  3.81808357]
+ [10.04095458  0.49087164  3.81810629]
  [        nan         nan         nan]]
 </pre></div>
 </div>
@@ -264,7 +261,7 @@ from the FOOOFGroup object.</p>
 <p>For this to work, at most 1 peak is extracted for each model fit within the specified band.
 If more than 1 peak are found within the band, the peak with the highest power is extracted.
 If no peaks are found, that row is filled with ‘nan’.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check descriptive statistics of extracted peak parameters</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check descriptive statistics of extracted peak parameters</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Alpha CF : </span><span class="si">{:1.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">alphas</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Alpha PW : </span><span class="si">{:1.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">alphas</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Alpha BW : </span><span class="si">{:1.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">alphas</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])))</span>
@@ -299,19 +296,19 @@ the characteristics of the data under study.</p>
 <h2>Analyzing the Aperiodic Component<a class="headerlink" href="#analyzing-the-aperiodic-component" title="Permalink to this heading">¶</a></h2>
 <p>Typically, for analyzing the aperiodic component of the data, aperiodic parameters
 just need to be extracted from FOOOF objects and fit into analyses of interest.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot from the FOOOFGroup, to visualize the parameters</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot from the FOOOFGroup, to visualize the parameters</span>
 <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.plot" title="fooof.FOOOFGroup.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">plot</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_08-FurtherAnalysis_001.png" srcset="../_images/sphx_glr_plot_08-FurtherAnalysis_001.png" alt="Aperiodic Fit, Goodness of Fit, Peaks - Center Frequencies" class = "sphx-glr-single-img"/><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract aperiodic exponent parameters from group results</span>
+<img src="../_images/sphx_glr_plot_08-FurtherAnalysis_001.png" srcset="../_images/sphx_glr_plot_08-FurtherAnalysis_001.png" alt="Aperiodic Fit, Goodness of Fit, Peaks - Center Frequencies" class = "sphx-glr-single-img"/><div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract aperiodic exponent parameters from group results</span>
 <span class="n">exps</span> <span class="o">=</span> <a href="../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;aperiodic_params&#39;</span><span class="p">,</span> <span class="s1">&#39;exponent&#39;</span><span class="p">)</span>
 
 <span class="c1"># Check out the aperiodic exponent results</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">exps</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[1.5174828  1.51806721 1.99827884 1.5156351  2.00559925 2.01700246
- 2.00089211 2.02010985 1.51575182 1.99955831]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[1.51748191 1.51806639 1.99827884 1.51563434 2.00559925 2.01700177
+ 2.00089211 2.02010911 1.51575116 1.99955831]
 </pre></div>
 </div>
 </section>
@@ -338,13 +335,13 @@ page.</p>
 <p>This is the end of the main tutorial materials!</p>
 <p>If you are having any troubles, please submit an issue on Github
 <a class="reference external" href="https://github.com/fooof-tools/fooof">here</a>.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.279 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.285 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-08-furtheranalysis-py">
-<div class="sphx-glr-download sphx-glr-download-python docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/bf02a0d9260abd47504beac02e8ba2e3/plot_08-FurtherAnalysis.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_08-FurtherAnalysis.py</span></code></a></p>
-</div>
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/5ee90e99e6d971d885ad278c3972711e/plot_08-FurtherAnalysis.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_08-FurtherAnalysis.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/bf02a0d9260abd47504beac02e8ba2e3/plot_08-FurtherAnalysis.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_08-FurtherAnalysis.py</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -363,8 +360,8 @@ page.</p>
       
     </p>
     <p>
-        &copy; Copyright 2018-2023, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
+        &copy; Copyright 2018-2025, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.1.2.<br/>
     </p>
   </div>
 </footer>

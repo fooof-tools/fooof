@@ -3,24 +3,21 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Topographical Analyses with MNE &#8212; fooof 1.1.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
-    <script src="../../_static/clipboard.min.js"></script>
-    <script src="../../_static/copybutton.js"></script>
+    <title>Topographical Analyses with MNE &#8212; fooof 1.1.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css?v=284a2d1d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=af026a1d"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=a56c686a"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 
@@ -58,7 +55,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.1</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -116,7 +113,7 @@
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
 <p><a class="reference internal" href="#sphx-glr-download-auto-examples-analyses-plot-mne-example-py"><span class="std std-ref">Go to the end</span></a>
-to download the full example code</p>
+to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="topographical-analyses-with-mne">
 <span id="sphx-glr-auto-examples-analyses-plot-mne-example-py"></span><h1>Topographical Analyses with MNE<a class="headerlink" href="#topographical-analyses-with-mne" title="Permalink to this heading">¶</a></h1>
@@ -127,7 +124,7 @@ installed. This tutorial needs mne &gt;= 1.2.</p>
 <a class="reference external" href="https://mne-tools.github.io/stable/getting_started.html">here</a>.</p>
 <p>For this example, we will explore how to parameterize power spectra using data loaded
 and managed with MNE, and how to plot topographies of resulting model parameters.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># General imports</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># General imports</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">colorbar</span>
@@ -143,6 +140,91 @@ and managed with MNE, and how to plot topographies of resulting model parameters
 <span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="kn">import</span> <a href="../../generated/fooof.plts.plot_spectra.html#fooof.plts.plot_spectra" title="fooof.plts.plot_spectra" class="sphx-glr-backref-module-fooof-plts sphx-glr-backref-type-py-function"><span class="n">plot_spectra</span></a>
 </pre></div>
 </div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/Users/tom/opt/anaconda3/lib/python3.8/site-packages/llvmlite/binding/ffi.py:175: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  from pkg_resources import resource_filename
+/Users/tom/opt/anaconda3/lib/python3.8/site-packages/pkg_resources/__init__.py:2871: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace(&#39;google&#39;)`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+/Users/tom/opt/anaconda3/lib/python3.8/site-packages/pkg_resources/__init__.py:2871: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace(&#39;google&#39;)`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+/Users/tom/opt/anaconda3/lib/python3.8/site-packages/pkg_resources/__init__.py:2871: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace(&#39;google&#39;)`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+/Users/tom/opt/anaconda3/lib/python3.8/site-packages/pkg_resources/__init__.py:2871: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace(&#39;google.cloud&#39;)`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+/Users/tom/opt/anaconda3/lib/python3.8/site-packages/pkg_resources/__init__.py:2350: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace(&#39;google&#39;)`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(parent)
+/Users/tom/opt/anaconda3/lib/python3.8/site-packages/pkg_resources/__init__.py:2871: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace(&#39;google&#39;)`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+/Users/tom/opt/anaconda3/lib/python3.8/site-packages/pkg_resources/__init__.py:2871: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace(&#39;google.cloud&#39;)`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+/Users/tom/opt/anaconda3/lib/python3.8/site-packages/pkg_resources/__init__.py:2871: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace(&#39;google&#39;)`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+/Users/tom/opt/anaconda3/lib/python3.8/site-packages/pkg_resources/__init__.py:2871: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace(&#39;google.cloud&#39;)`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+/Users/tom/opt/anaconda3/lib/python3.8/site-packages/pkg_resources/__init__.py:2871: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace(&#39;google&#39;)`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+/Users/tom/opt/anaconda3/lib/python3.8/site-packages/pkg_resources/__init__.py:2871: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace(&#39;google&#39;)`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+/Users/tom/opt/anaconda3/lib/python3.8/site-packages/pkg_resources/__init__.py:2871: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace(&#39;google.logging&#39;)`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+/Users/tom/opt/anaconda3/lib/python3.8/site-packages/pkg_resources/__init__.py:2350: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace(&#39;google&#39;)`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(parent)
+/Users/tom/opt/anaconda3/lib/python3.8/site-packages/pkg_resources/__init__.py:2871: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace(&#39;mpl_toolkits&#39;)`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+/Users/tom/opt/anaconda3/lib/python3.8/site-packages/pkg_resources/__init__.py:2871: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace(&#39;PyObjCTools&#39;)`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+/Users/tom/opt/anaconda3/lib/python3.8/site-packages/pkg_resources/__init__.py:2871: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace(&#39;PyObjCTools&#39;)`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+/Users/tom/opt/anaconda3/lib/python3.8/site-packages/pkg_resources/__init__.py:2871: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace(&#39;ruamel&#39;)`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+/Users/tom/opt/anaconda3/lib/python3.8/site-packages/pkg_resources/__init__.py:2871: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace(&#39;ruamel&#39;)`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+/Users/tom/opt/anaconda3/lib/python3.8/site-packages/pkg_resources/__init__.py:2871: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace(&#39;sphinxcontrib&#39;)`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+/Users/tom/opt/anaconda3/lib/python3.8/site-packages/pkg_resources/__init__.py:2871: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace(&#39;sphinxcontrib&#39;)`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+/Users/tom/opt/anaconda3/lib/python3.8/site-packages/pkg_resources/__init__.py:2871: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace(&#39;sphinxcontrib&#39;)`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+/Users/tom/opt/anaconda3/lib/python3.8/site-packages/pkg_resources/__init__.py:2871: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace(&#39;sphinxcontrib&#39;)`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+/Users/tom/opt/anaconda3/lib/python3.8/site-packages/pkg_resources/__init__.py:2871: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace(&#39;sphinxcontrib&#39;)`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+/Users/tom/opt/anaconda3/lib/python3.8/site-packages/pkg_resources/__init__.py:2871: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace(&#39;sphinxcontrib&#39;)`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+/Users/tom/opt/anaconda3/lib/python3.8/site-packages/pkg_resources/__init__.py:2871: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace(&#39;sphinxcontrib&#39;)`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+/Users/tom/opt/anaconda3/lib/python3.8/site-packages/pkg_resources/__init__.py:2871: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace(&#39;zope&#39;)`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+/Users/tom/opt/anaconda3/lib/python3.8/site-packages/pkg_resources/__init__.py:2871: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace(&#39;zope&#39;)`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+</pre></div>
+</div>
 <section id="load-check-mne-data">
 <h2>Load &amp; Check MNE Data<a class="headerlink" href="#load-check-mne-data" title="Permalink to this heading">¶</a></h2>
 <p>We will use the
@@ -152,14 +234,14 @@ which is a combined MEG/EEG recording with an audiovisual task.</p>
 and extract the EEG data that we will use for this example.</p>
 <p>Note that if you are running this locally, the following cell will download
 the example dataset, if you do not already have it.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the data path for the MNE example data</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the data path for the MNE example data</span>
 <span class="n">raw_fname</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">data_path</span><span class="p">()</span> <span class="o">/</span> <span class="s1">&#39;MEG&#39;</span> <span class="o">/</span> <span class="s1">&#39;sample&#39;</span> <span class="o">/</span> <span class="s1">&#39;sample_audvis_filt-0-40_raw.fif&#39;</span>
 
 <span class="c1"># Load the example MNE data</span>
 <span class="n">raw</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_raw_fif</span><span class="p">(</span><span class="n">raw_fname</span><span class="p">,</span> <span class="n">preload</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select EEG channels from the dataset</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select EEG channels from the dataset</span>
 <span class="n">raw</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">pick</span><span class="p">([</span><span class="s1">&#39;eeg&#39;</span><span class="p">],</span> <span class="n">exclude</span><span class="o">=</span><span class="s1">&#39;bads&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -168,7 +250,7 @@ Removing projector &lt;Projection | PCA-v2, active : False, n_channels : 102&gt;
 Removing projector &lt;Projection | PCA-v3, active : False, n_channels : 102&gt;
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the reference to be average reference</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the reference to be average reference</span>
 <span class="n">raw</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">set_eeg_reference</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -189,7 +271,7 @@ results for a given band can be NaN, which doesn’t always work very well with 
 analyses that we may want to do.</p>
 <p>To be able to deal with nan-values, we will define a helper function to
 check for NaN values and apply a specified policy for how to deal with them.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">check_nans</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">nan_policy</span><span class="o">=</span><span class="s1">&#39;zero&#39;</span><span class="p">):</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">check_nans</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">nan_policy</span><span class="o">=</span><span class="s1">&#39;zero&#39;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check an array for nan values, and replace, based on policy.&quot;&quot;&quot;</span>
 
     <span class="c1"># Find where there are nan values in the data</span>
@@ -214,7 +296,7 @@ frequency representations - meaning we have to calculate power spectra.</p>
 <p>To do so, we will leverage the time frequency tools available with MNE,
 in the <cite>time_frequency</cite> module. In particular, we can use the <code class="docutils literal notranslate"><span class="pre">compute_psd</span></code>
 method, that takes in MNE data objects and calculates and returns power spectra.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate power spectra across the continuous data</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate power spectra across the continuous data</span>
 <span class="n">psd</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">compute_psd</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;welch&quot;</span><span class="p">,</span> <span class="n">fmin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fmax</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">tmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tmax</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span>
                       <span class="n">n_overlap</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">n_fft</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
 <span class="n">spectra</span><span class="p">,</span> <span class="n">freqs</span> <span class="o">=</span> <span class="n">psd</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">return_freqs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -228,7 +310,7 @@ method, that takes in MNE data objects and calculates and returns power spectra.
 <h2>Fitting Power Spectrum Models<a class="headerlink" href="#fitting-power-spectrum-models" title="Permalink to this heading">¶</a></h2>
 <p>Now that we have power spectra, we can fit some power spectrum models.</p>
 <p>Since we have multiple power spectra, we will use the <a class="reference internal" href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOFGroup</span></code></a> object.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOFGroup object, with desired settings</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOFGroup object, with desired settings</span>
 <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOFGroup</span></a><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="n">min_peak_height</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>
                 <span class="n">peak_threshold</span><span class="o">=</span><span class="mf">2.</span><span class="p">,</span> <span class="n">max_n_peaks</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
@@ -236,11 +318,11 @@ method, that takes in MNE data objects and calculates and returns power spectra.
 <span class="n">freq_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">30</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit the power spectrum model across all channels</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit the power spectrum model across all channels</span>
 <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.fit" title="fooof.FOOOFGroup.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectra</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check the overall results of the group fits</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check the overall results of the group fits</span>
 <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.plot" title="fooof.FOOOFGroup.plot" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">plot</span></a><span class="p">()</span>
 </pre></div>
 </div>
@@ -261,30 +343,30 @@ using the MNE object to define the corresponding channel locations.</p>
 <p>Lets start start by plotting some periodic model parameters.</p>
 <p>To do so, we will use to <a class="reference internal" href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bands</span></code></a> object to manage some band
 definitions, and some analysis utilities to extracts peaks from bands of interest.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define frequency bands of interest</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define frequency bands of interest</span>
 <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a> <span class="o">=</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">Bands</span></a><span class="p">({</span><span class="s1">&#39;theta&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span>
                <span class="s1">&#39;alpha&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">],</span>
                <span class="s1">&#39;beta&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">30</span><span class="p">]})</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract alpha peaks</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract alpha peaks</span>
 <span class="n">alphas</span> <span class="o">=</span> <a href="../../generated/fooof.analysis.get_band_peak_fg.html#fooof.analysis.get_band_peak_fg" title="fooof.analysis.get_band_peak_fg" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">get_band_peak_fg</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
 
 <span class="c1"># Extract the power values from the detected peaks</span>
 <span class="n">alpha_pw</span> <span class="o">=</span> <span class="n">alphas</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the topography of alpha power</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the topography of alpha power</span>
 <span class="n">mne</span><span class="o">.</span><span class="n">viz</span><span class="o">.</span><span class="n">plot_topomap</span><span class="p">(</span><span class="n">alpha_pw</span><span class="p">,</span> <span class="n">raw</span><span class="o">.</span><span class="n">info</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">,</span> <span class="n">contours</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_plot_mne_example_002.png" srcset="../../_images/sphx_glr_plot_mne_example_002.png" alt="plot mne example" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&lt;matplotlib.image.AxesImage object at 0x7f961350b970&gt;, None)
+<img src="../../_images/sphx_glr_plot_mne_example_002.png" srcset="../../_images/sphx_glr_plot_mne_example_002.png" alt="plot mne example" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&lt;matplotlib.image.AxesImage object at 0x7fe3765dd070&gt;, None)
 </pre></div>
 </div>
 <p>And there we have it, our first topography of parameterized spectra, showing alpha power!</p>
 <p>The topography makes sense, as we can see a centro-posterior distribution.</p>
 <p>Now we can extend this to plot the power of each of our other defined frequency bands.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the topographies across different frequency bands</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the topographies across different frequency bands</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">band_def</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="p">):</span>
 
@@ -304,7 +386,7 @@ with our <cite>check_nan</cite> approach. Note this is also a single subject ana
 <p>Since we have the power spectrum models for each of our channels, we can also explore
 what these peaks look like in the underlying power spectra.</p>
 <p>Next, lets check the power spectra for the largest detected peaks within each band.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">band_def</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="p">):</span>
 
     <span class="c1"># Get the power values across channels for the current band</span>
@@ -324,15 +406,15 @@ what these peaks look like in the underlying power spectra.</p>
 <p>Next up, let’s plot the topography of the aperiodic exponent.</p>
 <p>To do so, we can simply extract the aperiodic parameters from our power spectrum models,
 and plot them.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract aperiodic exponent values</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract aperiodic exponent values</span>
 <span class="n">exps</span> <span class="o">=</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_params" title="fooof.FOOOFGroup.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;aperiodic_params&#39;</span><span class="p">,</span> <span class="s1">&#39;exponent&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the topography of aperiodic exponents</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the topography of aperiodic exponents</span>
 <span class="n">mne</span><span class="o">.</span><span class="n">viz</span><span class="o">.</span><span class="n">plot_topomap</span><span class="p">(</span><span class="n">exps</span><span class="p">,</span> <span class="n">raw</span><span class="o">.</span><span class="n">info</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">,</span> <span class="n">contours</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_plot_mne_example_005.png" srcset="../../_images/sphx_glr_plot_mne_example_005.png" alt="plot mne example" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&lt;matplotlib.image.AxesImage object at 0x7f960c7986d0&gt;, None)
+<img src="../../_images/sphx_glr_plot_mne_example_005.png" srcset="../../_images/sphx_glr_plot_mne_example_005.png" alt="plot mne example" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&lt;matplotlib.image.AxesImage object at 0x7fe36c2a8100&gt;, None)
 </pre></div>
 </div>
 <p>In the topography above, we can see that there is a fair amount of variation
@@ -340,7 +422,7 @@ across the scalp in terms of aperiodic exponent value, and there seems to be som
 spatial structure to it.</p>
 <p>To visualize how much the exponent values vary, we can again plot some example power
 spectra, in this case extracting those with the highest and lower exponent values.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare the power spectra between low and high exponent channels</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare the power spectra between low and high exponent channels</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 
 <span class="n">spectra</span> <span class="o">=</span> <span class="p">[</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.get_fooof" title="fooof.FOOOFGroup.get_fooof" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">get_fooof</span></a><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">exps</span><span class="p">))</span><span class="o">.</span><span class="n">power_spectrum</span><span class="p">,</span>
@@ -355,13 +437,13 @@ spectra, in this case extracting those with the highest and lower exponent value
 <h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading">¶</a></h2>
 <p>In this example, we have seen how to apply power spectrum models to data that is
 managed and processed with MNE.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  3.370 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 4.168 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-analyses-plot-mne-example-py">
-<div class="sphx-glr-download sphx-glr-download-python docutils container">
-<p><a class="reference download internal" download="" href="../../_downloads/208ddf4708879eabf6a6f4aae1ab846a/plot_mne_example.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_mne_example.py</span></code></a></p>
-</div>
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/22eca51ea62d18a21f9995a7bdfe8c49/plot_mne_example.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_mne_example.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/208ddf4708879eabf6a6f4aae1ab846a/plot_mne_example.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_mne_example.py</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -380,8 +462,8 @@ managed and processed with MNE.</p>
       
     </p>
     <p>
-        &copy; Copyright 2018-2023, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
+        &copy; Copyright 2018-2025, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.1.2.<br/>
     </p>
   </div>
 </footer>

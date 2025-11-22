@@ -3,24 +3,21 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>02: Fitting Power Spectrum Models &#8212; fooof 1.1.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
+    <title>02: Fitting Power Spectrum Models &#8212; fooof 1.1.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css?v=284a2d1d" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=af026a1d"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=a56c686a"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
 
@@ -58,7 +55,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.1</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -116,19 +113,19 @@
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
 <p><a class="reference internal" href="#sphx-glr-download-auto-tutorials-plot-02-fooof-py"><span class="std std-ref">Go to the end</span></a>
-to download the full example code</p>
+to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="fitting-power-spectrum-models">
 <span id="sphx-glr-auto-tutorials-plot-02-fooof-py"></span><h1>02: Fitting Power Spectrum Models<a class="headerlink" href="#fitting-power-spectrum-models" title="Permalink to this heading">¶</a></h1>
 <p>Introduction to the module, beginning with the FOOOF object.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the FOOOF object</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the FOOOF object</span>
 <span class="kn">from</span> <span class="nn">fooof</span> <span class="kn">import</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a>
 
 <span class="c1"># Import a utility to download and load example data</span>
 <span class="kn">from</span> <span class="nn">fooof.utils.download</span> <span class="kn">import</span> <span class="n">load_fooof_data</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download example data files needed for this example</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download example data files needed for this example</span>
 <span class="n">freqs</span> <span class="o">=</span> <span class="n">load_fooof_data</span><span class="p">(</span><span class="s1">&#39;freqs.npy&#39;</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
 <span class="n">spectrum</span> <span class="o">=</span> <span class="n">load_fooof_data</span><span class="p">(</span><span class="s1">&#39;spectrum.npy&#39;</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
 </pre></div>
@@ -161,7 +158,7 @@ produce erroneous results.</p>
 <section id="fitting-an-example-power-spectrum">
 <h2>Fitting an Example Power Spectrum<a class="headerlink" href="#fitting-an-example-power-spectrum" title="Permalink to this heading">¶</a></h2>
 <p>The following example demonstrates fitting a power spectrum model to a single power spectrum.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOF object</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOF object</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">()</span>
 
 <span class="c1"># Set the frequency range to fit the model</span>
@@ -207,7 +204,7 @@ produce erroneous results.</p>
 <li><p><a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF.plot" title="fooof.FOOOF.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a>: plots the data and model fit</p></li>
 </ul>
 <p>Each of these methods can also be called individually.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Alternatively, just fit the model with FOOOF.fit() (without printing anything)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Alternatively, just fit the model with FOOOF.fit() (without printing anything)</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.fit" title="fooof.FOOOF.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">)</span>
 
 <span class="c1"># After fitting, plotting and parameter fitting can be called independently:</span>
@@ -236,7 +233,7 @@ the model have a trailing underscore, for example:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">n_peaks_</span></code></p></li>
 </ul>
 <p>Access model fit parameters from FOOOF object, after fitting:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Aperiodic parameters</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Aperiodic parameters</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Aperiodic parameters: </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">aperiodic_params_</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 
 <span class="c1"># Peak parameters</span>
@@ -252,16 +249,16 @@ the model have a trailing underscore, for example:</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Aperiodic parameters:
- [-21.61849957   0.71602269]
+ [-21.61849463   0.71602469]
 
 Peak parameters:
- [[ 9.36187382  1.04444622  1.58733674]
- [11.1723471   0.23008765  2.87693709]
- [18.24843214  0.33140755  2.84640768]]
+ [[ 9.36187745  1.04444653  1.58739814]
+ [11.17320501  0.23009279  2.87553555]
+ [18.24842747  0.33142173  2.84617076]]
 
 Goodness of fit:
- Error -  0.03560819309517319
- R^2   -  0.9828921187692009
+ Error -  0.03560699596075832
+ R^2   -  0.9828918511050404
 
 Number of fit peaks:
  3
@@ -272,7 +269,7 @@ Number of fit peaks:
 <h3>Selecting Parameters<a class="headerlink" href="#selecting-parameters" title="Permalink to this heading">¶</a></h3>
 <p>You can also select parameters using the <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF.get_params" title="fooof.FOOOF.get_params"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_params()</span></code></a>
 method, which can be used to specify which parameters you want to extract.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract a model parameter with `get_params`</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract a model parameter with `get_params`</span>
 <span class="n">err</span> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.get_params" title="fooof.FOOOF.get_params" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">get_params</span></a><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">)</span>
 
 <span class="c1"># Extract parameters, indicating sub-selections of parameters</span>
@@ -321,7 +318,7 @@ as ‘power’, as the units of the input data are expected to be units of power
 <p>[2] Gaussian standard deviation is ‘1 sided’, where as the returned BW is ‘2 sided’.</p>
 <p>The underlying gaussian parameters are also available from the FOOOF object,
 in the <code class="docutils literal notranslate"><span class="pre">gaussian_params_</span></code> attribute.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare the &#39;peak_params_&#39; to the underlying gaussian parameters</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare the &#39;peak_params_&#39; to the underlying gaussian parameters</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  Peak Parameters </span><span class="se">\t</span><span class="s1"> Gaussian Parameters&#39;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">peak</span><span class="p">,</span> <span class="n">gauss</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">peak_params_</span><span class="p">,</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">gaussian_params_</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="se">\t</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1"> </span><span class="si">{:5.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">peak</span><span class="p">,</span> <span class="o">*</span><span class="n">gauss</span><span class="p">))</span>
@@ -341,7 +338,7 @@ in the <code class="docutils literal notranslate"><span class="pre">gaussian_par
 parameters, collected together into a FOOOFResults object.</p>
 <p>The FOOOFResults object, which in Python terms is a named tuple, is a standard data
 object used with FOOOF to organize and collect parameter data.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Grab each model fit result with `get_results` to gather all results together</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Grab each model fit result with `get_results` to gather all results together</span>
 <span class="c1">#   Note that this returns a FOOOFResult object</span>
 <a href="../generated/fooof.data.FOOOFResults.html#fooof.data.FOOOFResults" title="fooof.data.FOOOFResults" class="sphx-glr-backref-module-fooof-data sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fres</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.get_results" title="fooof.FOOOF.get_results" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">get_results</span></a><span class="p">()</span>
 
@@ -349,7 +346,7 @@ object used with FOOOF to organize and collect parameter data.</p>
 <span class="n">ap_params</span><span class="p">,</span> <span class="n">peak_params</span><span class="p">,</span> <span class="n">r_squared</span><span class="p">,</span> <span class="n">fit_error</span><span class="p">,</span> <span class="n">gauss_params</span> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.get_results" title="fooof.FOOOF.get_results" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">get_results</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print out the FOOOFResults</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print out the FOOOFResults</span>
 <span class="nb">print</span><span class="p">(</span><a href="../generated/fooof.data.FOOOFResults.html#fooof.data.FOOOFResults" title="fooof.data.FOOOFResults" class="sphx-glr-backref-module-fooof-data sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fres</span></a><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 
 <span class="c1"># From FOOOFResults, you can access the different results</span>
@@ -360,14 +357,14 @@ object used with FOOOF to organize and collect parameter data.</p>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Fit error: </span><span class="se">\n</span><span class="s1"> </span><span class="si">{:5.4f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">error_</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>FOOOFResults(aperiodic_params=array([-21.61849957,   0.71602269]), peak_params=array([[ 9.36187382,  1.04444622,  1.58733674],
-       [11.1723471 ,  0.23008765,  2.87693709],
-       [18.24843214,  0.33140755,  2.84640768]]), r_squared=0.9828921187692009, error=0.03560819309517319, gaussian_params=array([[ 9.36187382,  0.97903265,  0.79366837],
-       [11.1723471 ,  0.16897043,  1.43846854],
-       [18.24843214,  0.3341275 ,  1.42320384]]))
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>FOOOFResults(aperiodic_params=array([-21.61849463,   0.71602469]), peak_params=array([[ 9.36187745,  1.04444653,  1.58739814],
+       [11.17320501,  0.23009279,  2.87553555],
+       [18.24842747,  0.33142173,  2.84617076]]), r_squared=0.9828918511050404, error=0.03560699596075832, gaussian_params=array([[ 9.36187745,  0.97915802,  0.79369907],
+       [11.17320501,  0.16895001,  1.43776777],
+       [18.24842747,  0.33414214,  1.42308538]]))
 
 Aperiodic Parameters:
- [-21.61849957   0.71602269]
+ [-21.61849463   0.71602469]
 R-squared:
  0.9829
 Fit error:
@@ -381,13 +378,13 @@ Fit error:
 <p>In this tutorial, we have explored the basics of the <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object,
 fitting power spectrum models, and extracting parameters.</p>
 <p>In the next tutorial, we will explore how this algorithm actually works to fit the model.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.208 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.263 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-02-fooof-py">
-<div class="sphx-glr-download sphx-glr-download-python docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/c5eab696503901303f8a324c41d3284e/plot_02-FOOOF.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_02-FOOOF.py</span></code></a></p>
-</div>
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/3ec8e163e0123eaaf98ad9c1f5feb139/plot_02-FOOOF.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_02-FOOOF.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/c5eab696503901303f8a324c41d3284e/plot_02-FOOOF.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_02-FOOOF.py</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -406,8 +403,8 @@ fitting power spectrum models, and extracting parameters.</p>
       
     </p>
     <p>
-        &copy; Copyright 2018-2023, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
+        &copy; Copyright 2018-2025, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.1.2.<br/>
     </p>
   </div>
 </footer>

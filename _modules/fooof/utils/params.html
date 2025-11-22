@@ -4,22 +4,19 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>fooof.utils.params &#8212; fooof 1.1.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/bootstrap-sphinx.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css" />
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-    <script src="../../../_static/jquery.js"></script>
-    <script src="../../../_static/underscore.js"></script>
-    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/sphinx_highlight.js"></script>
-    <script src="../../../_static/clipboard.min.js"></script>
-    <script src="../../../_static/copybutton.js"></script>
+    <title>fooof.utils.params &#8212; fooof 1.1.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/bootstrap-sphinx.css?v=284a2d1d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=af026a1d"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=a56c686a"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
 
@@ -57,7 +54,7 @@
         </button>
         <a class="navbar-brand" href="../../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.1</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -134,55 +131,26 @@
 <span class="sd">    -------</span>
 <span class="sd">    float</span>
 <span class="sd">        Frequency value, in Hz, of the knee occurs.</span>
-
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    The knee frequency is an estimate of the frequency in spectrum at which the spectrum</span>
-<span class="sd">    moves from the plateau region to the exponential decay.</span>
-
-<span class="sd">    This approach for estimating the knee frequency comes from [1]_ (see [2]_ for code).</span>
-
-<span class="sd">    Note that this provides an estimate of the knee frequency, but is not, in the general case,</span>
-<span class="sd">    a precisely defined value. In particular, this conversion is based on the case of a Lorentzian</span>
-<span class="sd">    with exponent = 2, and for other exponent values provides a non-exact approximation.</span>
-
-<span class="sd">    References</span>
-<span class="sd">    ----------</span>
-<span class="sd">    .. [1] Gao, R., van den Brink, R. L., Pfeffer, T., &amp; Voytek, B. (2020). Neuronal timescales</span>
-<span class="sd">           are functionally dynamic and shaped by cortical microarchitecture. Elife, 9, e61277.</span>
-<span class="sd">           https://doi.org/10.7554/eLife.61277</span>
-<span class="sd">    .. [2] https://github.com/rdgao/field-echos/blob/master/echo_utils.py#L64</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">return</span> <span class="n">knee</span> <span class="o">**</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">/</span> <span class="n">exponent</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">knee</span> <span class="o">**</span> <span class="p">(</span><span class="mf">1.</span><span class="o">/</span><span class="n">exponent</span><span class="p">)</span></div>
 
 
-<span class="k">def</span> <span class="nf">compute_time_constant</span><span class="p">(</span><span class="n">knee_freq</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the characteristic time constant from the estimated knee frequency.</span>
+<span class="k">def</span> <span class="nf">compute_time_constant</span><span class="p">(</span><span class="n">knee</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the characteristic time constant based on the knee value.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    knee_freq : float</span>
-<span class="sd">        Estimated knee frequency.</span>
+<span class="sd">    knee : float</span>
+<span class="sd">        Knee parameter value.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    float</span>
-<span class="sd">        Calculated time constant value, tau, given the knee frequency.</span>
-
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    This approach for estimating the time constant comes from [1]_ (see [2]_ for code).</span>
-
-<span class="sd">    References</span>
-<span class="sd">    ----------</span>
-<span class="sd">    .. [1] Gao, R., van den Brink, R. L., Pfeffer, T., &amp; Voytek, B. (2020). Neuronal timescales</span>
-<span class="sd">           are functionally dynamic and shaped by cortical microarchitecture. Elife, 9, e61277.</span>
-<span class="sd">           https://doi.org/10.7554/eLife.61277</span>
-<span class="sd">    .. [2] https://github.com/rdgao/field-echos/blob/master/echo_utils.py#L65</span>
+<span class="sd">        Calculated time constant value, tau, given the knee parameter.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">return</span> <span class="mf">1.</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">knee_freq</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mf">1.</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">knee</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">compute_fwhm</span><span class="p">(</span><span class="n">std</span><span class="p">):</span>
@@ -230,8 +198,8 @@
       
     </p>
     <p>
-        &copy; Copyright 2018-2023, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
+        &copy; Copyright 2018-2025, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.1.2.<br/>
     </p>
   </div>
 </footer>

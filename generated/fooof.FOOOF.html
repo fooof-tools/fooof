@@ -3,24 +3,21 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>fooof.FOOOF &#8212; fooof 1.1.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
+    <title>fooof.FOOOF &#8212; fooof 1.1.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css?v=284a2d1d" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=af026a1d"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=a56c686a"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
 
@@ -58,7 +55,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.1</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -123,7 +120,7 @@
 <p>Passing in logged frequencies and/or power spectra is not detected,
 and will silently produce incorrect results.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>peak_width_limits</strong><span class="classifier">tuple of (float, float), optional, default: (0.5, 12.0)</span></dt><dd><p>Limits on possible peak width, in Hz, as (lower_bound, upper_bound).</p>
 </dd>
@@ -158,7 +155,7 @@ the PW of the peak is the height of the gaussian over and above the aperiodic co
 and the BW of the peak, is 2*std of the gaussian (as ‘two sided’ bandwidth).</p></li>
 </ul>
 <dl class="field-list simple">
-<dt class="field-odd">Attributes</dt>
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>freqs</strong><span class="classifier">1d array</span></dt><dd><p>Frequency values for the power spectrum.</p>
 </dd>
@@ -199,10 +196,6 @@ Each row is a gaussian, as [mean, height, standard deviation].</p>
 
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOF.__init__" title="fooof.FOOOF.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([peak_width_limits, max_n_peaks, ...])</p></td>
 <td><p>Initialize object with desired settings.</p></td>
@@ -289,10 +282,6 @@ Each row is a gaussian, as [mean, height, standard deviation].</p>
 </table>
 <p class="rubric">Attributes</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#fooof.FOOOF.has_data" title="fooof.FOOOF.has_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_data</span></code></a></p></td>
 <td><p>Indicator for if the object contains data.</p></td>
@@ -310,7 +299,7 @@ Each row is a gaussian, as [mean, height, standard deviation].</p>
 <span class="sig-name descname"><span class="pre">add_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freqs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_spectrum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clear_results</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.add_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOF.add_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add data (frequencies, and power spectrum values) to the current object.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>freqs</strong><span class="classifier">1d array</span></dt><dd><p>Frequency values for the power spectrum, in linear space.</p>
 </dd>
@@ -335,7 +324,7 @@ they will be cleared by this method call.</p>
 <span class="sig-name descname"><span class="pre">add_meta_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fooof_meta_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.add_meta_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOF.add_meta_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add data information into object from a FOOOFMetaData object.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>fooof_meta_data</strong><span class="classifier">FOOOFMetaData</span></dt><dd><p>A meta data object containing meta data information.</p>
 </dd>
@@ -349,7 +338,7 @@ they will be cleared by this method call.</p>
 <span class="sig-name descname"><span class="pre">add_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fooof_result</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.add_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOF.add_results" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add results data into object from a FOOOFResults object.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>fooof_result</strong><span class="classifier">FOOOFResults</span></dt><dd><p>A data object containing the results from fitting a FOOOF model.</p>
 </dd>
@@ -363,7 +352,7 @@ they will be cleared by this method call.</p>
 <span class="sig-name descname"><span class="pre">add_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fooof_settings</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.add_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOF.add_settings" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add settings into object from a FOOOFSettings object.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>fooof_settings</strong><span class="classifier">FOOOFSettings</span></dt><dd><p>A data object containing the settings for a FOOOF model.</p>
 </dd>
@@ -383,7 +372,7 @@ they will be cleared by this method call.</p>
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freqs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_spectrum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOF.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the full power spectrum as a combination of periodic and aperiodic components.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>freqs</strong><span class="classifier">1d array, optional</span></dt><dd><p>Frequency values for the power spectrum, in linear space.</p>
 </dd>
@@ -393,7 +382,7 @@ they will be cleared by this method call.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>NoDataError</dt><dd><p>If no data is available to fit.</p>
 </dd>
@@ -411,7 +400,7 @@ they will be cleared by this method call.</p>
 <span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'full'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'log'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.get_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOF.get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a data component.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>component</strong><span class="classifier">{‘full’, ‘aperiodic’, ‘peak’}</span></dt><dd><dl class="simple">
 <dt>Which data component to return.</dt><dd><p>‘full’ - full power spectrum
@@ -428,7 +417,7 @@ they will be cleared by this method call.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>output</strong><span class="classifier">1d array</span></dt><dd><p>Specified data component, in specified spacing.</p>
 </dd>
@@ -448,7 +437,7 @@ With space set as ‘linear’, this combination holds in linear space.</p>
 <span class="sig-name descname"><span class="pre">get_meta_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.get_meta_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOF.get_meta_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return data information from the current object.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt>FOOOFMetaData</dt><dd><p>Object containing meta data from the current object.</p>
 </dd>
@@ -462,7 +451,7 @@ With space set as ‘linear’, this combination holds in linear space.</p>
 <span class="sig-name descname"><span class="pre">get_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'full'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'log'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.get_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOF.get_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a model component.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>component</strong><span class="classifier">{‘full’, ‘aperiodic’, ‘peak’}</span></dt><dd><dl class="simple">
 <dt>Which model component to return.</dt><dd><p>‘full’ - full model
@@ -479,7 +468,7 @@ With space set as ‘linear’, this combination holds in linear space.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>output</strong><span class="classifier">1d array</span></dt><dd><p>Specified model component, in specified spacing.</p>
 </dd>
@@ -499,7 +488,7 @@ With space set as ‘linear’, this combination holds in linear space.</p>
 <span class="sig-name descname"><span class="pre">get_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.get_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOF.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return model fit parameters for specified feature(s).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>name</strong><span class="classifier">{‘aperiodic_params’, ‘peak_params’, ‘gaussian_params’, ‘error’, ‘r_squared’}</span></dt><dd><p>Name of the data field to extract.</p>
 </dd>
@@ -508,13 +497,13 @@ Only used for name of {‘aperiodic_params’, ‘peak_params’, ‘gaussian_pa
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>out</strong><span class="classifier">float or 1d array</span></dt><dd><p>Requested data.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt>NoModelError</dt><dd><p>If there are no model fit parameters available to return.</p>
 </dd>
@@ -530,7 +519,7 @@ Only used for name of {‘aperiodic_params’, ‘peak_params’, ‘gaussian_pa
 <span class="sig-name descname"><span class="pre">get_results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.get_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOF.get_results" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return model fit parameters and goodness of fit metrics.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt>FOOOFResults</dt><dd><p>Object containing the model fit results from the current object.</p>
 </dd>
@@ -544,7 +533,7 @@ Only used for name of {‘aperiodic_params’, ‘peak_params’, ‘gaussian_pa
 <span class="sig-name descname"><span class="pre">get_run_modes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.get_run_modes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOF.get_run_modes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return run modes of the current object.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt>FOOOFRunModes</dt><dd><p>Object containing the run modes from the current object.</p>
 </dd>
@@ -558,7 +547,7 @@ Only used for name of {‘aperiodic_params’, ‘peak_params’, ‘gaussian_pa
 <span class="sig-name descname"><span class="pre">get_settings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.get_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOF.get_settings" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return user defined settings of the current object.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt>FOOOFSettings</dt><dd><p>Object containing the settings from the current object.</p>
 </dd>
@@ -590,7 +579,7 @@ Only used for name of {‘aperiodic_params’, ‘peak_params’, ‘gaussian_pa
 <span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regenerate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOF.load" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load in a FOOOF formatted JSON file to the current object.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>file_name</strong><span class="classifier">str or FileObject</span></dt><dd><p>File to load data from.</p>
 </dd>
@@ -614,7 +603,7 @@ Only used for name of {‘aperiodic_params’, ‘peak_params’, ‘gaussian_pa
 <span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plot_peaks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_aperiodic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freqs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_spectrum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plt_log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_legend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aperiodic_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peak_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">plot_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOF.plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot the power spectrum and model fit results from a FOOOF object.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>plot_peaks</strong><span class="classifier">None or {‘shade’, ‘dot’, ‘outline’, ‘line’}, optional</span></dt><dd><p>What kind of approach to take to plot peaks. If None, peaks are not specifically plotted.
 Can also be a combination of approaches, separated by ‘-’, for example: ‘shade-line’.</p>
@@ -643,7 +632,7 @@ If provided, this overrides the values in the model object.</p>
 </dd>
 <dt><strong>data_kwargs, model_kwargs, aperiodic_kwargs, peak_kwargs</strong><span class="classifier">None or dict, optional</span></dt><dd><p>Keyword arguments to pass into the plot call for each plot element.</p>
 </dd>
-<dt><strong>**plot_kwargs</strong></dt><dd><p>Additional plot related keyword arguments, with styling options managed by <code class="docutils literal notranslate"><span class="pre">style_plot</span></code>.</p>
+<dt><strong>**plot_kwargs</strong></dt><dd><p>Keyword arguments to pass into the <code class="docutils literal notranslate"><span class="pre">style_plot</span></code>.</p>
 </dd>
 </dl>
 </dd>
@@ -658,7 +647,7 @@ the y-axis (power) is plotted in log spacing by default.</p>
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">print_report_issue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">concise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.print_report_issue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOF.print_report_issue" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prints instructions on how to report bugs and/or problematic fits.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>concise</strong><span class="classifier">bool, optional, default: False</span></dt><dd><p>Whether to print the report in a concise mode, or not.</p>
 </dd>
@@ -672,7 +661,7 @@ the y-axis (power) is plotted in log spacing by default.</p>
 <span class="sig-name descname"><span class="pre">print_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">concise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.print_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOF.print_results" title="Permalink to this definition">¶</a></dt>
 <dd><p>Print out model fitting results.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>concise</strong><span class="classifier">bool, optional, default: False</span></dt><dd><p>Whether to print the report in a concise mode, or not.</p>
 </dd>
@@ -686,7 +675,7 @@ the y-axis (power) is plotted in log spacing by default.</p>
 <span class="sig-name descname"><span class="pre">print_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.print_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOF.print_settings" title="Permalink to this definition">¶</a></dt>
 <dd><p>Print out the current settings.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>description</strong><span class="classifier">bool, optional, default: False</span></dt><dd><p>Whether to print out a description with current settings.</p>
 </dd>
@@ -702,7 +691,7 @@ the y-axis (power) is plotted in log spacing by default.</p>
 <span class="sig-name descname"><span class="pre">report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freqs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_spectrum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plt_log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_full_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">plot_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.report"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOF.report" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run model fit, and display a report, which includes a plot, and printed results.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>freqs</strong><span class="classifier">1d array, optional</span></dt><dd><p>Frequency values for the power spectrum.</p>
 </dd>
@@ -717,7 +706,7 @@ If not provided, fits across the entire given range.</p>
 Only relevant / effective if <cite>freqs</cite> and <cite>power_spectrum</cite> passed in in this call.</p>
 </dd>
 <dt><strong>**plot_kwargs</strong></dt><dd><p>Keyword arguments to pass into the plot method.
-Plot options with a name conflict be passed by pre-pending <cite>plot_</cite>.
+Plot options with a name conflict be passed by pre-pending ‘<a href="#id1"><span class="problematic" id="id2">plot_</span></a>’.
 e.g. <cite>freqs</cite>, <cite>power_spectrum</cite> and <cite>freq_range</cite>.</p>
 </dd>
 </dl>
@@ -732,7 +721,7 @@ e.g. <cite>freqs</cite>, <cite>power_spectrum</cite> and <cite>freq_range</cite>
 <span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">append</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_results</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_settings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOF.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save out data, results and/or settings from a FOOOF object into a JSON file.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>file_name</strong><span class="classifier">str or FileObject</span></dt><dd><p>File to save data to.</p>
 </dd>
@@ -749,7 +738,7 @@ This option is only valid (and only used) if ‘file_name’ is a str.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>ValueError</dt><dd><p>If the save file is not understood.</p>
 </dd>
@@ -763,7 +752,7 @@ This option is only valid (and only used) if ‘file_name’ is a str.</p>
 <span class="sig-name descname"><span class="pre">save_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plt_log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_settings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">plot_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.save_report"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOF.save_report" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate and save out a PDF report for a power spectrum model fit.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>file_name</strong><span class="classifier">str</span></dt><dd><p>Name to give the saved out file.</p>
 </dd>
@@ -785,7 +774,7 @@ This option is only valid (and only used) if ‘file_name’ is a str.</p>
 <span class="sig-name descname"><span class="pre">set_check_data_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">check_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.set_check_data_mode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOF.set_check_data_mode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set check data mode, which controls if an error is raised if NaN or Inf data are added.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>check_data</strong><span class="classifier">bool</span></dt><dd><p>Whether to run in check data mode.</p>
 </dd>
@@ -799,7 +788,7 @@ This option is only valid (and only used) if ‘file_name’ is a str.</p>
 <span class="sig-name descname"><span class="pre">set_check_modes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">check_freqs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.set_check_modes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOF.set_check_modes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set check modes, which controls if an error is raised based on check on the inputs.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>check_freqs</strong><span class="classifier">bool, optional</span></dt><dd><p>Whether to run in check freqs mode, which checks the frequency data.</p>
 </dd>
@@ -815,7 +804,7 @@ This option is only valid (and only used) if ‘file_name’ is a str.</p>
 <span class="sig-name descname"><span class="pre">set_debug_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">debug</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.set_debug_mode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOF.set_debug_mode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set debug mode, which controls if an error is raised if model fitting is unsuccessful.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>debug</strong><span class="classifier">bool</span></dt><dd><p>Whether to run in debug mode.</p>
 </dd>
@@ -829,7 +818,7 @@ This option is only valid (and only used) if ‘file_name’ is a str.</p>
 <span class="sig-name descname"><span class="pre">set_run_modes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">debug</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_freqs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.set_run_modes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOF.set_run_modes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Simultaneously set all run modes.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>debug</strong><span class="classifier">bool</span></dt><dd><p>Whether to run in debug mode.</p>
 </dd>
@@ -847,7 +836,7 @@ This option is only valid (and only used) if ‘file_name’ is a str.</p>
 <span class="sig-name descname"><span class="pre">to_df</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">peak_org</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fooof/objs/fit.html#FOOOF.to_df"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fooof.FOOOF.to_df" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert and extract the model results as a pandas object.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>peak_org</strong><span class="classifier">int or Bands</span></dt><dd><p>How to organize peaks.
 If int, extracts the first n peaks.
@@ -855,7 +844,7 @@ If Bands, extracts peaks based on band definitions.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>pd.Series</dt><dd><p>Model results organized into a pandas object.</p>
 </dd>
@@ -955,8 +944,8 @@ If Bands, extracts peaks based on band definitions.</p>
       
     </p>
     <p>
-        &copy; Copyright 2018-2023, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
+        &copy; Copyright 2018-2025, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.1.2.<br/>
     </p>
   </div>
 </footer>

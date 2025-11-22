@@ -4,22 +4,19 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>fooof.objs.fit &#8212; fooof 1.1.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/bootstrap-sphinx.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css" />
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-    <script src="../../../_static/jquery.js"></script>
-    <script src="../../../_static/underscore.js"></script>
-    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/sphinx_highlight.js"></script>
-    <script src="../../../_static/clipboard.min.js"></script>
-    <script src="../../../_static/copybutton.js"></script>
+    <title>fooof.objs.fit &#8212; fooof 1.1.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/bootstrap-sphinx.css?v=284a2d1d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=af026a1d"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=a56c686a"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
 
@@ -57,7 +54,7 @@
         </button>
         <a class="navbar-brand" href="../../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.1</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -186,7 +183,6 @@
 <span class="kn">from</span> <span class="nn">fooof.core.modutils</span> <span class="kn">import</span> <span class="n">copy_doc_func_to_method</span>
 <span class="kn">from</span> <span class="nn">fooof.core.utils</span> <span class="kn">import</span> <span class="n">group_three</span><span class="p">,</span> <span class="n">check_array_dim</span>
 <span class="kn">from</span> <span class="nn">fooof.core.funcs</span> <span class="kn">import</span> <span class="n">gaussian_function</span><span class="p">,</span> <span class="n">get_ap_func</span><span class="p">,</span> <span class="n">infer_ap_func</span>
-<span class="kn">from</span> <span class="nn">fooof.core.jacobians</span> <span class="kn">import</span> <span class="n">jacobian_gauss</span>
 <span class="kn">from</span> <span class="nn">fooof.core.errors</span> <span class="kn">import</span> <span class="p">(</span><span class="n">FitError</span><span class="p">,</span> <span class="n">NoModelError</span><span class="p">,</span> <span class="n">DataError</span><span class="p">,</span>
                                <span class="n">NoDataError</span><span class="p">,</span> <span class="n">InconsistentDataError</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">fooof.core.strings</span> <span class="kn">import</span> <span class="p">(</span><span class="n">gen_settings_str</span><span class="p">,</span> <span class="n">gen_results_fm_str</span><span class="p">,</span>
@@ -308,16 +304,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_gauss_overlap_thresh</span> <span class="o">=</span> <span class="mf">0.75</span>
         <span class="c1"># Parameter bounds for center frequency when fitting gaussians, in terms of +/- std dev</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cf_bound</span> <span class="o">=</span> <span class="mf">1.5</span>
+        <span class="c1"># The maximum number of calls to the curve fitting function</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_maxfev</span> <span class="o">=</span> <span class="mi">5000</span>
         <span class="c1"># The error metric to calculate, post model fitting. See `_calc_error` for options</span>
         <span class="c1">#   Note: this is for checking error post fitting, not an objective function for fitting</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_error_metric</span> <span class="o">=</span> <span class="s1">&#39;MAE&#39;</span>
-
-        <span class="c1">## PRIVATE CURVE_FIT SETTINGS</span>
-        <span class="c1"># The maximum number of calls to the curve fitting function</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_maxfev</span> <span class="o">=</span> <span class="mi">5000</span>
-        <span class="c1"># The tolerance setting for curve fitting (see scipy.curve_fit - ftol / xtol / gtol)</span>
-        <span class="c1">#   Here reduce tolerance to speed fitting. Set value to 1e-8 to match curve_fit default</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_tol</span> <span class="o">=</span> <span class="mf">0.00001</span>
 
         <span class="c1">## RUN MODES</span>
         <span class="c1"># Set default debug mode - controls if an error is raised if model fitting is unsuccessful</span>
@@ -522,7 +513,7 @@
 <span class="sd">            Only relevant / effective if `freqs` and `power_spectrum` passed in in this call.</span>
 <span class="sd">        **plot_kwargs</span>
 <span class="sd">            Keyword arguments to pass into the plot method.</span>
-<span class="sd">            Plot options with a name conflict be passed by pre-pending `plot_`.</span>
+<span class="sd">            Plot options with a name conflict be passed by pre-pending &#39;plot_&#39;.</span>
 <span class="sd">            e.g. `freqs`, `power_spectrum` and `freq_range`.</span>
 
 <span class="sd">        Notes</span>
@@ -1067,9 +1058,7 @@
                 <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
                 <span class="n">aperiodic_params</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">get_ap_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aperiodic_mode</span><span class="p">),</span>
                                                 <span class="n">freqs</span><span class="p">,</span> <span class="n">power_spectrum</span><span class="p">,</span> <span class="n">p0</span><span class="o">=</span><span class="n">guess</span><span class="p">,</span>
-                                                <span class="n">maxfev</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_maxfev</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="n">ap_bounds</span><span class="p">,</span>
-                                                <span class="n">ftol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_tol</span><span class="p">,</span> <span class="n">xtol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_tol</span><span class="p">,</span> <span class="n">gtol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_tol</span><span class="p">,</span>
-                                                <span class="n">check_finite</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                                                <span class="n">maxfev</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_maxfev</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="n">ap_bounds</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">excp</span><span class="p">:</span>
             <span class="n">error_msg</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Model fitting failed due to not finding parameters in &quot;</span>
                          <span class="s2">&quot;the simple aperiodic component fit.&quot;</span><span class="p">)</span>
@@ -1126,9 +1115,7 @@
                 <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
                 <span class="n">aperiodic_params</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">get_ap_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aperiodic_mode</span><span class="p">),</span>
                                                 <span class="n">freqs_ignore</span><span class="p">,</span> <span class="n">spectrum_ignore</span><span class="p">,</span> <span class="n">p0</span><span class="o">=</span><span class="n">popt</span><span class="p">,</span>
-                                                <span class="n">maxfev</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_maxfev</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="n">ap_bounds</span><span class="p">,</span>
-                                                <span class="n">ftol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_tol</span><span class="p">,</span> <span class="n">xtol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_tol</span><span class="p">,</span> <span class="n">gtol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_tol</span><span class="p">,</span>
-                                                <span class="n">check_finite</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                                                <span class="n">maxfev</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_maxfev</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="n">ap_bounds</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">excp</span><span class="p">:</span>
             <span class="n">error_msg</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Model fitting failed due to not finding &quot;</span>
                          <span class="s2">&quot;parameters in the robust aperiodic fit.&quot;</span><span class="p">)</span>
@@ -1274,9 +1261,7 @@
         <span class="c1"># Fit the peaks</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">gaussian_params</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">gaussian_function</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_spectrum_flat</span><span class="p">,</span>
-                                           <span class="n">p0</span><span class="o">=</span><span class="n">guess</span><span class="p">,</span> <span class="n">maxfev</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_maxfev</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="n">gaus_param_bounds</span><span class="p">,</span>
-                                           <span class="n">ftol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_tol</span><span class="p">,</span> <span class="n">xtol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_tol</span><span class="p">,</span> <span class="n">gtol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_tol</span><span class="p">,</span>
-                                           <span class="n">check_finite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">jac</span><span class="o">=</span><span class="n">jacobian_gauss</span><span class="p">)</span>
+                                           <span class="n">p0</span><span class="o">=</span><span class="n">guess</span><span class="p">,</span> <span class="n">maxfev</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_maxfev</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="n">gaus_param_bounds</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">excp</span><span class="p">:</span>
             <span class="n">error_msg</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Model fitting failed due to not finding &quot;</span>
                          <span class="s2">&quot;parameters in the peak component fit.&quot;</span><span class="p">)</span>
@@ -1635,8 +1620,8 @@
       
     </p>
     <p>
-        &copy; Copyright 2018-2023, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
+        &copy; Copyright 2018-2025, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.1.2.<br/>
     </p>
   </div>
 </footer>

@@ -3,24 +3,21 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Frequency-by-Frequency Errors &#8212; fooof 1.1.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
-    <script src="../../_static/clipboard.min.js"></script>
-    <script src="../../_static/copybutton.js"></script>
+    <title>Frequency-by-Frequency Errors &#8212; fooof 1.1.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css?v=284a2d1d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=af026a1d"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=a56c686a"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 
@@ -58,7 +55,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.1</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -116,12 +113,12 @@
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
 <p><a class="reference internal" href="#sphx-glr-download-auto-examples-models-plot-freq-by-freq-error-py"><span class="std std-ref">Go to the end</span></a>
-to download the full example code</p>
+to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="frequency-by-frequency-errors">
 <span id="sphx-glr-auto-examples-models-plot-freq-by-freq-error-py"></span><h1>Frequency-by-Frequency Errors<a class="headerlink" href="#frequency-by-frequency-errors" title="Permalink to this heading">¶</a></h1>
 <p>Check the error of power spectrum models across frequencies.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import numpy for some utility functions</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import numpy for some utility functions</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="c1"># Import the FOOOF and FOOOFGroup objects</span>
@@ -152,29 +149,29 @@ using simulated data.</p>
 <a class="reference internal" href="../../generated/fooof.analysis.compute_pointwise_error_fm.html#fooof.analysis.compute_pointwise_error_fm" title="fooof.analysis.compute_pointwise_error_fm"><code class="xref py py-func docutils literal notranslate"><span class="pre">compute_pointwise_error_fm()</span></code></a>.
 To start with, we will indicate to this function to plot the frequency-by-frequency
 error of our model fit.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate an example power spectrum</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate an example power spectrum</span>
 <span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">])</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOF object to fit with</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOF object to fit with</span>
 <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="c1"># Parameterize our power spectrum</span>
 <a href="../../generated/fooof.FOOOF.html#fooof.FOOOF.fit" title="fooof.FOOOF.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the error per frequency of the model</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the error per frequency of the model</span>
 <a href="../../generated/fooof.analysis.compute_pointwise_error_fm.html#fooof.analysis.compute_pointwise_error_fm" title="fooof.analysis.compute_pointwise_error_fm" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">compute_pointwise_error_fm</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="p">,</span> <span class="n">plot_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <img src="../../_images/sphx_glr_plot_freq_by_freq_error_001.png" srcset="../../_images/sphx_glr_plot_freq_by_freq_error_001.png" alt="plot freq by freq error" class = "sphx-glr-single-img"/><p>In the above, we can see that error is fairly even, and overall low.
 This suggests no particular problem with the fit.</p>
 <p>You can also calculate and return the frequency-by-frequency errors of a model fit.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># We can also use this function to return the frequency-by-frequency error</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># We can also use this function to return the frequency-by-frequency error</span>
 <span class="n">errs_fm</span> <span class="o">=</span> <a href="../../generated/fooof.analysis.compute_pointwise_error_fm.html#fooof.analysis.compute_pointwise_error_fm" title="fooof.analysis.compute_pointwise_error_fm" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">compute_pointwise_error_fm</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="p">,</span> <span class="n">plot_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Note that the average of this error is the same as the global error stored</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Note that the average of this error is the same as the global error stored</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Average freq-by-freq error:</span><span class="se">\t</span><span class="s1"> </span><span class="si">{:1.3f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">errs_fm</span><span class="p">)))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;FOOOF model fit error: </span><span class="se">\t\t</span><span class="s1"> </span><span class="si">{:1.3f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><a href="../../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a><span class="o">.</span><span class="n">error_</span><span class="p">))</span>
 </pre></div>
@@ -189,30 +186,30 @@ FOOOF model fit error:           0.004
 <p>Next, lets move on to calculating frequency-by-frequency error across groups of fits,
 again using some simulated data.</p>
 <p>To analyze error from a FOOOFGroup object, use <a class="reference internal" href="../../generated/fooof.analysis.compute_pointwise_error_fg.html#fooof.analysis.compute_pointwise_error_fg" title="fooof.analysis.compute_pointwise_error_fg"><code class="xref py py-func docutils literal notranslate"><span class="pre">compute_pointwise_error_fg()</span></code></a>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate a group of power spectra</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate a group of power spectra</span>
 <span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="fooof.sim.gen_group_power_spectra" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_group_power_spectra</span></a><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">nlvs</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOFGroup object to fit</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOFGroup object to fit</span>
 <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a> <span class="o">=</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOFGroup</span></a><span class="p">(</span><span class="n">min_peak_height</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Parameterize our group of power spectra</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Parameterize our group of power spectra</span>
 <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.fit" title="fooof.FOOOFGroup.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Just as before, we can plot and/or return the error.</p>
 <p>When plotting the error, the plot line is the mean error per frequency, across fits,
 and the shading indicates the standard deviation of the error, also per frequency.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the group frequency-by-frequency error</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the group frequency-by-frequency error</span>
 <a href="../../generated/fooof.analysis.compute_pointwise_error_fg.html#fooof.analysis.compute_pointwise_error_fg" title="fooof.analysis.compute_pointwise_error_fg" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">compute_pointwise_error_fg</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="p">,</span> <span class="n">plot_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_plot_freq_by_freq_error_002.png" srcset="../../_images/sphx_glr_plot_freq_by_freq_error_002.png" alt="plot freq by freq error" class = "sphx-glr-single-img"/><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Return the errors - this returns a 2D matrix of errors for all fits</span>
+<img src="../../_images/sphx_glr_plot_freq_by_freq_error_002.png" srcset="../../_images/sphx_glr_plot_freq_by_freq_error_002.png" alt="plot freq by freq error" class = "sphx-glr-single-img"/><div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Return the errors - this returns a 2D matrix of errors for all fits</span>
 <span class="n">errs_fg</span> <span class="o">=</span> <a href="../../generated/fooof.analysis.compute_pointwise_error_fg.html#fooof.analysis.compute_pointwise_error_fg" title="fooof.analysis.compute_pointwise_error_fg" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">compute_pointwise_error_fg</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># We can check which frequency has highest error, or standard deviation of error</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># We can check which frequency has highest error, or standard deviation of error</span>
 <span class="n">f_max_err</span> <span class="o">=</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">errs_fg</span><span class="p">,</span> <span class="mi">0</span><span class="p">))]</span>
 <span class="n">f_max_std</span> <span class="o">=</span> <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="o">.</span><span class="n">freqs</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">errs_fg</span><span class="p">,</span> <span class="mi">0</span><span class="p">))]</span>
 
@@ -221,8 +218,8 @@ and the shading indicates the standard deviation of the error, also per frequenc
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Frequency with highest standard deviation of error: </span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">f_max_std</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Frequency with highest mean error:                       37.0
-Frequency with highest standard deviation of error:      13.0
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Frequency with highest mean error:                       7.5
+Frequency with highest standard deviation of error:      7.5
 </pre></div>
 </div>
 <p>In the plot and checks above, we again see that the error is on average low, and
@@ -239,7 +236,7 @@ mode, and then analyze the frequency-by-frequency errors, as before. In this sce
 we are fitting data with the wrong model form, and so we expect there to be some issues
 with the fit, and we can use the frequency-by-frequency error to investigate if and how
 this is the case.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate a group of power spectra, with a knee</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate a group of power spectra, with a knee</span>
 <span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_group_power_spectra.html#fooof.sim.gen_group_power_spectra" title="fooof.sim.gen_group_power_spectra" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_group_power_spectra</span></a><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
                                         <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">nlvs</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
 
@@ -247,7 +244,7 @@ this is the case.</p>
 <a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup.fit" title="fooof.FOOOFGroup.fit" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fg</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the group frequency-by-frequency error</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the group frequency-by-frequency error</span>
 <a href="../../generated/fooof.analysis.compute_pointwise_error_fg.html#fooof.analysis.compute_pointwise_error_fg" title="fooof.analysis.compute_pointwise_error_fg" class="sphx-glr-backref-module-fooof-analysis sphx-glr-backref-type-py-function"><span class="n">compute_pointwise_error_fg</span></a><span class="p">(</span><a href="../../generated/fooof.FOOOFGroup.html#fooof.FOOOFGroup" title="fooof.FOOOFGroup" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fg</span></a><span class="p">,</span> <span class="n">plot_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -258,13 +255,13 @@ between the data properties we simulated and the aperiodic mode used to fit the 
 <p>If you see high errors, especially bunched up around particular frequencies,
 this is a sign that something might be going wrong, and it might be worth
 looking more into the how the model fits are going.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.584 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.073 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-models-plot-freq-by-freq-error-py">
-<div class="sphx-glr-download sphx-glr-download-python docutils container">
-<p><a class="reference download internal" download="" href="../../_downloads/6e8b93e073824005a7259de349123aeb/plot_freq_by_freq_error.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_freq_by_freq_error.py</span></code></a></p>
-</div>
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/951d01cde136b55267103faa4582e9b2/plot_freq_by_freq_error.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_freq_by_freq_error.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/6e8b93e073824005a7259de349123aeb/plot_freq_by_freq_error.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_freq_by_freq_error.py</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -284,8 +281,8 @@ looking more into the how the model fits are going.</p>
       
     </p>
     <p>
-        &copy; Copyright 2018-2023, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
+        &copy; Copyright 2018-2025, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.1.2.<br/>
     </p>
   </div>
 </footer>

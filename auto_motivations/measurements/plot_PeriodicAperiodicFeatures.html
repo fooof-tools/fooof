@@ -3,24 +3,21 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Conflating Periodic &amp; Aperiodic Changes &#8212; fooof 1.1.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
-    <script src="../../_static/clipboard.min.js"></script>
-    <script src="../../_static/copybutton.js"></script>
+    <title>Conflating Periodic &amp; Aperiodic Changes &#8212; fooof 1.1.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css?v=284a2d1d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=af026a1d"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=a56c686a"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 
@@ -58,7 +55,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.1</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -116,7 +113,7 @@
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
 <p><a class="reference internal" href="#sphx-glr-download-auto-motivations-measurements-plot-periodicaperiodicfeatures-py"><span class="std std-ref">Go to the end</span></a>
-to download the full example code</p>
+to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="conflating-periodic-aperiodic-changes">
 <span id="sphx-glr-auto-motivations-measurements-plot-periodicaperiodicfeatures-py"></span><h1>Conflating Periodic &amp; Aperiodic Changes<a class="headerlink" href="#conflating-periodic-aperiodic-changes" title="Permalink to this heading">¶</a></h1>
@@ -152,7 +149,7 @@ have multiple parameters, each of which could vary.</p>
 </ul>
 </li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import numpy &amp; matplotlib</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import numpy &amp; matplotlib</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
@@ -163,7 +160,7 @@ have multiple parameters, each of which could vary.</p>
 <span class="kn">from</span> <span class="nn">fooof.plts.spectra</span> <span class="kn">import</span> <a href="../../generated/fooof.plts.spectra.plot_spectra_shading.html#fooof.plts.spectra.plot_spectra_shading" title="fooof.plts.spectra.plot_spectra_shading" class="sphx-glr-backref-module-fooof-plts-spectra sphx-glr-backref-type-py-function"><span class="n">plot_spectra_shading</span></a>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Settings for plotting</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Settings for plotting</span>
 <span class="n">log_freqs</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">log_powers</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">shade_color</span> <span class="o">=</span> <span class="s1">&#39;#0365C0&#39;</span>
@@ -176,7 +173,7 @@ investigating differences in alpha activity.</p>
 <p>We will start by simulating a baseline power spectrum, with an alpha peak, and
 concurrent aperiodic activity. We will also simulate several altered versions of
 this spectrum, each which a change in a specific parameter of the power spectrum.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define our bands of interest</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define our bands of interest</span>
 <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a> <span class="o">=</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">Bands</span></a><span class="p">({</span><span class="s1">&#39;alpha&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">12</span><span class="p">)})</span>
 
 <span class="c1"># Simulation Settings</span>
@@ -195,18 +192,18 @@ this spectrum, each which a change in a specific parameter of the power spectrum
 <span class="n">exp_diff</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.87</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create baseline power spectrum, to compare to</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create baseline power spectrum, to compare to</span>
 <span class="n">freqs</span><span class="p">,</span> <span class="n">powers_base</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">ap_base</span><span class="p">,</span> <span class="n">pe_base</span><span class="p">,</span> <span class="n">nlv</span><span class="p">,</span> <span class="n">f_res</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create comparison power spectra, with differences in different parameters of the data</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create comparison power spectra, with differences in different parameters of the data</span>
 <span class="n">_</span><span class="p">,</span> <span class="n">powers_pw</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">ap_base</span><span class="p">,</span> <span class="n">pw_diff</span><span class="p">,</span> <span class="n">nlv</span><span class="p">,</span> <span class="n">f_res</span><span class="p">)</span>
 <span class="n">_</span><span class="p">,</span> <span class="n">powers_cf</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">ap_base</span><span class="p">,</span> <span class="n">cf_diff</span><span class="p">,</span> <span class="n">nlv</span><span class="p">,</span> <span class="n">f_res</span><span class="p">)</span>
 <span class="n">_</span><span class="p">,</span> <span class="n">powers_off</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">off_diff</span><span class="p">,</span> <span class="n">pe_base</span><span class="p">,</span> <span class="n">nlv</span><span class="p">,</span> <span class="n">f_res</span><span class="p">)</span>
 <span class="n">_</span><span class="p">,</span> <span class="n">powers_exp</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">exp_diff</span><span class="p">,</span> <span class="n">pe_base</span><span class="p">,</span> <span class="n">nlv</span><span class="p">,</span> <span class="n">f_res</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Collect the comparison power spectra together</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Collect the comparison power spectra together</span>
 <span class="n">all_powers</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;Alpha Power Change&#39;</span> <span class="p">:</span> <span class="n">powers_pw</span><span class="p">,</span>
     <span class="s1">&#39;Alpha Frequency Change&#39;</span> <span class="p">:</span> <span class="n">powers_cf</span><span class="p">,</span>
@@ -228,7 +225,7 @@ where each has a change in one parameter of the data.</p>
 <li><p>a change in the <strong>offset</strong> of the aperiodic component</p></li>
 <li><p>a change in the <strong>exponent</strong> of the aperiodic component</p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot and compare all of our power spectra</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot and compare all of our power spectra</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">all_powers</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
 
@@ -252,7 +249,7 @@ a band.</p>
 <p>Then, for each pair, consisting of the baseline power spectrum and an adapted version
 in which one parameter has been changed, we can measure the change in band specific
 activity relating to this change.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calc_avg_power</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">):</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calc_avg_power</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper function to calculate average power in a band.&quot;&quot;&quot;</span>
 
     <span class="n">_</span><span class="p">,</span> <span class="n">band_powers</span> <span class="o">=</span> <a href="../../generated/fooof.utils.trim_spectrum.html#fooof.utils.trim_spectrum" title="fooof.utils.trim_spectrum" class="sphx-glr-backref-module-fooof-utils sphx-glr-backref-type-py-function"><span class="n">trim_spectrum</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">,</span> <span class="n">freq_range</span><span class="p">)</span>
@@ -261,11 +258,11 @@ activity relating to this change.</p>
     <span class="k">return</span> <span class="n">avg_power</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the amount of alpha power in the baseline power spectrum</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the amount of alpha power in the baseline power spectrum</span>
 <span class="n">base_alpha</span> <span class="o">=</span> <span class="n">calc_avg_power</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers_base</span><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the different in alpha power for each of our comparison pairs</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the different in alpha power for each of our comparison pairs</span>
 <span class="k">for</span> <span class="n">title</span><span class="p">,</span> <span class="n">powers</span> <span class="ow">in</span> <span class="n">all_powers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:20s}</span><span class="se">\t</span><span class="s1"> </span><span class="si">{:1.4f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>\
         <span class="n">title</span><span class="p">,</span> <span class="n">calc_avg_power</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers</span><span class="p">,</span> <a href="../../generated/fooof.Bands.html#fooof.Bands" title="fooof.Bands" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">bands</span></a><span class="o">.</span><span class="n">alpha</span><span class="p">)</span> <span class="o">-</span> <span class="n">base_alpha</span><span class="p">))</span>
@@ -295,7 +292,7 @@ alpha power activity, in a scenario in which there actually is alpha activity.</
 analogy, any other band), in cases in which there is no band-specific power.</p>
 <p>To do so, we will simulate, plot and measure a new set of data, with the same set up
 as above, but without adding any alpha peaks to the spectra.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Redefine baseline with no alpha</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Redefine baseline with no alpha</span>
 <span class="n">pe_base_na</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">22</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>
 
 <span class="c1"># Redefine changes in for each parameter</span>
@@ -303,7 +300,7 @@ as above, but without adding any alpha peaks to the spectra.</p>
 <span class="n">exp_diff_na</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.31</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create baseline power spectrum, to compare to</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create baseline power spectrum, to compare to</span>
 <span class="n">freqs</span><span class="p">,</span> <span class="n">powers_noa_base</span> <span class="o">=</span> <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">ap_base</span><span class="p">,</span> <span class="n">pe_base_na</span><span class="p">,</span> <span class="n">nlv</span><span class="p">,</span> <span class="n">f_res</span><span class="p">)</span>
 
 <span class="c1"># Collect all powers together,</span>
@@ -313,7 +310,7 @@ as above, but without adding any alpha peaks to the spectra.</p>
                     <a href="../../generated/fooof.sim.gen_power_spectrum.html#fooof.sim.gen_power_spectrum" title="fooof.sim.gen_power_spectrum" class="sphx-glr-backref-module-fooof-sim sphx-glr-backref-type-py-function"><span class="n">gen_power_spectrum</span></a><span class="p">(</span><span class="n">f_range</span><span class="p">,</span> <span class="n">exp_diff_na</span><span class="p">,</span> <span class="n">pe_base_na</span><span class="p">,</span> <span class="n">nlv</span><span class="p">,</span> <span class="n">f_res</span><span class="p">)[</span><span class="mi">1</span><span class="p">]}</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot and compare spectra with no alpha</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot and compare spectra with no alpha</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">powers</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">all_powers_na</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
 
@@ -328,7 +325,7 @@ as above, but without adding any alpha peaks to the spectra.</p>
     <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_plot_PeriodicAperiodicFeatures_002.png" srcset="../../_images/sphx_glr_plot_PeriodicAperiodicFeatures_002.png" alt="Offset Change, Exponent Change" class = "sphx-glr-single-img"/><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate and compare the difference of &#39;alpha&#39; power</span>
+<img src="../../_images/sphx_glr_plot_PeriodicAperiodicFeatures_002.png" srcset="../../_images/sphx_glr_plot_PeriodicAperiodicFeatures_002.png" alt="Offset Change, Exponent Change" class = "sphx-glr-single-img"/><div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate and compare the difference of &#39;alpha&#39; power</span>
 <span class="n">base_noa_power</span> <span class="o">=</span> <span class="n">calc_avg_power</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">powers_noa_base</span><span class="p">,</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">12</span><span class="p">])</span>
 <span class="k">for</span> <span class="n">title</span><span class="p">,</span> <span class="n">powers</span> <span class="ow">in</span> <span class="n">all_powers_na</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:20s}</span><span class="se">\t</span><span class="s1"> </span><span class="si">{:1.4f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>\
@@ -352,13 +349,13 @@ a combination of them, could be contributing to the measured changes.</p>
 <p>As an alternative to analyzing narrow-band power, parameterizing power spectra offers
 an approach that can measure which parameters of the data are changing, and in what
 ways.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.825 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.962 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-motivations-measurements-plot-periodicaperiodicfeatures-py">
-<div class="sphx-glr-download sphx-glr-download-python docutils container">
-<p><a class="reference download internal" download="" href="../../_downloads/112729f849787b38e89f77cf269985c0/plot_PeriodicAperiodicFeatures.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_PeriodicAperiodicFeatures.py</span></code></a></p>
-</div>
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/e4ef6df4590ca63466dc3b85c671a8f6/plot_PeriodicAperiodicFeatures.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_PeriodicAperiodicFeatures.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/112729f849787b38e89f77cf269985c0/plot_PeriodicAperiodicFeatures.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_PeriodicAperiodicFeatures.py</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -378,8 +375,8 @@ ways.</p>
       
     </p>
     <p>
-        &copy; Copyright 2018-2023, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
+        &copy; Copyright 2018-2025, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.1.2.<br/>
     </p>
   </div>
 </footer>

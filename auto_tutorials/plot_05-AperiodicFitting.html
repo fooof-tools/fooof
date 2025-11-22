@@ -3,24 +3,21 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>05: Aperiodic Component Fitting &#8212; fooof 1.1.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
+    <title>05: Aperiodic Component Fitting &#8212; fooof 1.1.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css?v=284a2d1d" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=af026a1d"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=a56c686a"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -59,7 +56,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           fooof</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.1.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.1.1</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -117,12 +114,12 @@
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
 <p><a class="reference internal" href="#sphx-glr-download-auto-tutorials-plot-05-aperiodicfitting-py"><span class="std std-ref">Go to the end</span></a>
-to download the full example code</p>
+to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="aperiodic-component-fitting">
 <span id="sphx-glr-auto-tutorials-plot-05-aperiodicfitting-py"></span><h1>05: Aperiodic Component Fitting<a class="headerlink" href="#aperiodic-component-fitting" title="Permalink to this heading">¶</a></h1>
 <p>Choosing and using different modes for fitting the aperiodic component.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the FOOOF object</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the FOOOF object</span>
 <span class="kn">from</span> <span class="nn">fooof</span> <span class="kn">import</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a>
 
 <span class="c1"># Import a utility to download and load example data</span>
@@ -158,16 +155,16 @@ should be done using an extra parameter to capture this, using the ‘knee’ mo
 <h3>Fitting with an Aperiodic ‘Knee’<a class="headerlink" href="#fitting-with-an-aperiodic-knee" title="Permalink to this heading">¶</a></h3>
 <p>Let’s explore fitting power spectrum models across a broader frequency range,
 using some local field potential data.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load example data files needed for this example</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load example data files needed for this example</span>
 <span class="n">freqs</span> <span class="o">=</span> <span class="n">load_fooof_data</span><span class="p">(</span><span class="s1">&#39;freqs_lfp.npy&#39;</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
 <span class="n">spectrum</span> <span class="o">=</span> <span class="n">load_fooof_data</span><span class="p">(</span><span class="s1">&#39;spectrum_lfp.npy&#39;</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOF object, setting the aperiodic mode to use a &#39;knee&#39; fit</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize a FOOOF object, setting the aperiodic mode to use a &#39;knee&#39; fit</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">aperiodic_mode</span><span class="o">=</span><span class="s1">&#39;knee&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit a power spectrum model</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit a power spectrum model</span>
 <span class="c1">#  Note that this time we&#39;re specifying an optional parameter to plot in log-log</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.report" title="fooof.FOOOF.report" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">report</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">70</span><span class="p">],</span> <span class="n">plt_log</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
@@ -180,11 +177,11 @@ using some local field potential data.</p>
                                  Frequency Resolution is 1.00 Hz
 
                          Aperiodic Parameters (offset, knee, exponent):
-                                     6.5756, 87.1279, 2.0352
+                                     6.5759, 87.2235, 2.0354
 
                                        2 peaks were found:
                                 CF:   7.98, PW:  0.806, BW:  2.03
-                                CF:  16.32, PW:  0.233, BW:  2.30
+                                CF:  16.32, PW:  0.233, BW:  2.29
 
                                      Goodness of fit metrics:
                                     R^2 of model fit is 0.9925
@@ -216,7 +213,7 @@ knee &amp; exponent values should be considered together.</p>
 <p>In the example above, we jumped directly to fitting with a knee.</p>
 <p>Here we will explore what it looks like if we don’t use the appropriate mode for fitting
 the aperiodic component - fitting in ‘fixed’ mode when we should use ‘knee’</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create and fit a power spectrum model in fixed mode to the same data as above</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create and fit a power spectrum model in fixed mode to the same data as above</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fm</span></a> <span class="o">=</span> <a href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-class"><span class="n">FOOOF</span></a><span class="p">(</span><span class="n">peak_width_limits</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">aperiodic_mode</span><span class="o">=</span><span class="s1">&#39;fixed&#39;</span><span class="p">)</span>
 <a href="../generated/fooof.FOOOF.html#fooof.FOOOF.report" title="fooof.FOOOF.report" class="sphx-glr-backref-module-fooof sphx-glr-backref-type-py-method"><span class="n">fm</span><span class="o">.</span><span class="n">report</span></a><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">70</span><span class="p">],</span> <span class="n">plt_log</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
@@ -229,12 +226,12 @@ the aperiodic component - fitting in ‘fixed’ mode when we should use ‘knee
                                  Frequency Resolution is 1.00 Hz
 
                             Aperiodic Parameters (offset, exponent):
-                                          5.3474, 1.3359
+                                          5.3476, 1.3360
 
                                        3 peaks were found:
                                 CF:   8.01, PW:  1.020, BW:  2.41
                                 CF:  17.02, PW:  0.369, BW:  8.00
-                                CF:  31.02, PW:  0.273, BW:  8.00
+                                CF:  31.05, PW:  0.273, BW:  8.00
 
                                      Goodness of fit metrics:
                                     R^2 of model fit is 0.9847
@@ -293,13 +290,13 @@ aperiodic component process is relatively clear.</p></li>
 <p>We have now explored the <a class="reference internal" href="../generated/fooof.FOOOF.html#fooof.FOOOF" title="fooof.FOOOF"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOOOF</span></code></a> object, and different fitting
 approaches for the aperiodic component. Next up, we will be introducing how
 to scale the fitting to apply across multiple power spectra.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.442 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.450 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-tutorials-plot-05-aperiodicfitting-py">
-<div class="sphx-glr-download sphx-glr-download-python docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/10cda1893b9860bc237ad963e22b58ac/plot_05-AperiodicFitting.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_05-AperiodicFitting.py</span></code></a></p>
-</div>
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/f2e346deeb11403be8ed2a2138a98ecc/plot_05-AperiodicFitting.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_05-AperiodicFitting.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/10cda1893b9860bc237ad963e22b58ac/plot_05-AperiodicFitting.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_05-AperiodicFitting.py</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -318,8 +315,8 @@ to scale the fitting to apply across multiple power spectra.</p>
       
     </p>
     <p>
-        &copy; Copyright 2018-2023, VoytekLab.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
+        &copy; Copyright 2018-2025, VoytekLab.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.1.2.<br/>
     </p>
   </div>
 </footer>
