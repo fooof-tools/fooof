@@ -9,6 +9,7 @@ from specparam.sim.gen import gen_freqs
 from specparam.data import SpectrumMetaData, ModelChecks
 from specparam.utils.spectral import trim_spectrum
 from specparam.utils.checks import check_input_options
+from specparam.reports.strings import gen_data_str
 from specparam.modutils.errors import DataError, InconsistentDataError
 from specparam.modutils.docs import docs_get_section, replace_docstring_sections
 from specparam.plts.settings import PLT_COLORS
@@ -160,6 +161,18 @@ class Data():
             plt_kwargs, {'color' : PLT_COLORS['data'], 'linewidth' : 2.0})
         plot_spectra(self.freqs, self.power_spectrum, log_freqs=plt_log,
                      log_powers=False, **data_kwargs)
+
+
+    def print(self, concise):
+        """Print out a data summary.
+
+        Parameters
+        ----------
+        concise : bool, optional, default: False
+            Whether to print the report in a concise mode, or not.
+        """
+
+        print(gen_data_str(self, concise))
 
 
     def set_checks(self, check_freqs=None, check_data=None):

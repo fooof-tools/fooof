@@ -135,22 +135,22 @@ def gen_data_str(data, concise=False):
         Formatted string of data summary.
     """
 
-    # Get number of spectra, checking attributes for {Data3D, Data2DT, Data2D, Data}
-    if getattr(data, 'n_events', None):
-        n_spectra_str = '{} spectrograms with {} windows each'.format(data.n_events, data.n_time_windows)
-    elif getattr(data, 'n_time_windows', None):
-        n_spectra_str = '1 spectrogram with {} windows'.format(data.n_time_windows)
-    elif getattr(data, 'n_spectra', None):
-        n_spectra_str = '{} power spectra'.format(data.n_spectra)
-    else:
-        n_spectra_str = '1 power spectrum'
-
     if not data.has_data:
 
         no_data_str = "No data currently loaded in the object."
         str_lst = [DIVIDER,'', no_data_str, '', DIVIDER]
 
     else:
+
+        # Get number of spectra, checking attributes for {Data3D, Data2DT, Data2D, Data}
+        if getattr(data, 'n_events', None):
+            n_spectra_str = '{} spectrograms with {} windows each'.format(data.n_events, data.n_time_windows)
+        elif getattr(data, 'n_time_windows', None):
+            n_spectra_str = '1 spectrogram with {} windows'.format(data.n_time_windows)
+        elif getattr(data, 'n_spectra', None):
+            n_spectra_str = '{} power spectra'.format(data.n_spectra)
+        else:
+            n_spectra_str = '1 power spectrum'
 
         str_lst = [
 
