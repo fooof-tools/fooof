@@ -62,7 +62,7 @@ def test_time_fit():
 
 def test_time_print(tft):
 
-    tft.print_results()
+    tft.print('results')
 
 @plot_test
 def test_time_plot(tft, skip_if_no_mpl):

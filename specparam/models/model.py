@@ -225,19 +225,24 @@ class SpectralModel(BaseModel):
                       plot_full_range else plot_kwargs.pop('plot_power_spectrum', None),
                   freq_range=plot_kwargs.pop('plot_freq_range', None),
                   **plot_kwargs)
-        self.print_results(concise=False)
+        self.print('results')
 
 
-    def print_results(self, concise=False):
-        """Print out model fitting results.
+    def print(self, info='results', concise=False):
+        """Print out requested information.
 
         Parameters
         ----------
+        info : {'results', ...}
+            xx
         concise : bool, optional, default: False
             Whether to print the report in a concise mode, or not.
         """
 
-        print(gen_model_results_str(self, concise))
+        if info == 'results':
+            print(gen_model_results_str(self, concise))
+        else:
+            super().print(info, concise=concise)
 
 
     @copy_doc_func_to_method(plot_model)

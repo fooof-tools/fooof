@@ -78,7 +78,7 @@ def test_event_fit_par():
 
 def test_event_print(tfe):
 
-    tfe.print_results()
+    tfe.print('results')
 
 @plot_test
 def test_event_plot(tfe, skip_if_no_mpl):
