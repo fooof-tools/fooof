@@ -77,6 +77,17 @@ class Data():
         return bool(np.any(self.power_spectrum))
 
 
+    @property
+    def n_freqs(self):
+        """Indicator for the number of frequency values."""
+
+        n_freqs = None
+        if self.has_data:
+            n_freqs = len(self.freqs)
+
+        return n_freqs
+
+
     def add_data(self, freqs, power_spectrum, freq_range=None):
         """Add data (frequencies, and power spectrum values) to the current object.
 
@@ -330,6 +341,17 @@ class Data2D(Data):
         return bool(np.any(self.power_spectra))
 
 
+    @property
+    def n_spectra(self):
+        """Indicator for the number of power spectra."""
+
+        n_spectra = None
+        if self.has_data:
+            n_spectra = len(self.power_spectra)
+
+        return n_spectra
+
+
     def add_data(self, freqs, power_spectra, freq_range=None):
         """Add data (frequencies and power spectrum values) to the current object.
 
@@ -513,6 +535,17 @@ class Data3D(Data2DT):
         """How many events are included in the model object."""
 
         return len(self.spectrograms)
+
+
+    @property
+    def n_spectra(self):
+        """Redefine n_spectra marker to reflect the total number of spectra."""
+
+        n_spectra = None
+        if self.has_data:
+            n_spectra = self.n_events * self.n_time_windows
+
+        return n_spectra
 
 
     def add_data(self, freqs, spectrograms, freq_range=None):
