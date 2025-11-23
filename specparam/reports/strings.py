@@ -242,6 +242,35 @@ def gen_settings_str(algorithm, description=False, concise=False):
     return output
 
 
+def gen_bands_str(bands, concise=False):
+    """Generate a string representation of a set of bands definitions.
+
+    Parameters
+    ----------
+    bands : Bands
+        Bands definition.
+    concise : bool, optional, default: False
+        Whether to create the string in concise mode.
+
+    Returns
+    -------
+    output : str
+        Formatted string of bands definition.
+    """
+
+    str_lst = [
+        'BANDS DEFINITION',
+        '',
+    ]
+
+    for label, definition in bands.bands.items():
+        str_lst.append('{}: {}'.format(label, definition))
+
+    output = _format(str_lst, concise)
+
+    return output
+
+
 def gen_metrics_str(metrics, description=False, concise=False):
     """Generate a string representation of a set of metrics.
 

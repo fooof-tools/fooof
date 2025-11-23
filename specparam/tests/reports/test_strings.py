@@ -31,6 +31,10 @@ def test_gen_settings_str(tfm):
     assert gen_settings_str(tfm.algorithm)
     assert gen_settings_str(tfm.algorithm, True)
 
+def test_gen_bands_str(tbands):
+
+    assert gen_bands_str(tbands)
+
 def test_gen_metrics_str(tfm):
 
     assert gen_metrics_str(tfm.results.metrics)
