@@ -76,7 +76,7 @@ def test_no_model_str():
 
 def test_format():
 
-    str_lst = ['=', '', 'a', '', 'b', '', '=']
+    str_lst = ['a', '', 'b']
 
     str_out_1 = _format(str_lst, False)
     assert str_out_1

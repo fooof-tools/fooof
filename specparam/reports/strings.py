@@ -28,9 +28,6 @@ def gen_issue_str(concise=False):
     """
 
     str_lst = [
-
-        DIVIDER,
-        '',
         'ISSUE REPORTING',
         '',
 
@@ -48,9 +45,6 @@ def gen_issue_str(concise=False):
         "model.save('bad_fit_data', True, True, True)",
         '',
         'You can attach the generated files to a Github issue.',
-        '',
-
-        DIVIDER,
     ]
 
     output = _format(str_lst, concise)
@@ -103,14 +97,9 @@ def gen_version_str(concise=False):
     """
 
     str_lst = [
-
-        DIVIDER,
-        '',
         'CODE VERSION',
         '',
         '{}'.format(MODULE_VERSION),
-        '',
-        DIVIDER,
     ]
 
     output = _format(str_lst, concise)
@@ -135,13 +124,12 @@ def gen_data_str(data, concise=False):
         Formatted string of data summary.
     """
 
-    str_lst = [DIVIDER, '', 'DATA INFORMATION', '', '', DIVIDER]
-    add_ind = 4
+    str_lst = ['DATA INFORMATION', '']
 
     if not data.has_data:
 
         no_data_str = "No data currently loaded in the object."
-        str_lst = list_insert(str_lst, no_data_str, add_ind)
+        str_lst.append(no_data_str)
 
     else:
 
@@ -161,7 +149,7 @@ def gen_data_str(data, concise=False):
             'and a frequency resolution of {} Hz.'.format(data.freq_res),
         ]
 
-        str_lst = list_insert(str_lst, str_lst_add, add_ind)
+        str_lst.extend(str_lst_add)
 
     output = _format(str_lst, concise)
 
@@ -197,9 +185,6 @@ def gen_modes_str(modes, description=False, concise=False):
 
     # Create output string
     str_lst = [
-
-        DIVIDER,
-        '',
         'FIT MODES',
         '',
         # Settings - include descriptions if requested
@@ -207,8 +192,6 @@ def gen_modes_str(modes, description=False, concise=False):
                         '{}'.format(desc['aperiodic_mode']),
                         'Aperiodic Mode : {}'.format(modes.aperiodic.name),
                         '{}'.format(desc['aperiodic_mode'])] if el != ''],
-        '',
-        DIVIDER,
     ]
 
     output = _format(str_lst, concise)
@@ -236,8 +219,6 @@ def gen_settings_str(algorithm, description=False, concise=False):
 
     # Create output string - header
     str_lst = [
-        DIVIDER,
-        '',
         'ALGORITHM',
         algorithm.name,
     ]
@@ -255,11 +236,6 @@ def gen_settings_str(algorithm, description=False, concise=False):
         str_lst.append(name + ' : ' + str(getattr(algorithm.settings, name)))
         if description:
             str_lst.append(algorithm.public_settings.descriptions[name].split('\n ')[0])
-
-    str_lst.extend([
-        '',
-        DIVIDER,
-    ])
 
     output = _format(str_lst, concise)
 
@@ -291,13 +267,9 @@ def gen_metrics_str(metrics, description=False, concise=False):
         prints = [metric.label for metric in metrics.metrics]
 
     str_lst = [
-        DIVIDER,
-        '',
         'CURRENT METRICS',
         '',
         *[el for el in prints],
-        '',
-        DIVIDER,
     ]
 
     output = _format(str_lst, concise)
@@ -323,14 +295,9 @@ def gen_freq_range_str(model, concise=False):
     freq_range = model.data.freq_range if model.data.has_data else ('XX', 'XX')
 
     str_lst = [
-
-        DIVIDER,
-        '',
         'FIT RANGE',
         '',
         'The model was fit from {} to {} Hz.'.format(*freq_range),
-        '',
-        DIVIDER,
     ]
 
     output = _format(str_lst, concise)
@@ -353,9 +320,6 @@ def gen_methods_report_str(concise=False):
     """
 
     str_lst = [
-
-        DIVIDER,
-        '',
         'REPORTING',
         '',
         'Reports using spectral parameterization should include (at minimum):',
@@ -364,8 +328,6 @@ def gen_methods_report_str(concise=False):
         '- the fit modes that were used',
         '- the algorithm & settings that were used',
         '- the frequency range that was fit',
-        '',
-        DIVIDER,
     ]
 
     output = _format(str_lst, concise)
@@ -373,6 +335,7 @@ def gen_methods_report_str(concise=False):
     return output
 
 
+# NOTE: move this function? It's text - not a print report
 def gen_methods_text_str(model=None):
     """Generate a string representation of a template methods report.
 
@@ -451,8 +414,6 @@ def gen_model_results_str(model, concise=False):
     # Create the formatted strings for printing
     str_lst = [
 
-        DIVIDER,
-        '',
         'SPECTRUM MODEL RESULTS',
         '',
 
@@ -475,9 +436,6 @@ def gen_model_results_str(model, concise=False):
         'Model metrics:',
         *['{:>18s} is {:1.4f} {:8s}'.format('{:s} ({:s})'.format(*key.split('_')), res, ' ') \
             for key, res in model.results.metrics.results.items()],
-        '',
-
-        DIVIDER,
     ]
 
     output = _format(str_lst, concise)
@@ -506,8 +464,6 @@ def gen_group_results_str(group, concise=False):
 
     str_lst = [
 
-        DIVIDER,
-        '',
         'GROUP SPECTRAL MODEL RESULTS ({} spectra)'.format(len(group.results.group_results)),
         *_report_str_n_null(group),
         '',
@@ -536,12 +492,7 @@ def gen_group_results_str(group, concise=False):
                 '{:s} ({:s})'.format(*label.split('_')),
                 *compute_arr_desc(group.results.get_metrics(label))) \
                     for label in group.results.metrics.labels],
-            '',
             ])
-
-    str_lst.extend([
-        DIVIDER,
-    ])
 
     output = _format(str_lst, concise)
 
@@ -574,8 +525,6 @@ def gen_time_results_str(time, concise=False):
 
     str_lst = [
 
-        DIVIDER,
-        '',
         'TIME SPECTRAL MODEL RESULTS ({} time windows)'.format(time.data.n_time_windows),
         *_report_str_n_null(time),
         '',
@@ -606,9 +555,6 @@ def gen_time_results_str(time, concise=False):
             '{:s} ({:s})'.format(*key.split('_')),
             *compute_arr_desc(time.results.time_results[key])) \
                 for key in time.results.metrics.results],
-        '',
-
-        DIVIDER,
     ]
 
     output = _format(str_lst, concise)
@@ -642,8 +588,6 @@ def gen_event_results_str(event, concise=False):
 
     str_lst = [
 
-        DIVIDER,
-        '',
         'EVENT SPECTRAL MODEL RESULTS ({} events with {} time windows)'.format(\
             event.data.n_events, event.data.n_time_windows),
         *_report_str_n_null(event),
@@ -676,8 +620,6 @@ def gen_event_results_str(event, concise=False):
             '{:s} ({:s})'.format(*key.split('_')),
             *compute_arr_desc(np.mean(event.results.event_time_results[key], 1))) \
                 for key in event.results.metrics.results],
-        '',
-        DIVIDER,
     ]
 
     output = _format(str_lst, concise)
@@ -727,11 +669,7 @@ def _no_model_str(concise=False):
     """
 
     str_lst = [
-        DIVIDER,
-        '',
         'Model fit has not been run, or fitting was unsuccessful.',
-        '',
-        DIVIDER,
     ]
 
     output = _format(str_lst, concise)
@@ -756,6 +694,9 @@ def _format(str_lst, concise):
     output : str
         Formatted string, ready for printing.
     """
+
+    str_template = [DIVIDER, '', '', DIVIDER]
+    str_lst = list_insert(str_template, str_lst, 2)
 
     # Set centering value - use a smaller value if in concise mode
     center_val = SCV if concise else LCV
