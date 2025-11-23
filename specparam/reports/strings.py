@@ -4,6 +4,7 @@ from itertools import chain
 
 import numpy as np
 
+from specparam.utils.select import list_insert
 from specparam.utils.array import compute_arr_desc
 from specparam.measures.properties import compute_presence
 from specparam.version import __version__ as MODULE_VERSION
@@ -30,7 +31,7 @@ def gen_issue_str(concise=False):
 
         DIVIDER,
         '',
-        'specparam - ISSUE REPORTING',
+        'ISSUE REPORTING',
         '',
 
         # Reporting bugs
@@ -110,7 +111,6 @@ def gen_version_str(concise=False):
         '{}'.format(MODULE_VERSION),
         '',
         DIVIDER,
-
     ]
 
     output = _format(str_lst, concise)
@@ -135,10 +135,13 @@ def gen_data_str(data, concise=False):
         Formatted string of data summary.
     """
 
+    str_lst = [DIVIDER, '', 'DATA INFORMATION', '', '', DIVIDER]
+    add_ind = 4
+
     if not data.has_data:
 
         no_data_str = "No data currently loaded in the object."
-        str_lst = [DIVIDER,'', no_data_str, '', DIVIDER]
+        str_lst = list_insert(str_lst, no_data_str, add_ind)
 
     else:
 
@@ -152,16 +155,13 @@ def gen_data_str(data, concise=False):
         else:
             n_spectra_str = '1 power spectrum'
 
-        str_lst = [
-
-            DIVIDER,
-            '',
+        str_lst_add = [
             'The data object contains {}'.format(n_spectra_str),
             'with a frequency range of {} Hz'.format(data.freq_range),
             'and a frequency resolution of {} Hz.'.format(data.freq_res),
-            '',
-            DIVIDER,
         ]
+
+        str_lst = list_insert(str_lst, str_lst_add, add_ind)
 
     output = _format(str_lst, concise)
 
@@ -238,7 +238,8 @@ def gen_settings_str(algorithm, description=False, concise=False):
     str_lst = [
         DIVIDER,
         '',
-        'ALGORITHM: {}'.format(algorithm.name),
+        'ALGORITHM',
+        algorithm.name,
     ]
 
     if description:
@@ -247,7 +248,6 @@ def gen_settings_str(algorithm, description=False, concise=False):
     str_lst.extend([
         '',
         'ALGORITHM SETTINGS',
-        '',
     ])
 
     # Loop through algorithm settings, and add information
@@ -453,7 +453,7 @@ def gen_model_results_str(model, concise=False):
 
         DIVIDER,
         '',
-        'POWER SPECTRUM MODEL',
+        'SPECTRUM MODEL RESULTS',
         '',
 
         # Fit algorithm & data overview
