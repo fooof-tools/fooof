@@ -134,7 +134,7 @@ class ComponentParameters():
 
         Notes
         -----
-        If available, this return converted parameters. If not, this returns fit parameters.
+        If available, this returns converted parameters. If not, this returns fit parameters.
         """
 
         return self.get_params('converted' if self.has_converted else 'fit')
@@ -172,18 +172,6 @@ class ComponentParameters():
             self._fit = params
         if version == 'converted':
             self._converted = params
-
-
-    def convert_params(self, converter):
-        """Convert fit parameters to converted versions and store in the object.
-
-        Parameters
-        ----------
-        converter : func
-            Callable that takes in fit parameters and returns converted version.
-        """
-
-        self.add_params('converted', converter(self.get_params('fit')))
 
 
     def get_params(self, version, field=None):
