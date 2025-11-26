@@ -57,12 +57,17 @@ def get_converter(component, parameter, label):
 
     Parameters
     ----------
-    component : str
-        XX
+    component : {'aperiodic', 'peak'}
+        Which component to access a converter for.
     parameter : str
-        XX
+        The name of the parameter to access a converter for.
     label : str
-        XX
+        The label for which converter to access.
+
+    Returns
+    -------
+    converter : callable
+        Function to compute parameter conversion.
 
     Notes
     -----
@@ -79,7 +84,23 @@ def get_converter(component, parameter, label):
 
 
 def convert_aperiodic_params(model, updates):
-    """Convert aperiodic parameters."""
+    """Convert aperiodic parameters.
+
+    Parameters
+    ----------
+    model : SpectralModel
+        Model object, post model fitting.
+    updates : dict
+        Dictionary specifying the parameter conversions to do, whereby:
+            Each key is the name of a parameter.
+            Each value reflects what conversion to do.
+                This can be a string label for a built-in conversion, or a custom implementation.
+
+    Returns
+    -------
+    converted_parameters : 1d array
+        Converted aperiodic parameters.
+    """
 
     converted_params = np.zeros_like(model.results.params.aperiodic._fit)
     for param, p_ind in model.modes.aperiodic.params.indices.items():
@@ -90,7 +111,23 @@ def convert_aperiodic_params(model, updates):
 
 
 def convert_peak_params(model, updates):
-    """Convert peak parameters."""
+    """Convert peak parameters.
+
+    Parameters
+    ----------
+    model : SpectralModel
+        Model object, post model fitting.
+    updates : dict
+        Dictionary specifying the parameter conversions to do, whereby:
+            Each key is the name of a parameter.
+            Each value reflects what conversion to do.
+                This can be a string label for a built-in conversion, or a custom implementation.
+
+    Returns
+    -------
+    converted_parameters : array
+        Converted peak parameters.
+    """
 
     converted_params = np.zeros_like(model.results.params.periodic._fit)
     for peak_ind in range(len(converted_params)):
@@ -103,7 +140,7 @@ def convert_peak_params(model, updates):
 
 ## PARAMETER CONVERTERS
 
-FUNCS = {
+PEAK_HEIGHT_OPERATIONS = {
     'subtract' : np.subtract,
     'divide' : np.divide,
 }
@@ -115,15 +152,23 @@ def compute_peak_height(model, peak_ind, spacing, operation):
     ----------
     model : SpectralModel
         Model object, post fitting.
+    peak_ind : int
+        Index of which peak to compute height for.
     spacing : {'log', 'linear'}
         Spacing to extract the data components in.
     operation : {'subtract', 'divide'}
         Approach to take to compute the peak height measure.
+
+    Returns
+    -------
+    peak_height : float
+        Computed peak height.
     """
 
     ind = nearest_ind(model.data.freqs, model.results.params.periodic._fit[\
                           peak_ind, model.modes.periodic.params.indices['cf']])
-    out = FUNCS[operation](model.results.model.get_component('full', spacing)[ind],
-                           model.results.model.get_component('aperiodic', spacing)[ind])
+    peak_height = PEAK_HEIGHT_OPERATIONS[operation](\
+        model.results.model.get_component('full', spacing)[ind],
+        model.results.model.get_component('aperiodic', spacing)[ind])
 
-    return out
+    return peak_height
