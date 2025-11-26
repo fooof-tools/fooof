@@ -11,7 +11,8 @@ from specparam.models.base import BaseModel
 from specparam.data.data import Data
 from specparam.data.conversions import model_to_dataframe
 from specparam.results.results import Results
-from specparam.modes.convert import convert_aperiodic_params, convert_peak_params
+from specparam.modes.convert import (convert_aperiodic_params, convert_peak_params,
+                                     DEFAULT_CONVERTERS)
 
 from specparam.algorithms.spectral_fit import SpectralFitAlgorithm, SPECTRAL_FIT_SETTINGS_DEF
 from specparam.algorithms.definitions import ALGORITHMS, check_algorithm_definition
@@ -49,6 +50,8 @@ class SpectralModel(BaseModel):
         Setting for the algorithm.
     metrics : Metrics or list of Metric or list or str
         Metrics definition(s) to use to evaluate the model.
+    converters : dict
+        Definition for parameter conversions to apply post fitting.
     bands : Bands or dict or int or None, optional
         Bands object with band definitions, or definition that can be turned into a Bands object.
     debug : bool, optional, default: False
@@ -83,10 +86,12 @@ class SpectralModel(BaseModel):
 
     def __init__(self, aperiodic_mode='fixed', periodic_mode='gaussian',
                  algorithm='spectral_fit', algorithm_settings=None,
-                 metrics=None, bands=None, debug=False, verbose=True, **model_kwargs):
+                 metrics=None, converters=None, bands=None,
+                 debug=False, verbose=True, **model_kwargs):
         """Initialize model object."""
 
-        BaseModel.__init__(self, aperiodic_mode, periodic_mode, verbose)
+        converters = DEFAULT_CONVERTERS if not converters else converters
+        BaseModel.__init__(self, aperiodic_mode, periodic_mode, converters, verbose)
 
         self.data = Data()
 
@@ -338,28 +343,15 @@ class SpectralModel(BaseModel):
         return model_to_dataframe(self.results.get_results(), self.modes, bands)
 
 
-    def _convert_params(self, updates=None):
-        """Convert fit parameters.
+    def _convert_params(self):
+        """Convert fit parameters."""
 
-        Parameters
-        ----------
-        updates : dict
-            Specifier for the parameter conversion updates.
-        """
-
-        # TEMP
-        if not updates:
-            updates = {
-                'aperiodic' : {'offset' : None, 'exponent' : None},
-                'peak' : {'cf' : None, 'pw' : 'log_sub', 'bw' : 'full_width'},
-            }
-
-        if not check_all_none(updates['aperiodic'].values()):
+        if not check_all_none(self._converters['aperiodic'].values()):
             self.results.params.aperiodic.add_params(\
-                'converted', convert_aperiodic_params(self, updates['aperiodic']))
-        if not check_all_none(updates['peak'].values()):
+                'converted', convert_aperiodic_params(self, self._converters['aperiodic']))
+        if not check_all_none(self._converters['peak'].values()):
             self.results.params.periodic.add_params(\
-                'converted', convert_peak_params(self, updates['peak']))
+                'converted', convert_peak_params(self, self._converters['peak']))
 
 
     def _reset_data_results(self, clear_freqs=False, clear_spectrum=False, clear_results=False):

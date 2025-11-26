@@ -50,6 +50,14 @@ UPDATERS = {
     }
 }
 
+
+## DEFINE DEFAULT CONVERTERS
+
+DEFAULT_CONVERTERS = {
+    'aperiodic' : {'offset' : None, 'exponent' : None},
+    'peak' : {'cf' : None, 'pw' : 'log_sub', 'bw' : 'full_width'},
+}
+
 ## CONVERTER FUNCTIONS
 
 def get_converter(component, parameter, converter):
