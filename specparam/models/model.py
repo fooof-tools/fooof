@@ -338,29 +338,28 @@ class SpectralModel(BaseModel):
         return model_to_dataframe(self.results.get_results(), self.modes, bands)
 
 
-    def _convert_params(self, ap_updates=None, pe_updates=None):
+    def _convert_params(self, updates=None):
         """Convert fit parameters.
 
         Parameters
         ----------
-        ap_updates : dict
-            Specifier for the aperiodic parameter conversion updates.
-        pe_updates : dict
-            Specifier for the peak parameter conversion updates.
+        updates : dict
+            Specifier for the parameter conversion updates.
         """
 
         # TEMP
-        if not ap_updates:
-            ap_updates = {'offset' : None, 'exponent' : None}
-        if not pe_updates:
-            pe_updates = {'cf' : None, 'pw' : 'log_sub', 'bw' : 'full_width'}
+        if not updates:
+            updates = {
+                'aperiodic' : {'offset' : None, 'exponent' : None},
+                'peak' : {'cf' : None, 'pw' : 'log_sub', 'bw' : 'full_width'},
+            }
 
-        if not check_all_none(ap_updates.values()):
+        if not check_all_none(updates['aperiodic'].values()):
             self.results.params.aperiodic.add_params(\
-                'converted', convert_aperiodic_params(self, ap_updates))
-        if not check_all_none(pe_updates.values()):
+                'converted', convert_aperiodic_params(self, updates['aperiodic']))
+        if not check_all_none(updates['peak'].values()):
             self.results.params.periodic.add_params(\
-                'converted', convert_peak_params(self, pe_updates))
+                'converted', convert_peak_params(self, updates['peak']))
 
 
     def _reset_data_results(self, clear_freqs=False, clear_spectrum=False, clear_results=False):

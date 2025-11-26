@@ -52,7 +52,7 @@ UPDATERS = {
 
 ## CONVERTER FUNCTIONS
 
-def get_converter(component, parameter, label):
+def get_converter(component, parameter, converter):
     """Get a specified parameter converter function.
 
     Parameters
@@ -61,8 +61,10 @@ def get_converter(component, parameter, label):
         Which component to access a converter for.
     parameter : str
         The name of the parameter to access a converter for.
-    label : str
-        The label for which converter to access.
+    converter : str or callable
+        The converter to access.
+        If str, should correspond to a built-in converter.
+        If callable, should be a custom converter definition, following framework.
 
     Returns
     -------
@@ -71,12 +73,16 @@ def get_converter(component, parameter, label):
 
     Notes
     -----
-    This function accesses predefined converters from `UPDATERS`, defaulting
-    to a null converter (`NULL_UPDATERS`) if requested label is None or not found.
+    This function accesses predefined converters from `UPDATERS`.
+    If a callable, as a custom definition, is passed in, the same callable is returned.
+    If the parameter or converter name is not found, a null converter
+    (from `NULL_UPDATERS`) is returned.
     """
 
-    if label and label in UPDATERS[component][parameter]:
-        converter = UPDATERS[component][parameter][label]
+    if isinstance(converter, str) and converter in UPDATERS[component][parameter]:
+        converter = UPDATERS[component][parameter][converter]
+    elif callable(converter):
+        pass
     else:
         converter = NULL_UPDATERS[component]
 
