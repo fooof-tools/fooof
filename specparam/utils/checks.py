@@ -210,3 +210,27 @@ def check_inds(inds, length=None):
                          length, inds.step if inds.step else 1)
 
     return inds
+
+
+def check_all_none(collection):
+    """Check whether all elements of a collection are None.
+
+    Parameters
+    ----------
+    collection : list or type-castable to list
+        Collection of elements to check for all None contents.
+
+    Returns
+    -------
+    output : bool
+        Indicetor for whether all elements of `collection` are None.
+    """
+
+    items = set(list(collection))
+
+    if len(items) == 0:
+        output = False
+    else:
+        output = len(items) == 1 and items == {None}
+
+    return output
