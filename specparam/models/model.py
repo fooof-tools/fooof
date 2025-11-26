@@ -11,6 +11,7 @@ from specparam.models.base import BaseModel
 from specparam.data.data import Data
 from specparam.data.conversions import model_to_dataframe
 from specparam.results.results import Results
+from specparam.modes.convert import convert_aperiodic_params, convert_peak_params
 
 from specparam.algorithms.spectral_fit import SpectralFitAlgorithm, SPECTRAL_FIT_SETTINGS_DEF
 from specparam.algorithms.definitions import ALGORITHMS, check_algorithm_definition
@@ -20,6 +21,7 @@ from specparam.reports.strings import gen_model_results_str
 from specparam.modutils.errors import NoDataError, FitError
 from specparam.modutils.docs import (copy_doc_func_to_method, replace_docstring_sections,
                                      docs_get_section)
+from specparam.utils.checks import check_all_none
 from specparam.io.files import load_json
 from specparam.io.models import save_model
 from specparam.plts.model import plot_model
@@ -172,6 +174,9 @@ class SpectralModel(BaseModel):
             # Call the fit function from the algorithm object
             self.algorithm._fit()
 
+            # Do any parameter conversions
+            self.convert_params()
+
             # Compute post-fit metrics
             self.results.metrics.compute_metrics(self.data, self.results)
 
@@ -226,6 +231,31 @@ class SpectralModel(BaseModel):
                   freq_range=plot_kwargs.pop('plot_freq_range', None),
                   **plot_kwargs)
         self.print_results(concise=False)
+
+
+    def convert_params(self, ap_updates=None, pe_updates=None):
+        """Convert fit parameters.
+
+        Parameters
+        ----------
+        ap_updates : dict
+            XX
+        pe_updates : dict
+            XX
+        """
+
+        # TEMP
+        if not ap_updates:
+            ap_updates = {'offset' : None, 'exponent' : None}
+        if not pe_updates:
+            pe_updates = {'cf' : None, 'pw' : 'log_sub', 'bw' : 'full_width'}
+
+        if not check_all_none(ap_updates.values()):
+            self.results.params.aperiodic.add_params(\
+                'converted', convert_aperiodic_params(self, ap_updates))
+        if not check_all_none(pe_updates.values()):
+            self.results.params.periodic.add_params(\
+                'converted', convert_peak_params(self, pe_updates))
 
 
     def print_results(self, concise=False):
