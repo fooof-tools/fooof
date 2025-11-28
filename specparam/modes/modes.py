@@ -52,6 +52,23 @@ class Modes():
                           periodic_mode=self.periodic.name if self.periodic else None)
 
 
+    def get_params(self):
+        """Get a description of the parameters, across modes.
+
+        Returns
+        -------
+        params : dict
+            Parameter definition for the set of modes, in which each key is a
+            component label each value is a list of parameter labels.
+        """
+
+        params = {}
+        for component in self.components:
+            params[component] = getattr(self, component).params.labels
+
+        return params
+
+
     def print(self, description=False, concise=False):
         """Print out the current fit modes.
 

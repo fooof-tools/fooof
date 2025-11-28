@@ -17,7 +17,7 @@ def test_modes():
     assert isinstance(modes.periodic, Mode)
     modes.check_params()
 
-def test_modes_get_modes():
+def test_modes_gets():
 
     ap_mode_name = 'fixed'
     pe_mode_name = 'gaussian'
@@ -27,3 +27,6 @@ def test_modes_get_modes():
     assert isinstance(mode_names, ModelModes)
     assert mode_names.aperiodic_mode == ap_mode_name
     assert mode_names.periodic_mode == pe_mode_name
+
+    params = modes.get_params()
+    assert isinstance(params, dict)
