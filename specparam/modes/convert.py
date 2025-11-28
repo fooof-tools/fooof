@@ -14,9 +14,9 @@ from specparam.utils.select import nearest_ind
 ###################################################################################################
 ###################################################################################################
 
-## NULL UPDATERS: extract the fit parameter, with no conversion applied
+## NULL CONVERTERS: extract the fit parameter, with no conversion applied
 
-NULL_UPDATERS = {
+NULL_CONVERTERS = {
     'aperiodic' : lambda param, model : \
         model.results.params.aperiodic._fit[model.modes.aperiodic.params.indices[param]],
     'peak' : lambda param, model, peak_ind : \
@@ -25,7 +25,7 @@ NULL_UPDATERS = {
 
 ## PRE-DEFINED CONVERTERS
 
-UPDATERS = {
+CONVERTERS = {
     'aperiodic' : {
         'offset' : {},
         'exponent' : {},
@@ -81,18 +81,18 @@ def get_converter(component, parameter, converter):
 
     Notes
     -----
-    This function accesses predefined converters from `UPDATERS`.
+    This function accesses predefined converters from `CONVERTERS`.
     If a callable, as a custom definition, is passed in, the same callable is returned.
     If the parameter or converter name is not found, a null converter
-    (from `NULL_UPDATERS`) is returned.
+    (from `NULL_CONVERTERS`) is returned.
     """
 
-    if isinstance(converter, str) and converter in UPDATERS[component][parameter]:
-        converter = UPDATERS[component][parameter][converter]
+    if isinstance(converter, str) and converter in CONVERTERS[component][parameter]:
+        converter = CONVERTERS[component][parameter][converter]
     elif callable(converter):
         pass
     else:
-        converter = NULL_UPDATERS[component]
+        converter = NULL_CONVERTERS[component]
 
     return converter
 
