@@ -28,5 +28,11 @@ def test_modes_gets():
     assert mode_names.aperiodic_mode == ap_mode_name
     assert mode_names.periodic_mode == pe_mode_name
 
-    params = modes.get_params()
+    params = modes.get_params('list')
     assert isinstance(params, dict)
+    for comp in modes.components:
+        assert isinstance(params[comp], list)
+    params = modes.get_params('dict')
+    assert isinstance(params, dict)
+    for comp in modes.components:
+        assert isinstance(params[comp], dict)

@@ -52,19 +52,29 @@ class Modes():
                           periodic_mode=self.periodic.name if self.periodic else None)
 
 
-    def get_params(self):
+    def get_params(self, param_type='list'):
         """Get a description of the parameters, across modes.
+
+        Parameters
+        ----------
+        param_type : {'list', 'dict'}
+            The output type for the parameters.
 
         Returns
         -------
         params : dict
-            Parameter definition for the set of modes, in which each key is a
-            component label each value is a list of parameter labels.
+            Parameter definition for the set of modes.
+            Each key is a component label.
+            Each set of values if the parameters, with type specified by 'param_type'.
         """
 
         params = {}
         for component in self.components:
             params[component] = getattr(self, component).params.labels
+
+        if param_type == 'dict':
+            params = {component : {param : None for param in params[component]} \
+                for component in params.keys()}
 
         return params
 
