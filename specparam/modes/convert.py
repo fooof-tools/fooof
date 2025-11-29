@@ -19,7 +19,7 @@ from specparam.utils.select import nearest_ind
 NULL_CONVERTERS = {
     'aperiodic' : lambda param, model : \
         model.results.params.aperiodic._fit[model.modes.aperiodic.params.indices[param]],
-    'peak' : lambda param, model, peak_ind : \
+    'periodic' : lambda param, model, peak_ind : \
         model.results.params.periodic._fit[peak_ind, model.modes.periodic.params.indices[param]],
 }
 
@@ -30,7 +30,7 @@ CONVERTERS = {
         'offset' : {},
         'exponent' : {},
     },
-    'peak' : {
+    'periodic' : {
         'cf' : {},
         'pw' : {
             'log_sub' : lambda param, model, peak_ind : \
@@ -55,7 +55,7 @@ CONVERTERS = {
 
 DEFAULT_CONVERTERS = {
     'aperiodic' : {'offset' : None, 'exponent' : None},
-    'peak' : {'cf' : None, 'pw' : 'log_sub', 'bw' : 'full_width'},
+    'periodic' : {'cf' : None, 'pw' : 'log_sub', 'bw' : 'full_width'},
 }
 
 ## CONVERTER FUNCTIONS
@@ -65,7 +65,7 @@ def get_converter(component, parameter, converter):
 
     Parameters
     ----------
-    component : {'aperiodic', 'peak'}
+    component : {'aperiodic', 'periodic'}
         Which component to access a converter for.
     parameter : str
         The name of the parameter to access a converter for.
@@ -124,8 +124,8 @@ def convert_aperiodic_params(model, updates):
     return converted_params
 
 
-def convert_peak_params(model, updates):
-    """Convert peak parameters.
+def convert_periodic_params(model, updates):
+    """Convert periodic parameters.
 
     Parameters
     ----------
@@ -140,13 +140,13 @@ def convert_peak_params(model, updates):
     Returns
     -------
     converted_parameters : array
-        Converted peak parameters.
+        Converted periodic parameters.
     """
 
     converted_params = np.zeros_like(model.results.params.periodic._fit)
     for peak_ind in range(len(converted_params)):
         for param, param_ind in model.modes.periodic.params.indices.items():
-            converter = get_converter('peak', param, updates.get(param, None))
+            converter = get_converter('periodic', param, updates.get(param, None))
             converted_params[peak_ind, param_ind] = converter(param, model, peak_ind)
 
     return converted_params

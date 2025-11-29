@@ -11,7 +11,7 @@ from specparam.models.base import BaseModel
 from specparam.data.data import Data
 from specparam.data.conversions import model_to_dataframe
 from specparam.results.results import Results
-from specparam.modes.convert import (convert_aperiodic_params, convert_peak_params,
+from specparam.modes.convert import (convert_aperiodic_params, convert_periodic_params,
                                      DEFAULT_CONVERTERS)
 
 from specparam.algorithms.spectral_fit import SpectralFitAlgorithm, SPECTRAL_FIT_SETTINGS_DEF
@@ -349,9 +349,9 @@ class SpectralModel(BaseModel):
         if not check_all_none(self._converters['aperiodic'].values()):
             self.results.params.aperiodic.add_params(\
                 'converted', convert_aperiodic_params(self, self._converters['aperiodic']))
-        if not check_all_none(self._converters['peak'].values()):
+        if not check_all_none(self._converters['periodic'].values()):
             self.results.params.periodic.add_params(\
-                'converted', convert_peak_params(self, self._converters['peak']))
+                'converted', convert_periodic_params(self, self._converters['periodic']))
 
 
     def _reset_data_results(self, clear_freqs=False, clear_spectrum=False, clear_results=False):
