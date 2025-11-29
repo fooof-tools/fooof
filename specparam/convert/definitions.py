@@ -1,29 +1,29 @@
-"""Define parameter converters.
-
-Words, words, words.
-"""
+"""Define parameter converters."""
 
 from specparam.convert.params import compute_peak_height
 
 ###################################################################################################
-## NULL CONVERTERS: extract the fit parameter, with no conversion applied
+## DEFINE DEFAULT CONVERTERS
 
-NULL_CONVERTERS = {
-    'aperiodic' : lambda param, model : \
-        model.results.params.aperiodic._fit[model.modes.aperiodic.params.indices[param]],
-    'periodic' : lambda param, model, peak_ind : \
-        model.results.params.periodic._fit[peak_ind, model.modes.periodic.params.indices[param]],
+DEFAULT_CONVERTERS = {
+    'aperiodic' : {'offset' : None, 'exponent' : None},
+    'periodic' : {'cf' : None, 'pw' : 'log_sub', 'bw' : 'full_width'},
 }
 
 ###################################################################################################
 ## PRE-DEFINED CONVERTERS
 
 CONVERTERS = {
+
     'aperiodic' : {
+
         'offset' : {},
         'exponent' : {},
+
     },
+
     'periodic' : {
+
         'cf' : {},
         'pw' : {
             'log_sub' : lambda param, model, peak_ind : \
@@ -40,21 +40,22 @@ CONVERTERS = {
                 2 * model.results.params.periodic._fit[\
                         peak_ind, model.modes.periodic.params.indices['bw']]
         },
+
     }
 }
 
-
 ###################################################################################################
-## DEFINE DEFAULT CONVERTERS
+## NULL CONVERTERS: extract the fit parameter, with no conversion applied
 
-DEFAULT_CONVERTERS = {
-    'aperiodic' : {'offset' : None, 'exponent' : None},
-    'periodic' : {'cf' : None, 'pw' : 'log_sub', 'bw' : 'full_width'},
+NULL_CONVERTERS = {
+    'aperiodic' : lambda param, model : \
+        model.results.params.aperiodic._fit[model.modes.aperiodic.params.indices[param]],
+    'periodic' : lambda param, model, peak_ind : \
+        model.results.params.periodic._fit[peak_ind, model.modes.periodic.params.indices[param]],
 }
 
-
 ###################################################################################################
-## XXXX
+## SELECTOR
 
 def get_converter(component, parameter, converter):
     """Get a specified parameter converter function.
