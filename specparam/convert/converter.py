@@ -30,10 +30,10 @@ class BaseParamConverter():
         self.function = function
 
 
-class AperiodicParameterConverter(BaseParamConverter):
+class AperiodicParamConverter(BaseParamConverter):
     """Parameter converter for aperiodic parameters."""
 
-    def __init__(self, component, parameter, name, description, function):
+    def __init__(self, parameter, name, description, function):
         """Initialize an aperiodic parameter converter."""
 
         super().__init__('aperiodic', parameter, name, description, function)
@@ -53,10 +53,10 @@ class AperiodicParameterConverter(BaseParamConverter):
         return self.function(param, model)
 
 
-class PeriodicParameterConverter(BaseParamConverter):
+class PeriodicParamConverter(BaseParamConverter):
     """Parameter converter for periodic parameters."""
 
-    def __init__(self, component, parameter, name, description, function):
+    def __init__(self, parameter, name, description, function):
         """Initialize a periodic parameter converter."""
 
         super().__init__('periodic', parameter, name, description, function)
