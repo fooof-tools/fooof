@@ -17,3 +17,8 @@ def test_converters_library():
                 assert converter.component == component
                 assert converter.name == label
                 assert callable(converter.function)
+
+def test_check_converters():
+
+    check_converters('aperiodic')
+    check_converters('periodic')

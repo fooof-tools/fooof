@@ -12,6 +12,30 @@ DEFAULT_CONVERTERS = {
 }
 
 ###################################################################################################
+## APERIODIC PARAMETER CONVERTERS
+
+# Null converter for aperiodic parameters
+ap_null = AperiodicParamConverter(
+    parameter=None,
+    name='ap_null',
+    description='Null converter for aperiodic converter - return fit param.',
+    function=lambda param, model : \
+        model.results.params.aperiodic._fit[model.modes.aperiodic.params.indices[param]]
+)
+
+###################################################################################################
+## PERIODIC PARAMETER CONVERTERS
+
+# Null converter for periodic parameters
+pe_null = PeriodicParamConverter(
+    parameter=None,
+    name='pe_null',
+    description='Null converter for aperiodic converter - return fit param.',
+    function=lambda param, model, peak_ind : \
+        model.results.params.periodic._fit[peak_ind, model.modes.periodic.params.indices[param]]
+)
+
+###################################################################################################
 ## PRE-DEFINED CONVERTERS
 
 CONVERTERS = {
@@ -86,30 +110,16 @@ CONVERTERS = {
 }
 
 ###################################################################################################
-## NULL CONVERTERS: extract the fit parameter, with no conversion applied
+## COLLECT ALL CONVERTERS
 
+# Null converters: extract the fit parameter, with no conversion applied
 NULL_CONVERTERS = {
-
-    'aperiodic' : AperiodicParamConverter(
-        parameter=None,
-        name='ap_null',
-        description='Null converter for aperiodic converter - return fit param',
-        function=lambda param, model : \
-            model.results.params.aperiodic._fit[model.modes.aperiodic.params.indices[param]]
-    ),
-
-    'periodic' : PeriodicParamConverter(
-        parameter=None,
-        name='pe_null',
-        description='Null converter for aperiodic converter - return fit param',
-        function=lambda param, model, peak_ind : \
-            model.results.params.periodic._fit[peak_ind, model.modes.periodic.params.indices[param]]
-    )
-
+    'aperiodic' : ap_null,
+    'periodic' : pe_null,
 }
 
 ###################################################################################################
-## SELECTOR
+## SELECTOR & CHECKER FUNCTIONS
 
 def get_converter(component, parameter, converter):
     """Get a specified parameter converter function.
@@ -146,3 +156,19 @@ def get_converter(component, parameter, converter):
         converter = NULL_CONVERTERS[component]
 
     return converter
+
+
+def check_converters(component):
+    """Check the set of parameter converters that are available.
+
+    Parameters
+    ----------
+    component : {'aperiodic', 'periodic'}
+        Which component to check available parameter converters for.
+    """
+
+    print('Available {:s} converters:'.format(component))
+    for param, convs in CONVERTERS[component].items():
+        print(param)
+        for label, converter in convs.items():
+            print('    {:10s}    {:s}'.format(converter.name, converter.description))
