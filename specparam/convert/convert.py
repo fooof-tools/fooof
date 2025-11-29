@@ -14,8 +14,6 @@ from specparam.convert.definitions import get_converter
 ###################################################################################################
 ###################################################################################################
 
-## CONVERTER FUNCTIONS
-
 def convert_aperiodic_params(model, updates):
     """Convert aperiodic parameters.
 
