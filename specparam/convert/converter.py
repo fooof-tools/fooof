@@ -39,18 +39,18 @@ class AperiodicParamConverter(BaseParamConverter):
         super().__init__('aperiodic', parameter, name, description, function)
 
 
-    def __call__(self, param, model):
+    def __call__(self, fit_value, model):
         """Call the aperiodic parameter converter.
 
         Parameters
         ----------
-        param : float
-            Parameter value.
+        fit_value : float
+            Fit value for the parameter.
         model : SpectralModel
             Model object.
         """
 
-        return self.function(param, model)
+        return self.function(fit_value, model)
 
 
 class PeriodicParamConverter(BaseParamConverter):
@@ -62,17 +62,17 @@ class PeriodicParamConverter(BaseParamConverter):
         super().__init__('periodic', parameter, name, description, function)
 
 
-    def __call__(self, param, model, peak_ind):
+    def __call__(self, fit_value, model, peak_ind):
         """Call the peak parameter converter.
 
         Parameters
         ----------
-        param : float
-            Parameter value.
+        fit_value : float
+            Fit value for the parameter.
         model : SpectralModel
             Model object.
         peak_ind : int
             Index of the current peak.
         """
 
-        return self.function(param, model, peak_ind)
+        return self.function(fit_value, model, peak_ind)

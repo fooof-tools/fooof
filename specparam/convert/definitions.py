@@ -18,9 +18,8 @@ DEFAULT_CONVERTERS = {
 ap_null = AperiodicParamConverter(
     parameter=None,
     name='ap_null',
-    description='Null converter for aperiodic converter - return fit param.',
-    function=lambda param, model : \
-        model.results.params.aperiodic._fit[model.modes.aperiodic.params.indices[param]]
+    description='Null converter for aperiodic converter - return fit parameter value.',
+    function=lambda fit_value, model : fit_value,
 )
 
 ###################################################################################################
@@ -30,9 +29,8 @@ ap_null = AperiodicParamConverter(
 pe_null = PeriodicParamConverter(
     parameter=None,
     name='pe_null',
-    description='Null converter for aperiodic converter - return fit param.',
-    function=lambda param, model, peak_ind : \
-        model.results.params.periodic._fit[peak_ind, model.modes.periodic.params.indices[param]]
+    description='Null converter for aperiodic converter - return fit parameter value.',
+    function=lambda fit_value, model, peak_ind : fit_value,
 )
 
 ## PE - PW
@@ -42,7 +40,7 @@ pw_log_sub = PeriodicParamConverter(
     name='log_sub',
     description='Convert peak height to be the log subtraction '\
         'of full model and aperiodic component.',
-    function=lambda param, model, peak_ind : \
+    function=lambda fit_value, model, peak_ind : \
         compute_peak_height(model, peak_ind, 'log', 'subtract'),
 )
 
@@ -51,7 +49,7 @@ pw_log_div = PeriodicParamConverter(
     name='log_div',
     description='Convert peak height to be the log division '\
         'of full model and aperiodic component.',
-    function=lambda param, model, peak_ind : \
+    function=lambda fit_value, model, peak_ind : \
         compute_peak_height(model, peak_ind, 'log', 'divide'),
 )
 
@@ -60,7 +58,7 @@ pw_lin_sub = PeriodicParamConverter(
     name='lin_sub',
     description='Convert peak height to be the linear subtraction '\
         'of full model and aperiodic component.',
-    function=lambda param, model, peak_ind : \
+    function=lambda fit_value, model, peak_ind : \
         compute_peak_height(model, peak_ind, 'linear', 'subtract'),
 )
 
@@ -69,7 +67,7 @@ pw_lin_div = PeriodicParamConverter(
     name='lin_div',
     description='Convert peak height to be the linear division '\
         'of full model and aperiodic component.',
-    function=lambda param, model, peak_ind : \
+    function=lambda fit_value, model, peak_ind : \
         compute_peak_height(model, peak_ind, 'linear', 'divide'),
 )
 
@@ -80,9 +78,7 @@ bw_full_width = PeriodicParamConverter(
     name='full_width',
     description='Convert peak bandwidth to be the full, '\
         'two-sided bandwidth of the peak.',
-    function=lambda param, model, peak_ind : \
-        2 * model.results.params.periodic._fit[\
-            peak_ind, model.modes.periodic.params.indices['bw']]
+    function=lambda fit_value, model, peak_ind : 2 * fit_value,
 )
 
 ###################################################################################################
