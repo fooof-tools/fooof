@@ -28,7 +28,7 @@ from specparam.modes.convert import DEFAULT_CONVERTERS
 from specparam.plts.utils import check_ax
 
 def plot_peak_height(model, peak_ind, spacing, operation, ax=None):
-    """Annotat plot by drawing the computed peak height."""
+    """Annotate plot by drawing the computed peak height."""
 
     # Get the frequency value of the data closest to the specified peak
     f_ind = nearest_ind(model.data.freqs,
@@ -204,31 +204,33 @@ print('lin div : {:+08.4f}'.format(peak_heights['lin_div']))
 
 ###################################################################################################
 #
-# As expected, we can see that the four differet combinations of spacing and operation can
+# As expected, we can see that the four different combinations of spacing and operation can
 # lead to 4 different answers for the peak height.
 #
-# We can also go one step further, and examing (un)logging the results.
+# We can also go one step further, and examine (un)logging the results, to explore if
+# changing the spacing of the computed results aligns with any of the original calculations.
 #
 
 ###################################################################################################
 
-# Check logging / unlogging measures: lines up with above
+# Check logging / unlogging measures: un-logged log sub is same as linear division
 print('Unlog log sub  : {:+08.4f}'.format(unlog(peak_heights['log_sub'])))
+
+###################################################################################################
+
+# Check logging / unlogging measures: logged linear-division is the same as log subtraction
 print('Log of lin div : {:+08.4f}'.format(np.log10(peak_heights['lin_div'])))
 
 ###################################################################################################
-
-# Check logging / unlogging measures: does not line up with above
-print('Unlog log div  : {:+08.4f}'.format(unlog(peak_heights['log_div'])))
-print('Log of lin sub : {:+08.4f}'.format(np.log10(peak_heights['lin_sub'])))
-
-###################################################################################################
 #
-# As expected, unlogging the log-subtraction is equivalent to the linear division, and
-# (vice-versa) logging the linear division is equivalent to the log-subtraction.
+# In the above examples we see that changing the spacing of some results does line up with
+# some of the previously computed estimates. As expected based on the log rules, unlogging
+# the log-subtraction is equivalent to the linear division, and (vice-versa) logging the
+# linear division is equivalent to the log-subtraction.
 #
-# However, unlogging the log-division or logging the linear-subtraction do not lead to
-# answers that align with any of the previous measures.
+# This also means that you cannot convert directly between spacing keeping the same operation,
+# for example, you cannot convert to the linear-subtraction result by unlogging
+# the log-subtraction result.
 #
 # To summarize:
 #
