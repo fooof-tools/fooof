@@ -1,5 +1,7 @@
 """Define parameter converters."""
 
+from copy import deepcopy
+
 from specparam.convert.converter import AperiodicParamConverter, PeriodicParamConverter
 from specparam.convert.params import compute_peak_height
 
@@ -10,6 +12,30 @@ DEFAULT_CONVERTERS = {
     'aperiodic' : {'offset' : None, 'exponent' : None},
     'periodic' : {'cf' : None, 'pw' : 'log_sub', 'bw' : 'full_width'},
 }
+
+
+def update_converters(defaults, updates):
+    """Update default converters.
+
+    Parameters
+    ----------
+    defaults : dict
+        Default converters.
+    updates : dict
+        Converter definitions to update.
+
+    Returns
+    -------
+    converters : dict
+        Updated converters definition.
+    """
+
+    out = deepcopy(defaults)
+    for component, converters in updates.items():
+        for param, converter in converters.items():
+            out[component][param] = converter
+
+    return out
 
 ###################################################################################################
 ## APERIODIC PARAMETER CONVERTERS
