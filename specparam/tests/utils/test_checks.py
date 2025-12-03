@@ -113,3 +113,13 @@ def test_check_inds():
     # Check None inputs, including length input
     assert isinstance(check_inds(None), slice)
     assert isinstance(check_inds(None, 4), range)
+
+def test_check_all_none():
+
+    assert check_all_none([None])
+    assert check_all_none([None, None])
+    assert check_all_none((None,))
+
+    assert not check_all_none([])
+    assert not check_all_none([1, None])
+    assert not check_all_none([1, 2, 3])

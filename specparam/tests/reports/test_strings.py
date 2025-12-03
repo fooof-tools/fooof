@@ -14,6 +14,13 @@ def test_gen_version_str():
 
     assert gen_version_str()
 
+def test_gen_data_str(tdata, tdata2d, tdata2dt, tdata3d):
+
+    assert gen_data_str(tdata)
+    assert gen_data_str(tdata2d)
+    assert gen_data_str(tdata2dt)
+    assert gen_data_str(tdata3d)
+
 def test_gen_modes_str(tfm):
 
     assert gen_modes_str(tfm.modes)
