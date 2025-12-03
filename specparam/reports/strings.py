@@ -144,7 +144,8 @@ def gen_data_str(data, concise=False):
 
         # Get number of spectra, checking attributes for {Data3D, Data2DT, Data2D, Data}
         if getattr(data, 'n_events', None):
-            n_spectra_str = '{} spectrograms with {} windows each'.format(data.n_events, data.n_time_windows)
+            n_spectra_str = '{} spectrograms with {} windows each'.format(\
+                data.n_events, data.n_time_windows)
         elif getattr(data, 'n_time_windows', None):
             n_spectra_str = '1 spectrogram with {} windows'.format(data.n_time_windows)
         elif getattr(data, 'n_spectra', None):
@@ -464,7 +465,8 @@ def gen_model_results_str(model, concise=False):
         'Aperiodic Parameters (\'{}\' mode)'.format(model.modes.aperiodic.name),
         '(' + ', '.join(model.modes.aperiodic.params.labels) + ')',
         ', '.join(['{:2.4f}'] * \
-            len(model.results.params.aperiodic.params)).format(*model.results.params.aperiodic.params),
+            len(model.results.params.aperiodic.params)).format(\
+                *model.results.params.aperiodic.params),
         '',
 
         'Peak Parameters (\'{}\' mode) {} peaks found'.format(\

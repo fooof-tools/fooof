@@ -17,8 +17,8 @@ def test_algorithm_inherit(tfm):
 
     class TestAlgo(BaseModel):
         def __init__(self):
-            BaseModel.__init__(self, aperiodic_mode='fixed',
-                               periodic_mode='gaussian', verbose=False)
+            BaseModel.__init__(self, aperiodic_mode='fixed', periodic_mode='gaussian',
+                               converters=None, verbose=False)
             self.data = Data()
             self.add_data = self.data.add_data
             self.results = Results(modes=self.modes)

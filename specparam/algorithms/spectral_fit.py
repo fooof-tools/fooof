@@ -186,12 +186,6 @@ class SpectralFitAlgorithm(AlgorithmCF):
         self.results.model.modeled_spectrum = \
             self.results.model._peak_fit + self.results.model._ap_fit
 
-        ## PARAMETER UPDATES
-
-        # Convert fit peak parameters to updated values
-        self.results.params.periodic.add_params('converted', \
-            self._create_peak_params(self.results.params.periodic.get_params('fit')))
-
 
     def _get_ap_guess(self, freqs, power_spectrum):
         """Get the guess parameters for the aperiodic fit.
@@ -603,52 +597,3 @@ class SpectralFitAlgorithm(AlgorithmCF):
         guess = np.array([gu for (gu, keep) in zip(guess, keep_peak) if keep])
 
         return guess
-
-
-    def _create_peak_params(self, fit_peak_params):
-        """Copies over the fit peak parameters output parameters, updating as appropriate.
-
-        Parameters
-        ----------
-        fit_peak_params : 2d array
-            Parameters that define the peak parameters directly fit to the spectrum.
-
-        Returns
-        -------
-        peak_params : 2d array
-            Updated parameter values for the peaks.
-
-        Notes
-        -----
-        The center frequency estimate is unchanged as the peak center frequency.
-
-        The peak height is updated to reflect the height of the peak above
-        the aperiodic fit. This is returned instead of the fit peak height, as
-        the fit height is harder to interpret, due to peak overlaps.
-
-        The peak bandwidth is updated to be 'both-sided', to reflect the overal width
-        of the peak, as opposed to the fit parameter, which is 1-sided standard deviation.
-
-        Performing this conversion requires that the model has been run,
-        with `freqs`, `modeled_spectrum` and `_ap_fit` all required to be available.
-        """
-
-        inds = self.modes.periodic.params.indices
-
-        peak_params = np.empty((len(fit_peak_params), self.modes.periodic.n_params))
-
-        for ii, peak in enumerate(fit_peak_params):
-
-            cpeak = peak.copy()
-
-            # Gets the index of the power_spectrum at the frequency closest to the CF of the peak
-            cf_ind = np.argmin(np.abs(self.data.freqs - peak[inds['cf']]))
-            cpeak[inds['pw']] = \
-                self.results.model.modeled_spectrum[cf_ind] - self.results.model._ap_fit[cf_ind]
-
-            # Bandwidth is updated to be 'two-sided' (as opposed to one-sided std dev)
-            cpeak[inds['bw']] = peak[inds['bw']] * 2
-
-            peak_params[ii] = cpeak
-
-        return peak_params
