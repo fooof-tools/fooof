@@ -119,6 +119,8 @@ class SpectralTimeModel(SpectralGroupModel):
         bands : Bands or dict or int, optional
             How to organize peaks into bands.
             If Bands or dict, uses band definitions. If int, extracts the first 'n' peaks.
+        TODOXX:results_format :
+            xx
         n_jobs : int, optional, default: 1
             Number of jobs to run in parallel.
             1 is no parallelization. -1 uses all available cores.
@@ -132,24 +134,29 @@ class SpectralTimeModel(SpectralGroupModel):
 
         self.fit(freqs, spectrogram, freq_range, bands, n_jobs=n_jobs, progress=progress)
         self.plot(report_type)
-        self.print_results(report_type)
+        self.print('results', report_type)
 
 
-    def print_results(self, print_type='time', concise=False):
-        """Print out SpectralTimeModel results.
+    def print(self, info='results', report_type='time', concise=False):
+        """Print out requested information.
 
         Parameters
         ----------
-        print_type : {'time', 'group'}
-            Which format to print results out in.
+        info : {'results', ...}
+            xxx
+        report_type : {'time', 'group'}
+            Which report type to print results in. Only used if 'info' is 'results'.
         concise : bool, optional, default: False
             Whether to print the report in a concise mode, or not.
         """
 
-        if print_type == 'time':
-            print(gen_time_results_str(self, concise))
-        if print_type == 'group':
-            super().print_results(concise)
+        if info == 'results':
+            if report_type == 'time':
+                print(gen_time_results_str(self, concise=concise))
+            if report_type == 'group':
+                super().print('results', concise=concise)
+        else:
+            super().print(info, concise=concise)
 
 
     @copy_doc_func_to_method(plot_time_model)

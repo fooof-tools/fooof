@@ -182,7 +182,7 @@ class SpectralGroupModel(SpectralModel):
 
         self.fit(freqs, power_spectra, freq_range, n_jobs=n_jobs, progress=progress)
         self.plot(**plot_kwargs)
-        self.print_results(False)
+        self.print('results')
 
 
     @copy_doc_func_to_method(plot_group_model)
@@ -331,16 +331,21 @@ class SpectralGroupModel(SpectralModel):
         save_group_report(self, file_name, file_path, add_settings)
 
 
-    def print_results(self, concise=False):
-        """Print out the group results.
+    def print(self, info='results', concise=False):
+        """Print out requested information.
 
         Parameters
         ----------
+        info : {'results', ...}
+            xx
         concise : bool, optional, default: False
             Whether to print the report in a concise mode, or not.
         """
 
-        print(gen_group_results_str(self, concise))
+        if info == 'results':
+            print(gen_group_results_str(self, concise=concise))
+        else:
+            super().print(info, concise=concise)
 
 
     def save_model_report(self, index, file_name, file_path=None,

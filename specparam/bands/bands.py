@@ -2,6 +2,8 @@
 
 from collections import OrderedDict
 
+from specparam.reports.strings import gen_bands_str
+
 ###################################################################################################
 ###################################################################################################
 
@@ -124,6 +126,18 @@ class Bands():
         self._n_bands = None
         self._check_band(label, band_definition)
         self.bands[label] = tuple(band_definition)
+
+
+    def print(self, concise=False):
+        """Print out the current band definitions.
+
+        Parameters
+        ----------
+        concise : bool, optional, default: False
+            Whether to print the report in a concise mode, or not.
+        """
+
+        print(gen_bands_str(self, concise))
 
 
     def remove_band(self, label):

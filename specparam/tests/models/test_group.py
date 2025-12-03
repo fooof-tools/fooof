@@ -235,8 +235,7 @@ def test_fit_par():
 def test_print(tfg):
     """Check print method (alias)."""
 
-    tfg.print_results()
-    assert True
+    tfg.print('results')
 
 def test_save_model_report(tfg, skip_if_no_mpl):
 
