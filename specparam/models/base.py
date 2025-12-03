@@ -31,10 +31,11 @@ class BaseModel():
         Verbosity status.
     """
 
-    def __init__(self, aperiodic_mode, periodic_mode, verbose):
+    def __init__(self, aperiodic_mode, periodic_mode, converters, verbose):
         """Initialize object."""
 
         self.add_modes(aperiodic_mode, periodic_mode)
+        self._converters = converters
         self.verbose = verbose
 
 

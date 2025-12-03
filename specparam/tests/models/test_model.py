@@ -76,7 +76,8 @@ def test_fit_nk():
 
     # Check model results - gaussian parameters
     for ii, gauss in enumerate(groupby(gauss_params, 3)):
-        assert np.allclose(gauss, tfm.results.params.periodic.get_params('fit')[ii], [2.0, 0.5, 1.0])
+        assert np.allclose(gauss, \
+            tfm.results.params.periodic.get_params('fit')[ii], [2.0, 0.5, 1.0])
 
 def test_fit_nk_noise():
     """Test fit on noisy data, to make sure nothing breaks."""
@@ -107,7 +108,8 @@ def test_fit_knee():
 
     # Check model results - gaussian parameters
     for ii, gauss in enumerate(groupby(gauss_params, 3)):
-        assert np.allclose(gauss, tfm.results.params.periodic.get_params('fit')[ii], [2.0, 0.5, 1.0])
+        assert np.allclose(gauss, \
+            tfm.results.params.periodic.get_params('fit')[ii], [2.0, 0.5, 1.0])
 
 def test_fit_default_metrics():
     """Test computing metrics, post model fitting."""
@@ -137,6 +139,24 @@ def test_fit_custom_metrics():
     for key, val in tfm.results.metrics.results.items():
         assert key in metrics
         assert isinstance(val, float)
+
+def test_fit_null_conversions(tfm):
+
+    null_converters = tfm.modes.get_params('dict')
+    ntfm = SpectralModel(converters=null_converters)
+
+    ntfm.fit(tfm.data.freqs, tfm.get_data('full', 'linear'))
+    assert np.all(np.isnan(ntfm.results.get_params('aperiodic', version='converted')))
+    assert np.all(np.isnan(ntfm.results.get_params('periodic', version='converted')))
+
+def test_fit_custom_conversions(tfm):
+
+    converters = {'periodic' : {'pw' : 'lin_sub'}}
+    ntfm = SpectralModel(converters=converters)
+
+    ntfm.fit(tfm.data.freqs, tfm.get_data('full', 'linear'))
+    assert not np.array_equal(
+        tfm.results.get_params('periodic', 'pw'), ntfm.results.get_params('periodic', 'pw'))
 
 def test_checks():
     """Test various checks, errors and edge cases for model fitting.

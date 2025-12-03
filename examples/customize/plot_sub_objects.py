@@ -259,7 +259,7 @@ from specparam.models.base import BaseModel
 ###################################################################################################
 
 # Initialize a base model, passing in empty mode definitions
-base = BaseModel(None, None, False)
+base = BaseModel(None, None, None, False)
 
 # Check the API of the object
 print_public_api(base)

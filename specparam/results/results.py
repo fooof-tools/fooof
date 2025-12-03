@@ -10,14 +10,13 @@ from specparam.modes.modes import Modes
 from specparam.results.params import ModelParameters
 from specparam.results.components import ModelComponents
 from specparam.metrics.metrics import Metrics
-from specparam.metrics.definitions import METRICS
-from specparam.utils.checks import check_inds, check_array_dim
+from specparam.utils.checks import check_inds
 from specparam.modutils.errors import NoModelError
 from specparam.modutils.docs import (copy_doc_func_to_method, docs_get_section,
                                      replace_docstring_sections)
 from specparam.data.stores import FitResults
 from specparam.data.conversions import group_to_dict, event_group_to_dict
-from specparam.data.utils import (get_model_params, get_group_params, get_group_metrics,
+from specparam.data.utils import (get_group_params, get_group_metrics,
                                   get_results_by_ind, get_results_by_row)
 from specparam.sim.gen import gen_model
 

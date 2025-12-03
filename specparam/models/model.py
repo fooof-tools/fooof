@@ -12,7 +12,10 @@ from specparam.data.data import Data
 from specparam.data.conversions import model_to_dataframe
 from specparam.results.results import Results
 
-from specparam.algorithms.spectral_fit import SpectralFitAlgorithm, SPECTRAL_FIT_SETTINGS_DEF
+from specparam.convert.convert import convert_aperiodic_params, convert_periodic_params
+from specparam.convert.definitions import update_converters, DEFAULT_CONVERTERS
+
+from specparam.algorithms.spectral_fit import SPECTRAL_FIT_SETTINGS_DEF
 from specparam.algorithms.definitions import ALGORITHMS, check_algorithm_definition
 
 from specparam.reports.save import save_model_report
@@ -20,6 +23,7 @@ from specparam.reports.strings import gen_model_results_str
 from specparam.modutils.errors import NoDataError, FitError
 from specparam.modutils.docs import (copy_doc_func_to_method, replace_docstring_sections,
                                      docs_get_section)
+from specparam.utils.checks import check_all_none
 from specparam.io.files import load_json
 from specparam.io.models import save_model
 from specparam.plts.model import plot_model
@@ -47,6 +51,8 @@ class SpectralModel(BaseModel):
         Setting for the algorithm.
     metrics : Metrics or list of Metric or list or str
         Metrics definition(s) to use to evaluate the model.
+    converters : dict
+        Definition for parameter conversions to apply post fitting.
     bands : Bands or dict or int or None, optional
         Bands object with band definitions, or definition that can be turned into a Bands object.
     debug : bool, optional, default: False
@@ -81,10 +87,13 @@ class SpectralModel(BaseModel):
 
     def __init__(self, aperiodic_mode='fixed', periodic_mode='gaussian',
                  algorithm='spectral_fit', algorithm_settings=None,
-                 metrics=None, bands=None, debug=False, verbose=True, **model_kwargs):
+                 metrics=None, converters=None, bands=None,
+                 debug=False, verbose=True, **model_kwargs):
         """Initialize model object."""
 
-        BaseModel.__init__(self, aperiodic_mode, periodic_mode, verbose)
+        converters = DEFAULT_CONVERTERS if not converters else \
+            update_converters(DEFAULT_CONVERTERS, converters)
+        BaseModel.__init__(self, aperiodic_mode, periodic_mode, converters, verbose)
 
         self.data = Data()
 
@@ -171,6 +180,9 @@ class SpectralModel(BaseModel):
 
             # Call the fit function from the algorithm object
             self.algorithm._fit()
+
+            # Do any parameter conversions
+            self._convert_params()
 
             # Compute post-fit metrics
             self.results.metrics.compute_metrics(self.data, self.results)
@@ -336,6 +348,17 @@ class SpectralModel(BaseModel):
             bands = self.results.bands
 
         return model_to_dataframe(self.results.get_results(), self.modes, bands)
+
+
+    def _convert_params(self):
+        """Convert fit parameters."""
+
+        if not check_all_none(self._converters['aperiodic'].values()):
+            self.results.params.aperiodic.add_params(\
+                'converted', convert_aperiodic_params(self, self._converters['aperiodic']))
+        if not check_all_none(self._converters['periodic'].values()):
+            self.results.params.periodic.add_params(\
+                'converted', convert_periodic_params(self, self._converters['periodic']))
 
 
     def _reset_data_results(self, clear_freqs=False, clear_spectrum=False, clear_results=False):
