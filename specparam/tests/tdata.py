@@ -4,7 +4,7 @@ import numpy as np
 
 from specparam.bands import Bands
 from specparam.modes.modes import Modes
-from specparam.data.data import Data, Data2D
+from specparam.data.data import Data, Data2D, Data2DT, Data3D
 from specparam.data.stores import FitResults
 from specparam.models import (SpectralModel, SpectralGroupModel,
                               SpectralTimeModel, SpectralTimeEventModel)
@@ -49,6 +49,26 @@ def get_tdata2d():
     tdata2d.add_data(*sim_group_power_spectra(n_spectra, *default_group_params()))
 
     return tdata2d
+
+def get_tdata2dt():
+
+    n_spectra = 3
+    tdata2dt = Data2DT()
+    tdata2dt.add_data(*sim_spectrogram(n_spectra, *default_group_params()))
+
+    return tdata2dt
+
+def get_tdata3d():
+
+    n_events = 2
+    n_spectra = 3
+    tdata3d = Data3D()
+    freqs, spectrogram = sim_spectrogram(n_spectra, *default_group_params())
+    tdata3d.add_data(freqs, [spectrogram] * n_events)
+
+    return tdata3d
+
+## TEST MODEL OBJECTS
 
 def get_tfm():
     """Get a model object, with a fit power spectrum, for testing."""
@@ -116,6 +136,8 @@ def get_tfe():
     tfe.fit(xs, ys)
 
     return tfe
+
+## TEST OTHER OBJECTS
 
 def get_tbands():
     """Get a bands object, for testing."""

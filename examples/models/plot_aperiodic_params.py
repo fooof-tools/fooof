@@ -169,11 +169,11 @@ print('Knee frequency: ', knee_frequency)
 # to the auto-correlation function, and from there to the empirical time constant of the data.
 #
 # The :func:`~.compute_time_constant` function can be used to compute the knee-derived
-# time constant.
+# time constant. It takes the knee frequency as the input and calculates the time constant from it.
 #
 
 ###################################################################################################
 
 # Compute the characteristic time constant of a knee value
-time_constant = compute_time_constant(fm.get_params('aperiodic', 'knee'))
+time_constant = compute_time_constant(knee_frequency)
 print('Knee derived time constant: ', time_constant)

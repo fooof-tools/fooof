@@ -9,6 +9,7 @@ from specparam.sim.gen import gen_freqs
 from specparam.data import SpectrumMetaData, ModelChecks
 from specparam.utils.spectral import trim_spectrum
 from specparam.utils.checks import check_input_options
+from specparam.reports.strings import gen_data_str
 from specparam.modutils.errors import DataError, InconsistentDataError
 from specparam.modutils.docs import docs_get_section, replace_docstring_sections
 from specparam.plts.settings import PLT_COLORS
@@ -75,6 +76,17 @@ class Data():
         """Indicator for if the object contains data."""
 
         return bool(np.any(self.power_spectrum))
+
+
+    @property
+    def n_freqs(self):
+        """Indicator for the number of frequency values."""
+
+        n_freqs = None
+        if self.has_data:
+            n_freqs = len(self.freqs)
+
+        return n_freqs
 
 
     def add_data(self, freqs, power_spectrum, freq_range=None):
@@ -149,6 +161,18 @@ class Data():
             plt_kwargs, {'color' : PLT_COLORS['data'], 'linewidth' : 2.0})
         plot_spectra(self.freqs, self.power_spectrum, log_freqs=plt_log,
                      log_powers=False, **data_kwargs)
+
+
+    def print(self, concise=False):
+        """Print out a data summary.
+
+        Parameters
+        ----------
+        concise : bool, optional, default: False
+            Whether to print the report in a concise mode, or not.
+        """
+
+        print(gen_data_str(self, concise))
 
 
     def set_checks(self, check_freqs=None, check_data=None):
@@ -328,6 +352,17 @@ class Data2D(Data):
         """Indicator for if the object contains data."""
 
         return bool(np.any(self.power_spectra))
+
+
+    @property
+    def n_spectra(self):
+        """Indicator for the number of power spectra."""
+
+        n_spectra = None
+        if self.has_data:
+            n_spectra = len(self.power_spectra)
+
+        return n_spectra
 
 
     def add_data(self, freqs, power_spectra, freq_range=None):
@@ -513,6 +548,17 @@ class Data3D(Data2DT):
         """How many events are included in the model object."""
 
         return len(self.spectrograms)
+
+
+    @property
+    def n_spectra(self):
+        """Redefine n_spectra marker to reflect the total number of spectra."""
+
+        n_spectra = None
+        if self.has_data:
+            n_spectra = self.n_events * self.n_time_windows
+
+        return n_spectra
 
 
     def add_data(self, freqs, spectrograms, freq_range=None):
