@@ -52,6 +52,15 @@ def test_cauchy_function():
 
     assert np.all(ys)
 
+def test_gamma_function():
+
+    ctr, hgt, shp, scl = 50, 5, 2, 2
+
+    xs = np.arange(1, 100, 1.)
+    ys = gamma_function(xs, ctr, hgt, shp, scl)
+
+    assert np.any(ys)
+
 ## Aperiodic functions
 
 def test_expo_function():

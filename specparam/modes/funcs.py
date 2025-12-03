@@ -1,8 +1,11 @@
 """Functions that can be used for model fitting."""
 
+from math import gamma
+
 import numpy as np
 from scipy.special import erf
 
+from specparam.utils.array import normalize
 from specparam.utils.array import normalize
 
 ###################################################################################################
@@ -86,6 +89,41 @@ def cauchy_function(xs, *params):
     for ctr, hgt, wid in zip(*[iter(params)] * 3):
 
         ys = ys + hgt*wid**2/((xs-ctr)**2+wid**2)
+
+    return ys
+
+
+def gamma_function(xs, *params):
+    """Gamma fitting function.
+
+    Parameters
+    ----------
+    xs : 1d array
+        Input x-axis values.
+    *params : float
+        Parameters that define a gamma function.
+
+    Returns
+    -------
+    ys : 1d array
+        Output values for gamma function.
+
+    Notes
+    -----
+    Parameters should come in ordered sets of 4, each including the following:
+
+    - cf: center frequency parameter
+    - pw: power (height) parameter
+    - shp: shape parameter
+    - scl: scale parameter
+    """
+
+    ys = np.zeros_like(xs)
+
+    for ctr, hgt, shp, scale in zip(*[iter(params)] * 4):
+        cxs = xs-ctr
+        cxs = cxs.clip(min=0)
+        ys = ys + hgt * normalize((1 / (gamma(shp) * scale**shp) * cxs**(shp-1) * np.exp(-cxs/scale)))
 
     return ys
 
