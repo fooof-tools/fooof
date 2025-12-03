@@ -188,6 +188,8 @@ MODES = {
     'periodic' : PE_MODES,
 }
 
+###################################################################################################
+## CHECKER FUNCTION
 
 def check_modes(component, check_params=False):
     """Check the set of modes that are available.

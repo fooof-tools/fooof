@@ -16,6 +16,8 @@ def test_data():
 
     tdata = Data()
     assert tdata
+    assert not tdata.has_data
+    assert not tdata.n_freqs
 
 def test_data_add_data():
 
@@ -23,6 +25,7 @@ def test_data_add_data():
     freqs, pows = np.array([1, 2, 3]), np.array([10, 10, 10])
     tdata.add_data(freqs, pows)
     assert tdata.has_data
+    assert tdata.n_freqs == len(freqs)
 
 def test_data_meta_data():
 
@@ -66,6 +69,7 @@ def test_data2d():
     assert tdata2d
     assert isinstance(tdata2d, Data)
     assert isinstance(tdata2d, Data2D)
+    assert not tdata2d.has_data
 
 def test_data2d_add_data():
 
@@ -73,6 +77,7 @@ def test_data2d_add_data():
     freqs, pows = np.array([1, 2, 3]), np.array([[10, 10, 10], [20, 20, 20]])
     tdata2d.add_data(freqs, pows)
     assert tdata2d.has_data
+    assert tdata2d.n_spectra == len(pows)
 
 @plot_test
 def test_data2d_plot(tdata2d, skip_if_no_mpl):
@@ -88,6 +93,7 @@ def test_data2dt():
     assert isinstance(tdata2dt, Data)
     assert isinstance(tdata2dt, Data2D)
     assert isinstance(tdata2dt, Data2DT)
+    assert not tdata2dt.has_data
 
 def test_data2dt_add_data():
 
@@ -96,7 +102,7 @@ def test_data2dt_add_data():
     tdata2dt.add_data(freqs, pows)
     assert tdata2dt.has_data
     assert np.all(tdata2dt.spectrogram)
-    assert tdata2dt.n_time_windows
+    assert tdata2dt.n_spectra == tdata2dt.n_time_windows == len(pows.T)
 
 ## 3D Data Object
 
@@ -108,6 +114,7 @@ def test_data3d():
     assert isinstance(tdata3d, Data2D)
     assert isinstance(tdata3d, Data2DT)
     assert isinstance(tdata3d, Data3D)
+    assert not tdata3d.has_data
 
 def test_data3d_add_data():
 
@@ -117,3 +124,4 @@ def test_data3d_add_data():
     assert tdata3d.has_data
     assert np.all(tdata3d.spectrograms)
     assert tdata3d.n_events
+    assert tdata3d.n_spectra == 2 * len(pows.T)
