@@ -35,10 +35,13 @@ class Algorithm():
         Results object with model fit results and metrics.
     debug :  bool
         Whether to run in debug state, raising an error if encountered during fitting.
+    model : SpectralModel, optional
+        The model object this object is linked to, to provide access to other attributes.
     """
 
     def __init__(self, name, description, public_settings, private_settings=None,
-                 data_format='spectrum', modes=None, data=None, results=None, debug=False):
+                 data_format='spectrum', modes=None, data=None, results=None,
+                 debug=False, model=None):
         """Initialize Algorithm object."""
 
         self.name = name
@@ -65,6 +68,8 @@ class Algorithm():
         self._reset_subobjects(modes, data, results)
 
         self.set_debug(debug)
+
+        self._model = model
 
 
     def _fit_prechecks(self, verbose):

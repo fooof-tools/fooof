@@ -36,6 +36,8 @@ class Data():
         Whether to check the spectral data. If so, raises an error for any NaN / Inf values.
     format : {'power'}
         The representation format of the data.
+    model : SpectralModel, optional
+        The model object this object is linked to, to provide access to other attributes.
 
     Attributes
     ----------
@@ -55,7 +57,7 @@ class Data():
     All power values are stored internally in log10 scale.
     """
 
-    def __init__(self, check_freqs=True, check_data=True, format='power'):
+    def __init__(self, check_freqs=True, check_data=True, format='power', model=None):
         """Initialize Data object."""
 
         self._reset_data(True, True)
@@ -70,6 +72,7 @@ class Data():
         check_input_options(format, FORMATS, 'format')
         self.format = format
 
+        self._model = model
 
     @property
     def has_data(self):

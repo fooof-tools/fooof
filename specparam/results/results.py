@@ -38,6 +38,8 @@ class Results():
         Metrics object with metric definitions.
     bands : Bands or dict or int or None
         Bands object with band definitions, or definition that can be turned into a Bands object.
+    model : SpectralModel, optional
+        The model object this object is linked to, to provide access to other attributes.
 
     Attributes
     ----------
@@ -54,7 +56,7 @@ class Results():
     """
     # pylint: disable=attribute-defined-outside-init, arguments-differ
 
-    def __init__(self, modes=None, metrics=None, bands=None):
+    def __init__(self, modes=None, metrics=None, bands=None, model=None):
         """Initialize Results object."""
 
         self.modes = modes if modes else Modes(None, None)
@@ -67,6 +69,8 @@ class Results():
 
         # Initialize results attributes
         self._reset_results(True)
+
+        self._model = model
 
 
     @property
