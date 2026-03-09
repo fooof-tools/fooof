@@ -43,7 +43,7 @@ error_medae = Metric(
     space='log',
 )
 
-error_mae_lin = Metric(
+error_maelin = Metric(
     category='error',
     measure='maelin',
     description='Mean absolute error of the model fit to the data, in linear space.',
@@ -62,7 +62,7 @@ gof_rsquared = Metric(
     space='log',
 )
 
-gof_rsquared_lin = Metric(
+gof_rsquaredlin = Metric(
     category='gof',
     measure='rsquaredlin',
     description='R-squared between the model fit and the data, in linear space.',
@@ -92,14 +92,14 @@ METRICS = {
     'error_medae' : error_medae,
 
     # Error metrics - linear spacing
-    'error_mae_lin' : error_mae_lin,
+    'error_maelin' : error_maelin,
 
     # GOF / r-squared metrics - log spacing
     'gof_rsquared' : gof_rsquared,
     'gof_adjrsquared' : gof_adjrsquared,
 
     # GOF / r-squared metrics - linear spacing
-    'gof_rsquared_lin' : gof_rsquared_lin,
+    'gof_rsquaredlin' : gof_rsquaredlin,
 
 }
 
