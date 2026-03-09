@@ -262,10 +262,10 @@ class Results2D(Results):
         Results of the model fit for each power spectrum.
     """
 
-    def __init__(self, modes=None, metrics=None, bands=None):
+    def __init__(self, modes=None, metrics=None, bands=None, model=None):
         """Initialize Results2D object."""
 
-        Results.__init__(self, modes=modes, metrics=metrics, bands=bands)
+        Results.__init__(self, modes=modes, metrics=metrics, bands=bands, model=model)
 
         self._reset_group_results()
 
@@ -441,10 +441,10 @@ class Results2DT(Results2D):
         Results of the model fit across each time window.
     """
 
-    def __init__(self, modes=None, metrics=None, bands=None):
+    def __init__(self, modes=None, metrics=None, bands=None, model=None):
         """Initialize Results2DT object."""
 
-        Results2D.__init__(self, modes=modes, metrics=metrics, bands=bands)
+        Results2D.__init__(self, modes=modes, metrics=metrics, bands=bands, model=model)
 
         self._reset_time_results()
 
@@ -510,10 +510,10 @@ class Results3D(Results2DT):
         Each value in the dictionary stores a model fit parameter, as [n_events, n_time_windows].
     """
 
-    def __init__(self, modes=None, metrics=None, bands=None):
+    def __init__(self, modes=None, metrics=None, bands=None, model=None):
         """Initialize Results3D object."""
 
-        Results2DT.__init__(self, modes=modes, metrics=metrics, bands=bands)
+        Results2DT.__init__(self, modes=modes, metrics=metrics, bands=bands, model=model)
 
         self._reset_event_results()
 

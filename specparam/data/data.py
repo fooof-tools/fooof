@@ -342,10 +342,10 @@ class Data2D(Data):
     All power values are stored internally in log10 scale.
     """
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """Initialize Data2D object."""
 
-        Data.__init__(self)
+        Data.__init__(self, *args, **kwargs)
 
         self.power_spectra = None
 
@@ -454,10 +454,10 @@ class Data2DT(Data2D):
     All power values are stored internally in log10 scale.
     """
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """Initialize Data2DT object."""
 
-        Data2D.__init__(self)
+        Data2D.__init__(self, *args, **kwargs)
 
 
     @property
@@ -524,10 +524,10 @@ class Data3D(Data2DT):
     All power values are stored internally in log10 scale.
     """
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """Initialize Data3D object."""
 
-        Data2DT.__init__(self)
+        Data2DT.__init__(self, *args, **kwargs)
 
         self.spectrograms = None
 
