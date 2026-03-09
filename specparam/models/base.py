@@ -56,7 +56,7 @@ class BaseModel():
             Mode for periodic component, or string specifying which mode to use.
         """
 
-        self.modes = Modes(aperiodic=aperiodic_mode, periodic=periodic_mode)
+        self.modes = Modes(aperiodic=aperiodic_mode, periodic=periodic_mode, model=self)
 
         if getattr(self, 'results', None):
             self.results.modes = self.modes

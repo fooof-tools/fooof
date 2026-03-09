@@ -95,14 +95,14 @@ class SpectralModel(BaseModel):
             update_converters(DEFAULT_CONVERTERS, converters)
         BaseModel.__init__(self, aperiodic_mode, periodic_mode, converters, verbose)
 
-        self.data = Data()
+        self.data = Data(model=self)
 
-        self.results = Results(modes=self.modes, metrics=metrics, bands=bands)
+        self.results = Results(modes=self.modes, metrics=metrics, bands=bands, model=self)
 
         algorithm_settings = {} if algorithm_settings is None else algorithm_settings
         self.algorithm = check_algorithm_definition(algorithm, ALGORITHMS)(
             **algorithm_settings, modes=self.modes, data=self.data,
-            results=self.results, debug=debug, **model_kwargs)
+            results=self.results, debug=debug, model=self, **model_kwargs)
 
 
     @replace_docstring_sections([docs_get_section(Data.add_data.__doc__, 'Parameters'),
