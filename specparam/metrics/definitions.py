@@ -16,6 +16,7 @@ error_mae = Metric(
     measure='mae',
     description='Mean absolute error of the model fit to the data.',
     func=compute_mean_abs_error,
+    space='log',
 )
 
 error_mse = Metric(
@@ -23,6 +24,7 @@ error_mse = Metric(
     measure='mse',
     description='Mean squared error of the model fit to the data.',
     func=compute_mean_squared_error,
+    space='log',
 )
 
 error_rmse = Metric(
@@ -30,6 +32,7 @@ error_rmse = Metric(
     measure='rmse',
     description='Root mean squared error of the model fit to the data.',
     func=compute_root_mean_squared_error,
+    space='log',
 )
 
 error_medae = Metric(
@@ -37,6 +40,15 @@ error_medae = Metric(
     measure='medae',
     description='Median absolute error of the model fit to the data.',
     func=compute_median_abs_error,
+    space='log',
+)
+
+error_mae_lin = Metric(
+    category='error',
+    measure='maelin',
+    description='Mean absolute error of the model fit to the data, in linear space.',
+    func=compute_mean_abs_error,
+    space='linear',
 )
 
 ###################################################################################################
@@ -47,6 +59,15 @@ gof_rsquared = Metric(
     measure='rsquared',
     description='R-squared between the model fit and the data.',
     func=compute_r_squared,
+    space='log',
+)
+
+gof_rsquared_lin = Metric(
+    category='gof',
+    measure='rsquaredlin',
+    description='R-squared between the model fit and the data, in linear space.',
+    func=compute_r_squared,
+    space='linear',
 )
 
 gof_adjrsquared = Metric(
@@ -56,6 +77,7 @@ gof_adjrsquared = Metric(
     func=compute_adj_r_squared,
     kwargs={'n_params' : lambda data, results: \
             results.params.periodic.params.size + results.params.aperiodic.params.size},
+    space='log',
 )
 
 ###################################################################################################
@@ -63,15 +85,21 @@ gof_adjrsquared = Metric(
 
 METRICS = {
 
-    # Available error metrics
+    # Error metrics - log spacing
     'error_mae' : error_mae,
     'error_mse' : error_mse,
     'error_rmse' : error_rmse,
     'error_medae' : error_medae,
 
-    # Available GOF / r-squared metrics
+    # Error metrics - linear spacing
+    'error_mae_lin' : error_mae_lin,
+
+    # GOF / r-squared metrics - log spacing
     'gof_rsquared' : gof_rsquared,
     'gof_adjrsquared' : gof_adjrsquared,
+
+    # GOF / r-squared metrics - linear spacing
+    'gof_rsquared_lin' : gof_rsquared_lin,
 
 }
 
