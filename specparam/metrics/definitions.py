@@ -22,7 +22,7 @@ error_mse = Metric(
     category='error',
     measure='mse',
     description='Mean squared error of the model fit to the data.',
-    func=compute_mean_squared_error
+    func=compute_mean_squared_error,
 )
 
 error_rmse = Metric(

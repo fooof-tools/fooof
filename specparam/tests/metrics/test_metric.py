@@ -20,7 +20,7 @@ def test_metric(tfm):
 def test_metric_kwargs(tfm):
 
     metric = Metric('gof', 'ar2', 'Description.', compute_adj_r_squared,
-                    {'n_params' : lambda data, results: \
+                    kwargs={'n_params' : lambda data, results: \
                         results.params.periodic.params.size + results.params.aperiodic.params.size})
 
     assert isinstance(metric, Metric)
