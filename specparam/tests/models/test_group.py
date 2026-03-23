@@ -183,6 +183,11 @@ def test_fg_fail():
         assert np.isnan(ntfg.results.get_params('aperiodic', 'exponent')[null_ind])
         assert np.isnan(ntfg.results.get_metrics('error', 'mae')[null_ind])
 
+    # Test that fit failures are caught & continued when running in parallel
+    ntfg2 = ntfg.copy()
+    ntfg2.fit(fs, ps, n_jobs=2)
+    assert ntfg2.results.n_null > 0
+
 def test_drop():
     """Test function to drop results from group object."""
 
