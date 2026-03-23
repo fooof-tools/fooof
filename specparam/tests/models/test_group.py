@@ -226,11 +226,28 @@ def test_fit_par():
 
     tfg = SpectralGroupModel(verbose=False)
     tfg.fit(xs, ys, n_jobs=2)
-    out = tfg.results.get_results()
 
-    assert out
-    assert len(out) == n_spectra
-    assert np.all(out[1].aperiodic_fit)
+    assert len(tfg.results.get_results()) == n_spectra
+
+    aps = tfg.get_params('aperiodic')
+    assert aps.shape == (n_spectra, tfg.modes.aperiodic.n_params)
+    assert np.all(aps)
+
+    pes = tfg.get_params('periodic')
+    assert pes.shape == (sum(tfg.results.n_peaks), tfg.modes.periodic.n_params + 1)
+    assert np.all(pes)
+
+    peaks = tfg.get_params('peak')
+    assert peaks.shape == (sum(tfg.results.n_peaks), tfg.modes.periodic.n_params + 1)
+    assert np.all(peaks)
+
+    errs = tfg.get_metrics('error')
+    assert np.all(errs)
+    assert len(errs) == n_spectra
+
+    gofs = tfg.get_metrics('gof')
+    assert np.all(gofs)
+    assert len(gof) == n_spectra
 
 def test_print(tfg):
     """Check print method (alias)."""
