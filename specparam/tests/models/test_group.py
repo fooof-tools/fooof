@@ -231,23 +231,23 @@ def test_fit_par():
 
     aps = tfg.get_params('aperiodic')
     assert aps.shape == (n_spectra, tfg.modes.aperiodic.n_params)
-    assert np.all(aps)
+    assert np.all(~np.isnan(aps))
 
     pes = tfg.get_params('periodic')
     assert pes.shape == (sum(tfg.results.n_peaks), tfg.modes.periodic.n_params + 1)
-    assert np.all(pes)
+    assert np.all(~np.isnan(pes))
 
     peaks = tfg.get_params('peak')
     assert peaks.shape == (sum(tfg.results.n_peaks), tfg.modes.periodic.n_params + 1)
-    assert np.all(peaks)
+    assert np.all(~np.isnan(peaks))
 
     errs = tfg.get_metrics('error')
-    assert np.all(errs)
+    assert np.all(~np.isnan(errs))
     assert len(errs) == n_spectra
 
     gofs = tfg.get_metrics('gof')
-    assert np.all(gofs)
-    assert len(gof) == n_spectra
+    assert np.all(~np.isnan(gofs))
+    assert len(gofs) == n_spectra
 
 def test_print(tfg):
     """Check print method (alias)."""
