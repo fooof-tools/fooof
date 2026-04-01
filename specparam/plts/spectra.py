@@ -78,7 +78,7 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False, freq_r
         # Set plot data, logging if requested, and collect color, if absent
         freqs = np.log10(freqs) if log_freqs else freqs
         powers = np.log10(powers) if log_powers else powers
-        if color:
+        if color is not None:
             plot_kwargs['color'] = color
 
         ax.plot(freqs, powers, label=label, **plot_kwargs)
