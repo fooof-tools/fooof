@@ -15,7 +15,7 @@ import numpy as np
 from specparam.io.utils import create_file_path
 from specparam.modutils.dependencies import safe_import
 from specparam.modutils.functions import resolve_aliases
-from specparam.plts.settings import PLT_ALPHA_LEVELS, PLT_ALIASES
+from specparam.plts.settings import ITERABLES, PLT_ALPHA_LEVELS, PLT_ALIASES
 
 plt = safe_import('.pyplot', 'matplotlib')
 
@@ -92,8 +92,8 @@ def add_shades(ax, shades, colors='r', shade_alpha=0.2,
     if not isinstance(shades[0], (tuple, list)):
         shades = [shades]
 
-    colors = repeat(colors) if not isinstance(colors, list) else colors
-    shade_alphas = repeat(shade_alpha) if not isinstance(shade_alpha, list) else shade_alpha
+    colors = repeat(colors) if not isinstance(colors, ITERABLES) else colors
+    shade_alphas = repeat(shade_alpha) if not isinstance(shade_alpha, ITERABLES) else shade_alpha
 
     for shade, color, alpha in zip(shades, colors, shade_alphas):
 

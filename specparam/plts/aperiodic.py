@@ -8,7 +8,7 @@ from specparam.sim.gen import gen_freqs
 from specparam.modutils.dependencies import safe_import, check_dependency
 from specparam.modes.modes import check_mode_definition
 from specparam.modes.definitions import AP_MODES
-from specparam.plts.settings import PLT_FIGSIZES
+from specparam.plts.settings import ITERABLES, PLT_FIGSIZES
 from specparam.plts.templates import plot_yshade
 from specparam.plts.style import style_param_plot, style_plot
 from specparam.plts.utils import check_ax, recursive_plot, savefig, check_plot_kwargs
@@ -117,7 +117,7 @@ def plot_aperiodic_fits(aps, freq_range, aperiodic_mode, control_offset=False, a
         freqs = gen_freqs(freq_range, 0.1)
         plt_freqs = np.log10(freqs) if log_freqs else freqs
 
-        colors = colors[0] if isinstance(colors, list) else colors
+        colors = colors[0] if isinstance(colors, ITERABLES) else colors
 
         all_ap_vals = np.zeros(shape=(len(aps), len(freqs)))
         for ind, ap_params in enumerate(aps):

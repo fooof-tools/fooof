@@ -13,7 +13,7 @@ import numpy as np
 from specparam.modutils.dependencies import safe_import, check_dependency
 from specparam.utils.select import dict_extract_keys
 from specparam.plts.templates import plot_yshade
-from specparam.plts.settings import PLT_FIGSIZES
+from specparam.plts.settings import ITERABLES, PLT_FIGSIZES
 from specparam.plts.style import style_spectrum_plot, style_plot
 from specparam.plts.utils import check_ax, add_shades, savefig, check_plot_kwargs
 
@@ -69,8 +69,8 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False, freq_r
     # Set labels
     labels = plot_kwargs.pop('label') \
         if 'label' in plot_kwargs.keys() and labels is None else labels
-    labels = repeat(labels) if not isinstance(labels, list) else cycle(labels)
-    colors = repeat(colors) if not isinstance(colors, list) else cycle(colors)
+    labels = repeat(labels) if not isinstance(labels, ITERABLES) else cycle(labels)
+    colors = repeat(colors) if not isinstance(colors, ITERABLES) else cycle(colors)
 
     # Plot power spectra, looping across all spectra to plot
     for freqs, powers, color, label in zip(plt_freqs, plt_powers, colors, labels):
