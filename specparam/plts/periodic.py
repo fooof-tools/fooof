@@ -30,7 +30,7 @@ def plot_peak_params(peaks, freq_range=None, colors=None, labels=None, ax=None, 
         Peak data. Each row is a peak, as [CF, PW, BW].
     freq_range : list of [float, float] , optional
         The frequency range to plot the peak parameters across, as [f_min, f_max].
-    colors : str or list of str, optional
+    colors : str or iterable, optional
         Color(s) to plot data.
     labels : list of str, optional
         Label(s) for plotted data, to be added in a legend.
@@ -93,7 +93,7 @@ def plot_peak_fits(peaks, periodic_mode, freq_range=None, average='mean', shade=
     plot_individual : bool, optional, default: True
         Whether to plot individual component reconstructions.
         If False, only the average component reconstruction is plotted.
-    colors : str or list of str, optional
+    colors : str or iterable, optional
         Color(s) to plot data.
     labels : list of str, optional
         Label(s) for plotted data, to be added in a legend.

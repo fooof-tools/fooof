@@ -75,7 +75,7 @@ def add_shades(ax, shades, colors='r', shade_alpha=0.2,
         Figure axes upon which to plot.
     shades : list of [float, float] or list of list of [float, float]
         Shaded region(s) to add to plot, defined as [lower_bound, upper_bound].
-    colors : str or list of string
+    colors : str or iterable, default: 'red'
         Color(s) to plot shades.
     shade_alpha : float or list of float, optional, default: 0.2
         The alpha level to add the shade regions with.

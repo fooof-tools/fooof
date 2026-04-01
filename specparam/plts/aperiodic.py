@@ -28,7 +28,7 @@ def plot_aperiodic_params(aps, colors=None, labels=None, ax=None, **plot_kwargs)
     ----------
     aps : 2d array or list of 2d array
         Aperiodic parameters. Each row is a parameter set, as [Off, Exp] or [Off, Knee, Exp].
-    colors : str or list of str, optional
+    colors : str or iterable, optional
         Color(s) to plot data.
     labels : list of str, optional
         Label(s) for plotted data, to be added in a legend.
@@ -89,7 +89,7 @@ def plot_aperiodic_fits(aps, freq_range, aperiodic_mode, control_offset=False, a
         Whether to control for the offset, by setting it to zero.
     log_freqs : boolean, optional, default: False
         Whether to plot the x-axis in log space.
-    colors : str or list of str, optional
+    colors : str or iterable, optional
         Color(s) to plot data.
     labels : list of str, optional
         Label(s) for plotted data, to be added in a legend.

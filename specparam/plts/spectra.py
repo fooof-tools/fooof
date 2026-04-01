@@ -41,7 +41,7 @@ def plot_spectra(freqs, power_spectra, log_freqs=False, log_powers=False, freq_r
         Whether to plot the power axis in log spacing.
     freq_range : list of [float, float], optional
         Frequency range to plot, defined in linear space.
-    colors : list of str, optional, default: None
+    colors : str or iterable, optional, default: None
         Line colors of the spectra.
     labels : list of str, optional, default: None
         Legend labels for the spectra.
@@ -106,7 +106,7 @@ def plot_spectra_shading(freqs, power_spectra, shades, shade_colors='r',
         Power values, to be plotted on the y-axis.
     shades : list of [float, float] or list of list of [float, float]
         Shaded region(s) to add to plot, defined as [lower_bound, upper_bound].
-    shade_colors : str or list of string
+    shade_colors : str or iterable, default: 'red'
         Color(s) to plot shades.
     add_center : bool, optional, default: False
         Whether to add a line at the center point of the shaded regions.

@@ -84,7 +84,7 @@ def plot_scatter_2(data_0, label_0, data_1, label_1,
         Label for the data on the second axis, to be set as the axis label.
     title : str, optional
         Title for the plot.
-    colors : list of str, optional
+    colors : iterable, optional
         Color(s) to plot data.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
@@ -277,7 +277,7 @@ def plot_params_over_time(times, params, labels=None, title=None, colors=None,
         Label(s) for the data, to be set as the y-axis label(s).
     title : str, optional
         Title for the plot.
-    colors : list of str
+    colors : iterable, optional
         Color(s) to plot data.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
