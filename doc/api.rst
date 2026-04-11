@@ -165,6 +165,38 @@ Fit Functions
    expo_nk_function
    double_expo_function
 
+Metrics
+-------
+
+Functionality for definining metrics to evaluate model fitting performance.
+
+Metric Object
+~~~~~~~~~~~~~
+
+.. currentmodule:: specparam.metrics.metric
+
+.. autosummary::
+   :toctree: generated/
+
+   Metric
+
+Metrics
+~~~~~~~
+
+...
+
+Metric Utilities
+~~~~~~~~~~~~~~~~
+
+Utility to check for available metrics.
+
+.. currentmodule:: specparam.metrics.definitions
+
+.. autosummary::
+   :toctree: generated/
+
+   check_metrics
+
 Data Objects
 ------------
 
@@ -230,6 +262,18 @@ The following functions operate on arrays of peak parameters, which may be usefu
     get_highest_peak
     threshold_peaks
     sort_peaks
+
+Bands
+~~~~~
+
+An object for defining frequency band definitions.
+
+.. currentmodule:: specparam
+
+.. autosummary::
+   :toctree: generated/
+
+   Bands
 
 Measures
 --------
