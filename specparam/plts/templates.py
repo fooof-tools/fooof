@@ -22,8 +22,8 @@ plt = safe_import('.pyplot', 'matplotlib')
 ###################################################################################################
 
 @check_dependency(plt, 'matplotlib')
-def plot_scatter_1(data, label=None, title=None, x_val=0, color=None, ax=None, **plot_kwargs):
-    """Plot a scatter plot, with a single y-axis.
+def plot_points_1(data, label=None, title=None, x_val=0, color=None, ax=None, **plot_kwargs):
+    """Plot data values as points, with a single y-axis.
 
     Parameters
     ----------
@@ -68,9 +68,9 @@ def plot_scatter_1(data, label=None, title=None, x_val=0, color=None, ax=None, *
 
 
 @check_dependency(plt, 'matplotlib')
-def plot_scatter_2(data_0, label_0, data_1, label_1,
+def plot_points_2(data_0, label_0, data_1, label_1,
                    title=None, colors=None, ax=None, **plot_kwargs):
-    """Plot a scatter plot, with two y-axes.
+    """Plot data values as points, with two y-axes.
 
     Parameters
     ----------
@@ -101,8 +101,8 @@ def plot_scatter_2(data_0, label_0, data_1, label_1,
 
     colors = iter(colors) if isinstance(colors, ITERABLES) else repeat(colors)
 
-    plot_scatter_1(data_0, label_0, color=next(colors), ax=ax, **plot_kwargs)
-    plot_scatter_1(data_1, label_1, x_val=1, color=next(colors), ax=ax1, **plot_kwargs)
+    plot_points_1(data_0, label_0, color=next(colors), ax=ax, **plot_kwargs)
+    plot_points_1(data_1, label_1, x_val=1, color=next(colors), ax=ax1, **plot_kwargs)
 
     if title:
         ax.set_title(title, fontsize=TITLE_FONTSIZE)
