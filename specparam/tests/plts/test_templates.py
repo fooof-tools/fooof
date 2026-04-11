@@ -71,3 +71,13 @@ def test_plot_text(skip_if_no_mpl):
     # Test this plot custom, as text doesn't count as data
     ax = mpl.pyplot.gca()
     assert isinstance(ax.get_children()[0], mpl.text.Text)
+
+def test_plot_formula(skip_if_no_mpl):
+
+    formula = r'A(F) = b - \log(F^\chi)'
+
+    plot_formula(formula)
+
+    # Test this plot custom, as text doesn't count as data
+    ax = mpl.pyplot.gca()
+    assert isinstance(ax.get_children()[0], mpl.text.Text)

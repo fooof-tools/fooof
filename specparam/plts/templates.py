@@ -370,3 +370,18 @@ def plot_text(text, x, y, color=None, ax=None, **plot_kwargs):
     ax.text(x, y, text, PLT_TEXT_FONT, ha='center', va='center', color=color, **plot_kwargs)
     ax.set_frame_on(False)
     ax.set(xticks=[], yticks=[])
+
+
+@check_dependency(plt, 'matplotlib')
+def plot_formula(formula, ax=None):
+    """Plot a formula definition.
+
+    Parameters
+    ----------
+    formula : str
+        Definition of the formula, using mathematical notation.
+    """
+
+    ax = check_ax(ax, figsize=(4, 0.5))
+    ax.axis('off')
+    ax.text(.5, .5, "${}$".format(formula), fontsize=24, ha='center', va='center');
