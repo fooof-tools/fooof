@@ -67,30 +67,14 @@ Functions to manipulate, examine, and analyze model objects.
    average_reconstructions
    fit_models_3d
 
-Component Objects
+Model Sub-Objects
 -----------------
 
 The model object combines multiple sub-objects that define and store different
-elements of the model definition, data, and results.
-
-Here, the main sub-objects are listed, some of which can also be used independently.
-
-Bands
-~~~~~
-
-An object for defining frequency band definitions.
-
-.. currentmodule:: specparam
-
-.. autosummary::
-   :toctree: generated/
-
-   Bands
+elements of the model definition, data, and results. Here, the main sub-objects are listed.
 
 Algorithm
 ~~~~~~~~~
-
-An object for defining fit algorithms.
 
 .. currentmodule:: specparam.algorithms.algorithm
 
@@ -102,58 +86,15 @@ An object for defining fit algorithms.
 Modes
 ~~~~~
 
-An object for defining fit modes.
-
-.. currentmodule:: specparam.modes.mode
+.. currentmodule:: specparam.modes.modes
 
 .. autosummary::
    :toctree: generated/
 
-   Mode
-
-Associated objects allow for defining mode parameters.
-
-.. currentmodule:: specparam.modes.params
-
-.. autosummary::
-   :toctree: generated/
-
-   ParamDefinition
-
-Utility to check for available fit modes.
-
-.. currentmodule:: specparam.modes.definitions
-
-.. autosummary::
-   :toctree: generated/
-
-   check_modes
-
-Metrics
-~~~~~~~
-
-An object for defining metrics.
-
-.. currentmodule:: specparam.metrics.metric
-
-.. autosummary::
-   :toctree: generated/
-
-   Metric
-
-Utility to check for available metrics.
-
-.. currentmodule:: specparam.metrics.definitions
-
-.. autosummary::
-   :toctree: generated/
-
-   check_metrics
+   Modes
 
 Data
 ~~~~
-
-An object for managing data to be modeled.
 
 .. currentmodule:: specparam.data.data
 
@@ -165,14 +106,64 @@ An object for managing data to be modeled.
 Results
 ~~~~~~~
 
-An object for managing model results.
-
 .. currentmodule:: specparam.results.results
 
 .. autosummary::
    :toctree: generated/
 
    Results
+
+Model Definitions
+-----------------
+
+Words, words, words.
+
+Mode
+~~~~
+
+The Mode object is the key entity for defining a fit mode.
+
+.. currentmodule:: specparam.modes.mode
+
+.. autosummary::
+   :toctree: generated/
+
+   Mode
+
+Mode Utilities
+~~~~~~~~~~~~~~
+
+Associated utilties for fit modes, including for checking defined modes and defining and managing mode parameters.
+
+.. currentmodule:: specparam.modes.params
+
+.. autosummary::
+   :toctree: generated/
+
+   ParamDefinition
+
+.. currentmodule:: specparam.modes.definitions
+
+.. autosummary::
+   :toctree: generated/
+
+   check_modes
+
+Fit Functions
+~~~~~~~~~~~~~
+
+.. currentmodule:: specparam.modes.funcs
+
+.. autosummary::
+   :toctree: generated/
+
+   gaussian_function
+   skewed_gaussian_function
+   cauchy_function
+
+   expo_function
+   expo_nk_function
+   double_expo_function
 
 Data Objects
 ------------
