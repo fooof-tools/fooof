@@ -23,7 +23,7 @@ params_fixed = ParamDefinition(OrderedDict({
 ap_fixed = Mode(
     name='fixed',
     component='aperiodic',
-    description='Fit an exponential, with no knee.',
+    description='One-over-f (powerlaw) function.',
     formula=r'A(F) = 10^b * \frac{1}{F^\chi}',
     func=expo_nk_function,
     jacobian=None,
@@ -45,7 +45,7 @@ params_knee = ParamDefinition(OrderedDict({
 ap_knee = Mode(
     name='knee',
     component='aperiodic',
-    description='Fit an exponential, with a knee.',
+    description='Lorentzian function, with a powerlaw exponent and a knee.',
     formula=r'A(F) = 10^b * \frac{1}{(k + F^\chi)}',
     func=expo_function,
     jacobian=None,
@@ -68,7 +68,7 @@ params_doublexp = ParamDefinition(OrderedDict({
 ap_doublexp = Mode(
     name='doublexp',
     component='aperiodic',
-    description='Fit an function with 2 exponents and a knee.',
+    description='Multi-fractal powerlaw function with 2 exponents and a knee.',
     formula=r'A(F) = 10^b * \frac{1}{F^{\chi_{0}} * (k + F^{\chi_{1}})}',
     func=double_expo_function,
     jacobian=None,
