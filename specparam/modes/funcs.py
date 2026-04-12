@@ -190,7 +190,7 @@ def knee_constant_function(xs, *params):
 
     offset, exp, knee, constant = params
 
-    ys = ys + np.log10(10**offset * (1 / (knee**(exp) + xs**(exp))) + constant)
+    ys = ys + offset - np.log10(1 / (knee**(exp) + xs**(exp)) + constant)
 
     return ys
 
