@@ -130,8 +130,8 @@ def cauchy_function(xs, *params):
 
 ## APERIODIC FUNCTIONS
 
-def expo_nk_function(xs, *params):
-    r"""Exponential function, for fitting aperiodic component without a 'knee'.
+def powerlaw_function(xs, *params):
+    r"""Powerlaw function, for fitting aperiodic component as 1/f.
 
     Parameters
     ----------
@@ -143,7 +143,7 @@ def expo_nk_function(xs, *params):
     Returns
     -------
     ys : 1d array
-        Output values for exponential function, without a knee.
+        Output values for exponential function.
 
     Notes
     -----
@@ -169,8 +169,8 @@ def expo_nk_function(xs, *params):
     return ys
 
 
-def expo_function(xs, *params):
-    r"""Exponential function, for fitting aperiodic component with a 'knee'.
+def lorentzian_function(xs, *params):
+    r"""Lorentzian function, for fitting aperiodic component as a 1/f function with a knee.
 
     Parameters
     ----------
