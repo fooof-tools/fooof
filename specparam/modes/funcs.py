@@ -1,6 +1,7 @@
 """Functions that can be used for model fitting.
 
 For defining the formulas, the following standard variable definitions are used (formula / code):
+
 - `F` / `xs` : frequency vector
 - `a` / `ctr` : the height of a peak function, corresponding to 'power' (pw).
 - `c` / `hgt` : the center of a peak function, corresponding to 'center frequency' (cf).
@@ -8,6 +9,8 @@ For defining the formulas, the following standard variable definitions are used 
 - `\chi` / `exp` : an exponent of a 1/f function. Can be subscripted if there are multiple.
 - `k` / `knee` : a knee of a Lorentzian function. Can be subscripted if there are multiple.
 - `b` / `offset` : the offset of an aperiodic function.
+- `A` : relating to the aperiodic component.
+- `P` : relating to the periodic component.
 """
 
 import numpy as np
@@ -28,7 +31,7 @@ def gaussian_function(xs, *params):
     xs : 1d array
         Input x-axis values.
     *params : float
-        Parameters that define gaussian function.
+        Parameters that define the gaussian function.
 
     Returns
     -------
@@ -48,7 +51,7 @@ def gaussian_function(xs, *params):
 
     for ctr, hgt, wid in zip(*[iter(params)] * 3):
 
-        ys = ys + hgt * np.exp(-(xs-ctr)**2 / (2*wid**2))
+        ys = ys + hgt * np.exp(-(xs - ctr)**2 / (2 * wid**2))
 
     return ys
 
@@ -70,7 +73,8 @@ def skewed_gaussian_function(xs, *params):
 
     Notes
     -----
-    Defines a skewed Gaussian fit function as (TODO - check & fix):
+    ToDo - Check & Fix:
+    Defines a skewed Gaussian fit function as:
 
     .. math::
 
@@ -99,7 +103,7 @@ def cauchy_function(xs, *params):
     xs : 1d array
         Input x-axis values.
     *params : float
-        Parameters that define a cauchy function.
+        Parameters that define the cauchy function.
 
     Returns
     -------
@@ -134,8 +138,7 @@ def expo_nk_function(xs, *params):
     xs : 1d array
         Input x-axis values.
     *params : float
-        Parameters (offset, exp) that define Lorentzian function:
-        y = 10^off * (1/(x^exp))
+        Parameters (offset, exponent) that define the 1/f function.
 
     Returns
     -------
@@ -150,14 +153,14 @@ def expo_nk_function(xs, *params):
 
     .. math::
 
-        AP(F) = 10^b * \frac{1}{F^\chi}
+        A(F) = 10^b * \frac{1}{F^\chi}
 
     Note that the above function form is defined in linear/linear space.
     The equivalent for linear/log, as implemented in the code, is:
 
     .. math::
 
-        AP(F) = b - \log(F^\chi)
+        A(F) = b - \log(F^\chi)
     """
 
     offset, exp = params
@@ -174,8 +177,7 @@ def expo_function(xs, *params):
     xs : 1d array
         Input x-axis values.
     *params : float
-        Parameters (offset, knee, exp) that define Lorentzian function:
-        y = 10^offset * (1/(knee + x^exp))
+        Parameters (offset, knee, exponent) that define the Lorentzian function.
 
     Returns
     -------
@@ -190,7 +192,7 @@ def expo_function(xs, *params):
 
     .. math::
 
-        AP(F) = 10^b * \frac{1}{(k + F^\chi)}
+        A(F) = 10^b * \frac{1}{(k + F^\chi)}
 
     Note that the above function form is defined in linear/linear space.
     The equivalent for linear/log, as implemented in the code, is:
@@ -214,8 +216,7 @@ def double_expo_function(xs, *params):
     xs : 1d array
         Input x-axis values.
     *params : float
-        Parameters (offset, exp0, knee, exp1) that define the function:
-        y = 10^offset * (1/((x**exp0) * (knee + x^exp1))
+        Parameters (offset, exp0, knee, exp1) that define the the double exponent function.
 
     Returns
     -------
@@ -230,14 +231,14 @@ def double_expo_function(xs, *params):
 
     .. math::
 
-        AP(F) = 10^b * \frac{1}{F^{\chi_{0}} * (k + F^{\chi_{1}})}
+        A(F) = 10^b * \frac{1}{F^{\chi_{0}} * (k + F^{\chi_{1}})}
 
     Note that the above function form is defined in linear/linear space.
     The equivalent for linear/log, as implemented in the code, is:
 
     .. math::
 
-        AP(F) = b - \log(F^{\chi_{0}} * (k + F^{\chi_{1}}))
+        A(F) = b - \log(F^{\chi_{0}} * (k + F^{\chi_{1}}))
     """
 
     ys = np.zeros_like(xs)
@@ -257,7 +258,7 @@ def linear_function(xs, *params):
     xs : 1d array
         Input x-axis values.
     *params : float
-        Parameters that define linear function.
+        Parameters that define the linear function.
 
     Returns
     -------
@@ -272,7 +273,7 @@ def linear_function(xs, *params):
 
     .. math::
 
-        AP(F) = b + \chi * F
+        A(F) = b + \chi * F
     """
 
     offset, slope = params
@@ -289,7 +290,7 @@ def quadratic_function(xs, *params):
     xs : 1d array
         Input x-axis values.
     *params : float
-        Parameters that define quadratic function.
+        Parameters that define the quadratic function.
 
     Returns
     -------
@@ -304,7 +305,7 @@ def quadratic_function(xs, *params):
 
     .. math::
 
-        AP(F) = b + \chi * F + F^2 * v
+        A(F) = b + \chi * F + F^2 * v
     """
 
     offset, slope, curve = params

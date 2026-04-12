@@ -5,7 +5,7 @@ from collections import OrderedDict
 
 from specparam.modes.mode import Mode
 from specparam.modes.params import ParamDefinition
-from specparam.modes.funcs import (expo_function, expo_nk_function, double_expo_function,
+from specparam.modes.funcs import (expo_nk_function, expo_function, double_expo_function,
                                    gaussian_function, skewed_gaussian_function, cauchy_function)
 from specparam.modes.jacobians import jacobian_gauss
 from specparam.utils.checks import check_selection
@@ -146,7 +146,7 @@ pe_cauchy = Mode(
     name='cauchy',
     component='periodic',
     description='Cauchy peak fit function.',
-    formula=r'P(F)_n = a * \frac {w^2} {(F - c)^2 + w^2}})',
+    formula=r'P(F)_n = a * \frac {w^2} {(F - c)^2 + w^2}',
     func=cauchy_function,
     jacobian=None,
     params=params_cauchy,
