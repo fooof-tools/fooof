@@ -1,4 +1,15 @@
-"""Functions that can be used for model fitting."""
+"""Functions that can be used for model fitting.
+
+
+For defining the formulas, the following standard variable definitions are used (formula / code):
+- `F` / `xs` : frequency vector
+- `a` / `ctr` : the height of a peak function, corresponding to 'power' (pw).
+- `c` / `hgt` : the center of a peak function, corresponding to 'center frequency' (cf).
+- `w` / `wid` : the width of a peak function, corresponding to 'bandwidth' (bw).
+- `\chi` / `exp` : an exponent of a 1/f function. Can be subscripted if there are multiple.
+- `k` / `knee` : a knee of a Lorentzian function. Can be subscripted if there are multiple.
+- `b` / `offset` : the offset of an aperiodic function.
+"""
 
 import numpy as np
 from scipy.special import erf
@@ -119,8 +130,6 @@ def cauchy_function(xs, *params):
 def expo_function(xs, *params):
     """Exponential function, for fitting aperiodic component with a 'knee'.
 
-    NOTE: this function requires linear frequency (not log).
-
     Parameters
     ----------
     xs : 1d array
@@ -136,11 +145,20 @@ def expo_function(xs, *params):
 
     Notes
     -----
+    This is an aperiodic fit function, defined for use with LINEAR freqs and LOG power.
+
     Defines a 1/f fit function as:
 
     .. math::
 
-        AP = 10^b * \frac{1}{F^\chi}
+        AP(F) = 10^b * \frac{1}{F^\chi}
+
+    Note that the above function form is defined in linear/linear space.
+    The equivalent for linear/log, as implemented in the code, is:
+
+    .. math::
+
+        AP(F) = b - \log(F^\chi)
     """
 
     offset, knee, exp = params
@@ -151,8 +169,6 @@ def expo_function(xs, *params):
 
 def expo_nk_function(xs, *params):
     """Exponential function, for fitting aperiodic component without a 'knee'.
-
-    NOTE: this function requires linear frequency (not log).
 
     Parameters
     ----------
@@ -169,11 +185,20 @@ def expo_nk_function(xs, *params):
 
     Notes
     -----
+    This is an aperiodic fit function, defined for use with LINEAR freqs and LOG power.
+
     Defines a Lorentzian fit function as:
 
     .. math::
 
-        AP = 10^b * \frac{1}{(k + F^\chi)}
+        AP(F) = 10^b * \frac{1}{(k + F^\chi)}
+
+    Note that the above function form is defined in linear/linear space.
+    The equivalent for linear/log, as implemented in the code, is:
+
+    .. math::
+
+        A(F) = b - \log(k + F^\chi)
     """
 
     offset, exp = params
@@ -184,8 +209,6 @@ def expo_nk_function(xs, *params):
 
 def double_expo_function(xs, *params):
     """Double exponential function, for fitting aperiodic component with two exponents and a knee.
-
-    NOTE: this function requires linear frequency (not log).
 
     Parameters
     ----------
@@ -202,11 +225,20 @@ def double_expo_function(xs, *params):
 
     Notes
     -----
+    This is an aperiodic fit function, defined for use with LINEAR freqs and LOG power.
+
     Defines a double-exponent 1/f fit function as:
 
     .. math::
 
-        AP = 10^b * \frac{1}{F^{\chi_{0}} * (k + F^{\chi_{1}})}
+        AP(F) = 10^b * \frac{1}{F^{\chi_{0}} * (k + F^{\chi_{1}})}
+
+    Note that the above function form is defined in linear/linear space.
+    The equivalent for linear/log, as implemented in the code, is:
+
+    .. math::
+
+        AP(F) = b - \log(F^{\chi_{0}} * (k + F^{\chi_{1}}))
     """
 
     ys = np.zeros_like(xs)
@@ -235,11 +267,13 @@ def linear_function(xs, *params):
 
     Notes
     -----
+    This is an aperiodic fit function, defined for use with LOG freqs and LOG power.
+
     Defines a linear fit function as:
 
     .. math::
 
-        AP = b + \chi * F
+        AP(F) = b + \chi * F
     """
 
     offset, slope = params
@@ -265,11 +299,13 @@ def quadratic_function(xs, *params):
 
     Notes
     -----
+    This is an aperiodic fit function.
+
     Defines a quaratic fit function as:
 
     .. math::
 
-        AP = b + \chi * F + F^2 * v
+        AP(F) = b + \chi * F + F^2 * v
     """
 
     offset, slope, curve = params
