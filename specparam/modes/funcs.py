@@ -1,6 +1,5 @@
 """Functions that can be used for model fitting.
 
-
 For defining the formulas, the following standard variable definitions are used (formula / code):
 - `F` / `xs` : frequency vector
 - `a` / `ctr` : the height of a peak function, corresponding to 'power' (pw).
@@ -127,46 +126,6 @@ def cauchy_function(xs, *params):
 
 ## APERIODIC FUNCTIONS
 
-def expo_function(xs, *params):
-    """Exponential function, for fitting aperiodic component with a 'knee'.
-
-    Parameters
-    ----------
-    xs : 1d array
-        Input x-axis values.
-    *params : float
-        Parameters (offset, knee, exp) that define Lorentzian function:
-        y = 10^offset * (1/(knee + x^exp))
-
-    Returns
-    -------
-    ys : 1d array
-        Output values for exponential function.
-
-    Notes
-    -----
-    This is an aperiodic fit function, defined for use with LINEAR freqs and LOG power.
-
-    Defines a 1/f fit function as:
-
-    .. math::
-
-        AP(F) = 10^b * \frac{1}{F^\chi}
-
-    Note that the above function form is defined in linear/linear space.
-    The equivalent for linear/log, as implemented in the code, is:
-
-    .. math::
-
-        AP(F) = b - \log(F^\chi)
-    """
-
-    offset, knee, exp = params
-    ys = offset - np.log10(knee + xs**exp)
-
-    return ys
-
-
 def expo_nk_function(xs, *params):
     """Exponential function, for fitting aperiodic component without a 'knee'.
 
@@ -187,6 +146,46 @@ def expo_nk_function(xs, *params):
     -----
     This is an aperiodic fit function, defined for use with LINEAR freqs and LOG power.
 
+    Defines a 1/f fit function as:
+
+    .. math::
+
+        AP(F) = 10^b * \frac{1}{F^\chi}
+
+    Note that the above function form is defined in linear/linear space.
+    The equivalent for linear/log, as implemented in the code, is:
+
+    .. math::
+
+        AP(F) = b - \log(F^\chi)
+    """
+
+    offset, exp = params
+    ys = offset - np.log10(xs**exp)
+
+    return ys
+
+
+def expo_function(xs, *params):
+    """Exponential function, for fitting aperiodic component with a 'knee'.
+
+    Parameters
+    ----------
+    xs : 1d array
+        Input x-axis values.
+    *params : float
+        Parameters (offset, knee, exp) that define Lorentzian function:
+        y = 10^offset * (1/(knee + x^exp))
+
+    Returns
+    -------
+    ys : 1d array
+        Output values for exponential function.
+
+    Notes
+    -----
+    This is an aperiodic fit function, defined for use with LINEAR freqs and LOG power.
+
     Defines a Lorentzian fit function as:
 
     .. math::
@@ -201,8 +200,8 @@ def expo_nk_function(xs, *params):
         A(F) = b - \log(k + F^\chi)
     """
 
-    offset, exp = params
-    ys = offset - np.log10(xs**exp)
+    offset, knee, exp = params
+    ys = offset - np.log10(knee + xs**exp)
 
     return ys
 
