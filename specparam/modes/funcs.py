@@ -57,7 +57,7 @@ def gaussian_function(xs, *params):
 
 
 def skewed_gaussian_function(xs, *params):
-    """Skewed gaussian fitting function.
+    r"""Skewed gaussian fitting function.
 
     Parameters
     ----------
@@ -96,7 +96,7 @@ def skewed_gaussian_function(xs, *params):
 
 
 def cauchy_function(xs, *params):
-    """Cauchy fitting function.
+    r"""Cauchy fitting function.
 
     Parameters
     ----------
@@ -131,7 +131,7 @@ def cauchy_function(xs, *params):
 ## APERIODIC FUNCTIONS
 
 def expo_nk_function(xs, *params):
-    """Exponential function, for fitting aperiodic component without a 'knee'.
+    r"""Exponential function, for fitting aperiodic component without a 'knee'.
 
     Parameters
     ----------
@@ -170,7 +170,7 @@ def expo_nk_function(xs, *params):
 
 
 def expo_function(xs, *params):
-    """Exponential function, for fitting aperiodic component with a 'knee'.
+    r"""Exponential function, for fitting aperiodic component with a 'knee'.
 
     Parameters
     ----------
@@ -209,7 +209,7 @@ def expo_function(xs, *params):
 
 
 def double_expo_function(xs, *params):
-    """Double exponential function, for fitting aperiodic component with two exponents and a knee.
+    r"""Double exponential function, for fitting aperiodic component with two exponents and a knee.
 
     Parameters
     ----------
@@ -251,7 +251,7 @@ def double_expo_function(xs, *params):
 
 
 def linear_function(xs, *params):
-    """Linear fitting function.
+    r"""Linear fitting function.
 
     Parameters
     ----------
@@ -283,7 +283,7 @@ def linear_function(xs, *params):
 
 
 def quadratic_function(xs, *params):
-    """Quadratic fitting function.
+    r"""Quadratic fitting function.
 
     Parameters
     ----------
