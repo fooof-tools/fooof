@@ -11,7 +11,7 @@ from specparam.utils.array import normalize
 ## PEAK FUNCTIONS
 
 def gaussian_function(xs, *params):
-    """Gaussian fitting function.
+    r"""Gaussian fitting function.
 
     Parameters
     ----------
@@ -24,6 +24,14 @@ def gaussian_function(xs, *params):
     -------
     ys : 1d array
         Output values for gaussian function.
+
+    Notes
+    -----
+    Defines a Gaussian fit function as:
+
+    .. math::
+
+        P(F)_n = a * \frac {w^2} {(F - c)^2 + w^2}
     """
 
     ys = np.zeros_like(xs)
@@ -49,6 +57,14 @@ def skewed_gaussian_function(xs, *params):
     -------
     ys : 1d array
         Output values for skewed normal distribution function.
+
+    Notes
+    -----
+    Defines a skewed Gaussian fit function as (TODO - check & fix):
+
+    .. math::
+
+        P(F)_n = a * \frac{2}{w\sqrt{2\pi}} e^{\frac{(F - \epsilon)^2} {2w^2}}
     """
 
     ys = np.zeros_like(xs)
@@ -79,13 +95,21 @@ def cauchy_function(xs, *params):
     -------
     ys : 1d array
         Output values for cauchy function.
+
+    Notes
+    -----
+    Defines a cauchy fit function as:
+
+    .. math::
+
+        P(F)_n = a * \frac {w^2} {(F - c)^2 + w^2}
     """
 
     ys = np.zeros_like(xs)
 
     for ctr, hgt, wid in zip(*[iter(params)] * 3):
 
-        ys = ys + hgt*wid**2/((xs-ctr)**2+wid**2)
+        ys = ys + hgt * wid**2 / ((xs - ctr)**2 + wid**2)
 
     return ys
 
@@ -109,6 +133,14 @@ def expo_function(xs, *params):
     -------
     ys : 1d array
         Output values for exponential function.
+
+    Notes
+    -----
+    Defines a 1/f fit function as:
+
+    .. math::
+
+        AP = 10^b * \frac{1}{F^\chi}
     """
 
     offset, knee, exp = params
@@ -134,6 +166,14 @@ def expo_nk_function(xs, *params):
     -------
     ys : 1d array
         Output values for exponential function, without a knee.
+
+    Notes
+    -----
+    Defines a Lorentzian fit function as:
+
+    .. math::
+
+        AP = 10^b * \frac{1}{(k + F^\chi)}
     """
 
     offset, exp = params
@@ -159,6 +199,14 @@ def double_expo_function(xs, *params):
     -------
     ys : 1d array
         Output values for exponential function.
+
+    Notes
+    -----
+    Defines a double-exponent 1/f fit function as:
+
+    .. math::
+
+        AP = 10^b * \frac{1}{F^{\chi_{0}} * (k + F^{\chi_{1}})}
     """
 
     ys = np.zeros_like(xs)
@@ -184,6 +232,14 @@ def linear_function(xs, *params):
     -------
     ys : 1d array
         Output values for linear function.
+
+    Notes
+    -----
+    Defines a linear fit function as:
+
+    .. math::
+
+        AP = b + \chi * F
     """
 
     offset, slope = params
@@ -206,6 +262,14 @@ def quadratic_function(xs, *params):
     -------
     ys : 1d array
         Output values for quadratic function.
+
+    Notes
+    -----
+    Defines a quaratic fit function as:
+
+    .. math::
+
+        AP = b + \chi * F + F^2 * v
     """
 
     offset, slope, curve = params
