@@ -41,7 +41,7 @@ Overview
 
 The power spectrum model conceives of a model of the power spectrum as a combination of two distinct functional processes:
 
-- An aperiodic component, reflecting 1/f like characteristics, with
+- An aperiodic component, with power across all frequencies (e.g. 1/f-like characteristics), with
 - A variable number of periodic components (putative oscillations), as peaks rising above the aperiodic component
 
 This model driven approach can be used to measure periodic and aperiodic properties of electrophysiological data,

@@ -5,7 +5,7 @@ from collections import OrderedDict
 
 from specparam.modes.mode import Mode
 from specparam.modes.params import ParamDefinition
-from specparam.modes.funcs import (expo_function, expo_nk_function, double_expo_function,
+from specparam.modes.funcs import (powerlaw_function, lorentzian_function, double_expo_function,
                                    gaussian_function, skewed_gaussian_function,
                                    cauchy_function, triangle_function)
 from specparam.modes.jacobians import jacobian_gauss
@@ -14,48 +14,50 @@ from specparam.utils.checks import check_selection
 ###################################################################################################
 ## APERIODIC MODES
 
-## AP - Fixed Mode
+## AP - Powerlaw (1/f) Mode ('fixed')
 
-params_fixed = ParamDefinition(OrderedDict({
+params_powerlaw = ParamDefinition(OrderedDict({
     'offset' : 'Offset of the aperiodic component.',
     'exponent' : 'Exponent of the aperiodic component.',
 }))
 
-ap_fixed = Mode(
+ap_powerlaw = Mode(
     name='fixed',
     component='aperiodic',
-    description='Fit an exponential, with no knee.',
-    func=expo_nk_function,
+    description='One-over-f (powerlaw) function.',
+    formula=r'A(F) = 10^b * \frac{1}{F^\chi}',
+    func=powerlaw_function,
     jacobian=None,
-    params=params_fixed,
+    params=params_powerlaw,
     ndim=1,
     freq_space='linear',
     powers_space='log10',
 )
 
 
-## AP - Knee Mode
+## AP - Lorentzian Mode ('knee')
 
-params_knee = ParamDefinition(OrderedDict({
+params_lorentzian = ParamDefinition(OrderedDict({
     'offset' : 'Offset of the aperiodic component.',
     'knee' : 'Knee of the aperiodic component.',
     'exponent' : 'Exponent of the aperiodic component.',
 }))
 
-ap_knee = Mode(
+ap_lorentzian = Mode(
     name='knee',
     component='aperiodic',
-    description='Fit an exponential, with a knee.',
-    func=expo_function,
+    description='Lorentzian function, with a powerlaw exponent and a knee.',
+    formula=r'A(F) = 10^b * \frac{1}{(k + F^\chi)}',
+    func=lorentzian_function,
     jacobian=None,
-    params=params_knee,
+    params=params_lorentzian,
     ndim=1,
     freq_space='linear',
     powers_space='log10',
 )
 
 
-## AP - Double Exponent Mode
+## AP - Double Exponent Mode ('doublexp')
 
 params_doublexp = ParamDefinition(OrderedDict({
     'offset' : 'Offset of the aperiodic component.',
@@ -67,7 +69,8 @@ params_doublexp = ParamDefinition(OrderedDict({
 ap_doublexp = Mode(
     name='doublexp',
     component='aperiodic',
-    description='Fit an function with 2 exponents and a knee.',
+    description='Multi-fractal powerlaw function with 2 exponents and a knee.',
+    formula=r'A(F) = 10^b * \frac{1}{F^{\chi_{0}} * (k + F^{\chi_{1}})}',
     func=double_expo_function,
     jacobian=None,
     params=params_doublexp,
@@ -79,8 +82,8 @@ ap_doublexp = Mode(
 
 # Collect available aperiodic modes
 AP_MODES = {
-    'fixed' : ap_fixed,
-    'knee' : ap_knee,
+    'fixed' : ap_powerlaw,
+    'knee' : ap_lorentzian,
     'doublexp' : ap_doublexp,
 }
 
@@ -99,6 +102,7 @@ pe_gaussian = Mode(
     name='gaussian',
     component='periodic',
     description='Gaussian peak fit function.',
+    formula=r'P(F)_n = a * exp (\frac{- (F - c)^2}{2 * w^2})',
     func=gaussian_function,
     jacobian=jacobian_gauss,
     params=params_gauss,
@@ -121,6 +125,7 @@ pe_skewed_gaussian = Mode(
     name='skewed_gaussian',
     component='periodic',
     description='Skewed Gaussian peak fit function.',
+    formula=r'P(F)_n = \frac{2}{w\sqrt{2\pi}} e^{\frac{(F - \epsilon)^2} {2w^2}}',
     func=skewed_gaussian_function,
     jacobian=None,
     params=params_skewed_gaussian,
@@ -142,6 +147,7 @@ pe_cauchy = Mode(
     name='cauchy',
     component='periodic',
     description='Cauchy peak fit function.',
+    formula=r'P(F)_n = a * \frac {w^2} {(F - c)^2 + w^2}',
     func=cauchy_function,
     jacobian=None,
     params=params_cauchy,

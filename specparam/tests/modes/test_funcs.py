@@ -59,12 +59,27 @@ def test_triangle_function():
 
 ## Aperiodic functions
 
-def test_expo_function():
+def test_powerlaw_function():
+
+    off, exp = 10, 2
+
+    xs = np.arange(1, 100, 1.)
+    ys = powerlaw_function(xs, off, exp)
+
+    assert np.all(ys)
+
+    # By design, this expo function assumes linear xs and log-space ys
+    #   Where the log-log should be a straight line. Use that to test.
+    exp_meas, off_meas, _, _, _ = linregress(np.log10(xs), ys)
+    assert np.isclose(off, off_meas)
+    assert np.isclose(exp, np.abs(exp_meas))
+
+def test_lorentzian_function():
 
     off, knee, exp = 10, 5, 2
 
     xs = np.arange(1, 100, 1.)
-    ys = expo_function(xs, off, knee, exp)
+    ys = lorentzian_function(xs, off, knee, exp)
 
     assert np.all(ys)
 
@@ -74,21 +89,6 @@ def test_expo_function():
 
     assert np.isclose(off_meas, off, 0.1)
     assert np.isclose(np.abs(exp_meas), exp, 0.1)
-
-def test_expo_nk_function():
-
-    off, exp = 10, 2
-
-    xs = np.arange(1, 100, 1.)
-    ys = expo_nk_function(xs, off, exp)
-
-    assert np.all(ys)
-
-    # By design, this expo function assumes linear xs and log-space ys
-    #   Where the log-log should be a straight line. Use that to test.
-    exp_meas, off_meas, _, _, _ = linregress(np.log10(xs), ys)
-    assert np.isclose(off, off_meas)
-    assert np.isclose(exp, np.abs(exp_meas))
 
 def test_double_expo_function():
 
