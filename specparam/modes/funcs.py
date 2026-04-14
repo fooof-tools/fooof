@@ -128,7 +128,7 @@ def cauchy_function(xs, *params):
 
 
 def triangle_function(xs, *params):
-    """Triangle fitting function.
+    r"""Triangle fitting function.
 
     Parameters
     ----------
@@ -141,6 +141,16 @@ def triangle_function(xs, *params):
     -------
     ys : 1d array
         Output values for triangle function.
+
+    Notes
+    -----
+    Defines a triangular fit function as:
+
+    .. math::
+
+        \text{tri}(x) = \begin{cases} 1 - |x| & \text{if } |x| < 1 \\ 0 & \text{if } |x| \geq 1 \end{cases}
+
+    To use this function as a peak function, this function is scaled by hgt and wid, and moved to ctr.
     """
 
     ys = np.zeros_like(xs)

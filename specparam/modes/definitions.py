@@ -168,6 +168,7 @@ pe_triangle = Mode(
     name='triangle',
     component='periodic',
     description='Triangle peak fit function.',
+    formula=r'\text{tri}(x) = \begin{cases} 1 - |x| & \text{if } |x| < 1 \\ 0 & \text{if } |x| \geq 1 \end{cases}',
     func=triangle_function,
     jacobian=None,
     params=params_triangle,
