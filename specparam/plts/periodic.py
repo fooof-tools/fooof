@@ -8,7 +8,7 @@ from specparam.sim import gen_freqs
 from specparam.modutils.dependencies import safe_import, check_dependency
 from specparam.modes.modes import check_mode_definition
 from specparam.modes.definitions import PE_MODES
-from specparam.plts.settings import PLT_FIGSIZES
+from specparam.plts.settings import ITERABLES, PLT_FIGSIZES
 from specparam.plts.templates import plot_yshade
 from specparam.plts.style import style_param_plot, style_plot
 from specparam.plts.utils import check_ax, recursive_plot, savefig, check_plot_kwargs
@@ -30,7 +30,7 @@ def plot_peak_params(peaks, freq_range=None, colors=None, labels=None, ax=None, 
         Peak data. Each row is a peak, as [CF, PW, BW].
     freq_range : list of [float, float] , optional
         The frequency range to plot the peak parameters across, as [f_min, f_max].
-    colors : str or list of str, optional
+    colors : str or iterable, optional
         Color(s) to plot data.
     labels : list of str, optional
         Label(s) for plotted data, to be added in a legend.
@@ -93,7 +93,7 @@ def plot_peak_fits(peaks, periodic_mode, freq_range=None, average='mean', shade=
     plot_individual : bool, optional, default: True
         Whether to plot individual component reconstructions.
         If False, only the average component reconstruction is plotted.
-    colors : str or list of str, optional
+    colors : str or iterable, optional
         Color(s) to plot data.
     labels : list of str, optional
         Label(s) for plotted data, to be added in a legend.
@@ -133,7 +133,7 @@ def plot_peak_fits(peaks, periodic_mode, freq_range=None, average='mean', shade=
         # Create the frequency axis, which will be the plot x-axis
         freqs = gen_freqs(freq_range, 0.1)
 
-        colors = colors[0] if isinstance(colors, list) else colors
+        colors = colors[0] if isinstance(colors, ITERABLES) else colors
 
         all_peak_vals = np.zeros(shape=(len(peaks), len(freqs)))
         for ind, peak_params in enumerate(peaks):

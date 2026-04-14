@@ -22,6 +22,8 @@ class Mode():
         Which component the mode relates to.
     description : str
         Description of the mode.
+    formula : str
+        Formula of the fit mode.
     func : callable
         Function that defines the fit function for the mode.
     jacobian : callable, optional
@@ -37,13 +39,14 @@ class Mode():
         Required spacing of the power values for this mode.
     """
 
-    def __init__(self, name, component, description, func, jacobian,
-                 params, ndim, freq_space, powers_space):
+    def __init__(self, name, component, description, formula, func,
+                 jacobian, params, ndim, freq_space, powers_space):
         """Initialize a mode."""
 
         self.name = name
         self.component = check_input_options(component, VALID_COMPONENTS, 'component')
         self.description = description
+        self.formula = formula
 
         self.func = func
         self.jacobian = jacobian
