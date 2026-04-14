@@ -133,7 +133,7 @@ def cauchy_function(xs, *params):
 
 
 def gamma_function(xs, *params):
-    """Gamma fitting function.
+    r"""Gamma fitting function.
 
     Parameters
     ----------
@@ -149,12 +149,12 @@ def gamma_function(xs, *params):
 
     Notes
     -----
-    Parameters should come in ordered sets of 4, each including the following:
+    Defines a gamma fit function as:
 
-    - cf: center frequency parameter
-    - pw: power (height) parameter
-    - shp: shape parameter
-    - scl: scale parameter
+        P(F)_n = a * \frac{1}{\Gamma (k)\theta^{k}}F_c^{k-1}e^{-\frac{F_c}{\theta}}
+
+    where k is the shape parameter, theta is the scale parameter, and F_c is the
+    frequency values scaled to center the peak at the desired center frequency.
     """
 
     ys = np.zeros_like(xs)

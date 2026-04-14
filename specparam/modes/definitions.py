@@ -170,6 +170,7 @@ pe_gamma = Mode(
     name='gamma',
     component='periodic',
     description='Fit a gamma peak function.',
+    formula=r'P(F)_n = a * \frac{1}{\Gamma (k)\theta^{k}}F_c^{k-1}e^{-\frac{F_c}{\theta}}',
     func=gamma_function,
     jacobian=None,
     params=params_gamma,
