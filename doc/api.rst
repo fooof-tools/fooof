@@ -116,41 +116,36 @@ Results
 Model Definitions
 -----------------
 
-Words, words, words.
+Spectral models are defined by the defining fit Modes. This section
 
 Mode
 ~~~~
 
-The Mode object is the key entity for defining a fit mode.
+The Mode object & related utilties, providing functionality for defining fit modes.
 
-.. currentmodule:: specparam.modes.mode
+.. currentmodule:: specparam.modes
 
 .. autosummary::
    :toctree: generated/
 
    Mode
-
-Mode Utilities
-~~~~~~~~~~~~~~
-
-Associated utilties for fit modes, including for checking defined modes and defining and managing mode parameters.
-
-.. currentmodule:: specparam.modes.params
-
-.. autosummary::
-   :toctree: generated/
-
    ParamDefinition
-
-.. currentmodule:: specparam.modes.definitions
-
-.. autosummary::
-   :toctree: generated/
-
    check_modes
 
-Fit Functions
-~~~~~~~~~~~~~
+Fit Functions (Aperiodic)
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. currentmodule:: specparam.modes.funcs
+
+.. autosummary::
+   :toctree: generated/
+
+   powerlaw_function
+   lorentzian_function
+   double_expo_function
+
+Fit Functions (Peaks)
+~~~~~~~~~~~~~~~~~~~~~
 
 .. currentmodule:: specparam.modes.funcs
 
@@ -160,42 +155,47 @@ Fit Functions
    gaussian_function
    skewed_gaussian_function
    cauchy_function
-
-   expo_function
-   expo_nk_function
-   double_expo_function
+   gamma_function
+   triangle_function
 
 Metrics
 -------
 
-Functionality for definining metrics to evaluate model fitting performance.
+The Metric object & related utilties, providing functionality for definining metrics to evaluate model fitting performance.
 
 Metric Object
 ~~~~~~~~~~~~~
 
-.. currentmodule:: specparam.metrics.metric
+.. currentmodule:: specparam.metrics
 
 .. autosummary::
    :toctree: generated/
 
    Metric
 
-Metrics
-~~~~~~~
+Metric Functions (Error)
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-...
-
-Metric Utilities
-~~~~~~~~~~~~~~~~
-
-Utility to check for available metrics.
-
-.. currentmodule:: specparam.metrics.definitions
+.. currentmodule:: specparam.metrics.error
 
 .. autosummary::
    :toctree: generated/
 
-   check_metrics
+   compute_mean_abs_error
+   compute_mean_squared_error
+   compute_root_mean_squared_error
+   compute_median_abs_error
+
+Metric Functions (GoF)
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. currentmodule:: specparam.metrics.gof
+
+.. autosummary::
+   :toctree: generated/
+
+   compute_r_squared
+   compute_adj_r_squared
 
 Data Objects
 ------------
