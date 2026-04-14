@@ -33,12 +33,15 @@ class Algorithm():
         Data object with spectral data and metadata.
     results : Results
         Results object with model fit results and metrics.
+    model : SpectralModel, optional
+        The model object this object is linked to, to provide access to other attributes.
     debug :  bool
         Whether to run in debug state, raising an error if encountered during fitting.
     """
 
     def __init__(self, name, description, public_settings, private_settings=None,
-                 data_format='spectrum', modes=None, data=None, results=None, debug=False):
+                 data_format='spectrum', modes=None, data=None, results=None, model=None,
+                 debug=False):
         """Initialize Algorithm object."""
 
         self.name = name
@@ -65,6 +68,8 @@ class Algorithm():
         self._reset_subobjects(modes, data, results)
 
         self.set_debug(debug)
+
+        self._model = model
 
 
     def _fit_prechecks(self, verbose):
@@ -178,13 +183,14 @@ class AlgorithmCF(Algorithm):
     """
 
     def __init__(self, name, description, public_settings, private_settings=None,
-                 data_format='spectrum', modes=None, data=None, results=None, debug=False):
+                 data_format='spectrum', modes=None, data=None, results=None,
+                 model=None, debug=False):
         """Initialize Algorithm object."""
 
         Algorithm.__init__(self, name=name, description=description,
                            public_settings=public_settings, private_settings=private_settings,
                            data_format=data_format, modes=modes, data=data, results=results,
-                           debug=debug)
+                           model=model, debug=debug)
 
         self._cf_settings_desc = CURVE_FIT_SETTINGS
         self._cf_settings = SettingsValues(self._cf_settings_desc.names)

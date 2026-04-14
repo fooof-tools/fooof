@@ -95,14 +95,14 @@ class SpectralModel(BaseModel):
             update_converters(DEFAULT_CONVERTERS, converters)
         BaseModel.__init__(self, aperiodic_mode, periodic_mode, converters, verbose)
 
-        self.data = Data()
+        self.data = Data(model=self)
 
-        self.results = Results(modes=self.modes, metrics=metrics, bands=bands)
+        self.results = Results(modes=self.modes, metrics=metrics, bands=bands, model=self)
 
         algorithm_settings = {} if algorithm_settings is None else algorithm_settings
         self.algorithm = check_algorithm_definition(algorithm, ALGORITHMS)(
             **algorithm_settings, modes=self.modes, data=self.data,
-            results=self.results, debug=debug, **model_kwargs)
+            results=self.results, debug=debug, model=self, **model_kwargs)
 
 
     @replace_docstring_sections([docs_get_section(Data.add_data.__doc__, 'Parameters'),
@@ -166,40 +166,8 @@ class SpectralModel(BaseModel):
         if prechecks:
             self.algorithm._fit_prechecks(self.verbose)
 
-        # In rare cases, the model fails to fit, and so uses try / except
-        try:
-
-            # If not set to fail on NaN or Inf data at add time, check data here
-            #   This serves as a catch all for curve_fits which will fail given NaN or Inf
-            #   Because FitError's are by default caught, this allows fitting to continue
-            if not self.data.checks['data']:
-                if np.any(np.isinf(self.data.power_spectrum)) or \
-                    np.any(np.isnan(self.data.power_spectrum)):
-                    raise FitError("Model fitting was skipped because there are NaN or Inf "
-                                   "values in the data, which preclude model fitting.")
-
-            # Call the fit function from the algorithm object
-            self.algorithm._fit()
-
-            # Do any parameter conversions
-            self._convert_params()
-
-            # Compute post-fit metrics
-            self.results.metrics.compute_metrics(self.data, self.results)
-
-        except FitError:
-
-            # If in debug mode, re-raise the error
-            if self.algorithm._debug:
-                raise
-
-            # Clear any interim model results that may have run
-            #   Partial model results shouldn't be interpreted in light of overall failure
-            self.results._reset_results(True)
-
-            # Print out status
-            if self.verbose:
-                print("Model fitting was unsuccessful.")
+        # Call the sub-function to fit the model + post-processing
+        self._fit()
 
 
     def report(self, freqs=None, power_spectrum=None, freq_range=None,
@@ -348,6 +316,52 @@ class SpectralModel(BaseModel):
             bands = self.results.bands
 
         return model_to_dataframe(self.results.get_results(), self.modes, bands)
+
+
+    def _fit(self):
+        """"Internal fit function to run the algorithm fit + post processing.
+
+        Notes
+        -----
+        Post-processing steps are parameter conversions & model metric evaluations.
+        In rare cases, the model fails to fit. To manage this, this function uses a try / except,
+        and in the case of failure while check for run status (to continue or not) and clear object
+        of any interim results.
+        """
+
+        try:
+
+            # If not set to fail on NaN or Inf data at add time, check data here
+            #   This serves as a catch all for curve_fits which will fail given NaN or Inf
+            #   Because FitError's are by default caught, this allows fitting to continue
+            if not self.data.checks['data']:
+                if np.any(np.isinf(self.data.power_spectrum)) or \
+                    np.any(np.isnan(self.data.power_spectrum)):
+                    raise FitError("Model fitting was skipped because there are NaN or Inf "
+                                   "values in the data, which preclude model fitting.")
+
+            # Call the fit function from the algorithm object
+            self.algorithm._fit()
+
+            # Do any parameter conversions
+            self._convert_params()
+
+            # Compute post-fit metrics
+            self.results.metrics.compute_metrics(self.data, self.results)
+
+        except FitError:
+
+            # If in debug mode, re-raise the error
+            if self.algorithm._debug:
+                raise
+
+            # Clear any interim model results that may have run
+            #   Partial model results shouldn't be interpreted in light of overall failure
+            self.results._reset_results(True)
+
+            # Print out status
+            if self.verbose:
+                print("Model fitting was unsuccessful.")
 
 
     def _convert_params(self):

@@ -7,6 +7,7 @@ import numpy as np
 
 from specparam.sim.gen import gen_freqs
 from specparam.data import SpectrumMetaData, ModelChecks
+from specparam.utils.array import unlog
 from specparam.utils.spectral import trim_spectrum
 from specparam.utils.checks import check_input_options
 from specparam.reports.strings import gen_data_str
@@ -36,6 +37,8 @@ class Data():
         Whether to check the spectral data. If so, raises an error for any NaN / Inf values.
     format : {'power'}
         The representation format of the data.
+    model : SpectralModel, optional
+        The model object this object is linked to, to provide access to other attributes.
 
     Attributes
     ----------
@@ -55,7 +58,7 @@ class Data():
     All power values are stored internally in log10 scale.
     """
 
-    def __init__(self, check_freqs=True, check_data=True, format='power'):
+    def __init__(self, check_freqs=True, check_data=True, format='power', model=None):
         """Initialize Data object."""
 
         self._reset_data(True, True)
@@ -70,6 +73,7 @@ class Data():
         check_input_options(format, FORMATS, 'format')
         self.format = format
 
+        self._model = model
 
     @property
     def has_data(self):
@@ -152,6 +156,54 @@ class Data():
         """
 
         return SpectrumMetaData(**{key : getattr(self, key) for key in self._meta_fields})
+
+
+    def get_data(self, component='full', space='log'):
+        """Get a data component.
+
+        Parameters
+        ----------
+        component : {'full', 'aperiodic', 'peak'}
+            Which data component to return.
+                'full' - full power spectrum
+                'aperiodic' - isolated aperiodic data component
+                'peak' - isolated peak data component
+        space : {'log', 'linear'}
+            Which space to return the data component in.
+                'log' - returns in log10 space.
+                'linear' - returns in linear space.
+
+        Returns
+        -------
+        output : 1d array
+            Specified data component, in specified spacing.
+
+        Notes
+        -----
+        The 'space' parameter doesn't just define the spacing of the data component
+        values, but rather defines the space of the additive data definition such that
+        `power_spectrum = aperiodic_component + peak_component`.
+        With space set as 'log', this combination holds in log space.
+        With space set as 'linear', this combination holds in linear space.
+        """
+
+        if not self.has_data:
+            raise NoDataError("No data available to fit, can not proceed.")
+        assert space in ['linear', 'log'], "Input for 'space' invalid."
+
+        if component == 'full':
+            output = self.power_spectrum if space == 'log' \
+                else unlog(self.power_spectrum)
+        elif component == 'aperiodic':
+            output = self._model.results.model._spectrum_peak_rm if space == 'log' else \
+                unlog(self.power_spectrum) / unlog(self._model.results.model._peak_fit)
+        elif component == 'peak':
+            output = self._model.results.model._spectrum_flat if space == 'log' else \
+                unlog(self.power_spectrum) - unlog(self._model.results.model._ap_fit)
+        else:
+            raise ValueError('Input for component invalid.')
+
+        return output
 
 
     def plot(self, plt_log=False, **plt_kwargs):
@@ -339,10 +391,10 @@ class Data2D(Data):
     All power values are stored internally in log10 scale.
     """
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """Initialize Data2D object."""
 
-        Data.__init__(self)
+        Data.__init__(self, *args, **kwargs)
 
         self.power_spectra = None
 
@@ -451,10 +503,10 @@ class Data2DT(Data2D):
     All power values are stored internally in log10 scale.
     """
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """Initialize Data2DT object."""
 
-        Data2D.__init__(self)
+        Data2D.__init__(self, *args, **kwargs)
 
 
     @property
@@ -521,10 +573,10 @@ class Data3D(Data2DT):
     All power values are stored internally in log10 scale.
     """
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """Initialize Data3D object."""
 
-        Data2DT.__init__(self)
+        Data2DT.__init__(self, *args, **kwargs)
 
         self.spectrograms = None
 

@@ -145,7 +145,7 @@ def test_fit_null_conversions(tfm):
     null_converters = tfm.modes.get_params('dict')
     ntfm = SpectralModel(converters=null_converters)
 
-    ntfm.fit(tfm.data.freqs, tfm.get_data('full', 'linear'))
+    ntfm.fit(tfm.data.freqs, tfm.data.get_data('full', 'linear'))
     assert np.all(np.isnan(ntfm.results.get_params('aperiodic', version='converted')))
     assert np.all(np.isnan(ntfm.results.get_params('periodic', version='converted')))
 
@@ -154,7 +154,7 @@ def test_fit_custom_conversions(tfm):
     converters = {'periodic' : {'pw' : 'lin_sub'}}
     ntfm = SpectralModel(converters=converters)
 
-    ntfm.fit(tfm.data.freqs, tfm.get_data('full', 'linear'))
+    ntfm.fit(tfm.data.freqs, tfm.data.get_data('full', 'linear'))
     assert not np.array_equal(
         tfm.results.get_params('periodic', 'pw'), ntfm.results.get_params('periodic', 'pw'))
 
@@ -295,7 +295,7 @@ def test_get_data(tfm):
 
     for comp in ['full', 'aperiodic', 'peak']:
         for space in ['log', 'linear']:
-            assert isinstance(tfm.get_data(comp, space), np.ndarray)
+            assert isinstance(tfm.data.get_data(comp, space), np.ndarray)
 
 def test_get_component(tfm):
 
