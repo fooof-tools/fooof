@@ -9,7 +9,7 @@ from specparam.modutils.errors import NoModelError
 from specparam.modutils.dependencies import safe_import, check_dependency
 from specparam.utils.select import find_first_ind
 from specparam.plts.settings import PLT_FIGSIZES
-from specparam.plts.templates import plot_scatter_1, plot_scatter_2, plot_hist
+from specparam.plts.templates import plot_points_1, plot_points_2, plot_hist
 from specparam.plts.utils import savefig
 from specparam.plts.style import style_plot
 
@@ -43,17 +43,17 @@ def plot_group_model(group, **plot_kwargs):
     fig = plt.figure(figsize=plot_kwargs.pop('figsize', PLT_FIGSIZES['group']))
     gs = gridspec.GridSpec(2, 2, wspace=0.35, hspace=0.35, height_ratios=[1, 1.2])
 
-    # Apply scatter kwargs to all subplots
-    scatter_kwargs = plot_kwargs
-    scatter_kwargs['all_axes'] = True
+    # Apply points kwargs to all subplots
+    points_kwargs = plot_kwargs
+    points_kwargs['all_axes'] = True
 
     # Aperiodic parameters plot
     ax0 = plt.subplot(gs[0, 0])
-    plot_group_aperiodic(group, ax0, **scatter_kwargs, custom_styler=None)
+    plot_group_aperiodic(group, ax0, **points_kwargs, custom_styler=None)
 
     # Goodness of fit plot
     ax1 = plt.subplot(gs[0, 1])
-    plot_group_metrics(group, ax1, **scatter_kwargs, custom_styler=None)
+    plot_group_metrics(group, ax1, **points_kwargs, custom_styler=None)
 
     # Center frequencies plot
     ax2 = plt.subplot(gs[1, :])
@@ -64,7 +64,7 @@ def plot_group_model(group, **plot_kwargs):
 @style_plot
 @check_dependency(plt, 'matplotlib')
 def plot_group_aperiodic(group, ax=None, **plot_kwargs):
-    """Plot aperiodic fit parameters, in a scatter plot.
+    """Plot aperiodic fit parameters.
 
     Parameters
     ----------
@@ -77,19 +77,19 @@ def plot_group_aperiodic(group, ax=None, **plot_kwargs):
     """
 
     if group.modes.aperiodic.name == 'knee':
-        plot_scatter_2(group.results.get_params('aperiodic', 'exponent'), 'Exponent',
-                       group.results.get_params('aperiodic', 'knee'), 'Knee',
-                       'Aperiodic Parameters', ax=ax)
+        plot_points_2(group.results.get_params('aperiodic', 'exponent'), 'Exponent',
+                      group.results.get_params('aperiodic', 'knee'), 'Knee',
+                      'Aperiodic Parameters', ax=ax)
     else:
-        plot_scatter_1(group.results.get_params('aperiodic', 'exponent'), 'Exponent',
-                       'Aperiodic Parameters', ax=ax)
+        plot_points_1(group.results.get_params('aperiodic', 'exponent'), 'Exponent',
+                      'Aperiodic Parameters', ax=ax)
 
 
 @savefig
 @style_plot
 @check_dependency(plt, 'matplotlib')
 def plot_group_metrics(group, ax=None, **plot_kwargs):
-    """Plot metrics results, in a scatter plot.
+    """Plot metrics results.
 
     Parameters
     ----------
@@ -105,9 +105,9 @@ def plot_group_metrics(group, ax=None, **plot_kwargs):
         ax.set(xticks=[], yticks=[])
 
     if len(group.results.metrics) == 1:
-        plot_scatter_1(group.results.get_metrics(group.results.metrics.labels[0]),
-                       group.results.metrics.flabels[0],
-                       'Metrics', ax=ax)
+        plot_points_1(group.results.get_metrics(group.results.metrics.labels[0]),
+                      group.results.metrics.flabels[0],
+                      'Metrics', ax=ax)
 
     elif len(group.results.metrics) >= 2:
         ind1 = 0
@@ -116,11 +116,11 @@ def plot_group_metrics(group, ax=None, **plot_kwargs):
             ind1 = find_first_ind(group.results.metrics.labels, 'error')
         if 'gof' in group.results.metrics.categories:
             ind2 = find_first_ind(group.results.metrics.labels, 'gof')
-        plot_scatter_2(group.results.get_metrics(group.results.metrics.labels[ind1]),
-                       group.results.metrics.flabels[ind1],
-                       group.results.get_metrics(group.results.metrics.labels[ind2]),
-                       group.results.metrics.flabels[ind2],
-                       'Metrics', ax=ax)
+        plot_points_2(group.results.get_metrics(group.results.metrics.labels[ind1]),
+                      group.results.metrics.flabels[ind1],
+                      group.results.get_metrics(group.results.metrics.labels[ind2]),
+                      group.results.metrics.flabels[ind2],
+                      'Metrics', ax=ax)
 
 
 @savefig

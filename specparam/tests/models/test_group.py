@@ -183,6 +183,11 @@ def test_fg_fail():
         assert np.isnan(ntfg.results.get_params('aperiodic', 'exponent')[null_ind])
         assert np.isnan(ntfg.results.get_metrics('error', 'mae')[null_ind])
 
+    # Test that fit failures are caught & continued when running in parallel
+    ntfg2 = ntfg.copy()
+    ntfg2.fit(fs, ps, n_jobs=2)
+    assert ntfg2.results.n_null > 0
+
 def test_drop():
     """Test function to drop results from group object."""
 
@@ -226,11 +231,28 @@ def test_fit_par():
 
     tfg = SpectralGroupModel(verbose=False)
     tfg.fit(xs, ys, n_jobs=2)
-    out = tfg.results.get_results()
 
-    assert out
-    assert len(out) == n_spectra
-    assert np.all(out[1].aperiodic_fit)
+    assert len(tfg.results.get_results()) == n_spectra
+
+    aps = tfg.get_params('aperiodic')
+    assert aps.shape == (n_spectra, tfg.modes.aperiodic.n_params)
+    assert np.all(~np.isnan(aps))
+
+    pes = tfg.get_params('periodic')
+    assert pes.shape == (sum(tfg.results.n_peaks), tfg.modes.periodic.n_params + 1)
+    assert np.all(~np.isnan(pes))
+
+    peaks = tfg.get_params('peak')
+    assert peaks.shape == (sum(tfg.results.n_peaks), tfg.modes.periodic.n_params + 1)
+    assert np.all(~np.isnan(peaks))
+
+    errs = tfg.get_metrics('error')
+    assert np.all(~np.isnan(errs))
+    assert len(errs) == n_spectra
+
+    gofs = tfg.get_metrics('gof')
+    assert np.all(~np.isnan(gofs))
+    assert len(gofs) == n_spectra
 
 def test_print(tfg):
     """Check print method (alias)."""

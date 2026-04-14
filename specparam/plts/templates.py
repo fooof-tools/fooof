@@ -13,7 +13,7 @@ import numpy as np
 from specparam.modutils.dependencies import safe_import, check_dependency
 from specparam.measures.properties import compute_average, compute_dispersion
 from specparam.plts.utils import check_ax, set_alpha
-from specparam.plts.settings import (PLT_FIGSIZES, DEFAULT_COLORS, PLT_TEXT_FONT,
+from specparam.plts.settings import (ITERABLES, PLT_FIGSIZES, DEFAULT_COLORS, PLT_TEXT_FONT,
                                      TITLE_FONTSIZE, LABEL_SIZE, TICK_LABELSIZE)
 
 plt = safe_import('.pyplot', 'matplotlib')
@@ -22,8 +22,8 @@ plt = safe_import('.pyplot', 'matplotlib')
 ###################################################################################################
 
 @check_dependency(plt, 'matplotlib')
-def plot_scatter_1(data, label=None, title=None, x_val=0, color=None, ax=None, **plot_kwargs):
-    """Plot a scatter plot, with a single y-axis.
+def plot_points_1(data, label=None, title=None, x_val=0, color=None, ax=None, **plot_kwargs):
+    """Plot data values as points, with a single y-axis.
 
     Parameters
     ----------
@@ -68,9 +68,9 @@ def plot_scatter_1(data, label=None, title=None, x_val=0, color=None, ax=None, *
 
 
 @check_dependency(plt, 'matplotlib')
-def plot_scatter_2(data_0, label_0, data_1, label_1,
+def plot_points_2(data_0, label_0, data_1, label_1,
                    title=None, colors=None, ax=None, **plot_kwargs):
-    """Plot a scatter plot, with two y-axes.
+    """Plot data values as points, with two y-axes.
 
     Parameters
     ----------
@@ -84,7 +84,7 @@ def plot_scatter_2(data_0, label_0, data_1, label_1,
         Label for the data on the second axis, to be set as the axis label.
     title : str, optional
         Title for the plot.
-    colors : list of str, optional
+    colors : iterable, optional
         Color(s) to plot data.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
@@ -99,10 +99,10 @@ def plot_scatter_2(data_0, label_0, data_1, label_1,
     ax = check_ax(ax)
     ax1 = ax.twinx()
 
-    colors = iter(colors) if isinstance(colors, list) else repeat(colors)
+    colors = iter(colors) if isinstance(colors, ITERABLES) else repeat(colors)
 
-    plot_scatter_1(data_0, label_0, color=next(colors), ax=ax, **plot_kwargs)
-    plot_scatter_1(data_1, label_1, x_val=1, color=next(colors), ax=ax1, **plot_kwargs)
+    plot_points_1(data_0, label_0, color=next(colors), ax=ax, **plot_kwargs)
+    plot_points_1(data_1, label_1, x_val=1, color=next(colors), ax=ax1, **plot_kwargs)
 
     if title:
         ax.set_title(title, fontsize=TITLE_FONTSIZE)
@@ -277,7 +277,7 @@ def plot_params_over_time(times, params, labels=None, title=None, colors=None,
         Label(s) for the data, to be set as the y-axis label(s).
     title : str, optional
         Title for the plot.
-    colors : list of str
+    colors : iterable, optional
         Color(s) to plot data.
     ax : matplotlib.Axes, optional
         Figure axes upon which to plot.
@@ -285,8 +285,8 @@ def plot_params_over_time(times, params, labels=None, title=None, colors=None,
         Additional keyword arguments for the plot call.
     """
 
-    labels = repeat(labels) if not isinstance(labels, list) else cycle(labels)
-    colors = cycle(DEFAULT_COLORS) if not isinstance(colors, list) else cycle(colors)
+    labels = repeat(labels) if not isinstance(labels, ITERABLES) else cycle(labels)
+    colors = cycle(DEFAULT_COLORS) if not isinstance(colors, ITERABLES) else cycle(colors)
 
     ax0 = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['time']))
 

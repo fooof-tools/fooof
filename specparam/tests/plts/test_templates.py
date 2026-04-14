@@ -14,19 +14,19 @@ mpl = safe_import('matplotlib')
 ###################################################################################################
 
 @plot_test
-def test_plot_scatter_1(skip_if_no_mpl):
+def test_plot_points_1(skip_if_no_mpl):
 
     data = np.random.randint(0, 100, 100)
 
-    plot_scatter_1(data, 'label', 'title')
+    plot_points_1(data, 'label', 'title')
 
 @plot_test
-def test_plot_scatter_2(skip_if_no_mpl):
+def test_plot_points_2(skip_if_no_mpl):
 
     data1 = np.random.randint(0, 100, 100)
     data2 = np.random.randint(0, 100, 100)
 
-    plot_scatter_2(data1, 'label1', data2, 'label2', 'title')
+    plot_points_2(data1, 'label1', data2, 'label2', 'title')
 
 @plot_test
 def test_plot_hist(skip_if_no_mpl):
