@@ -86,7 +86,7 @@ def expo_only_function(xs, *params):
     xs : 1d array
         X-axis values.
     *params : float
-        Parameters that define the component fit.
+        Parameters that define the component fit: exponent.
 
     Returns
     -------
@@ -146,6 +146,7 @@ expo_only_mode = Mode(
     name='custom_expo_only',
     component='aperiodic',
     description='Fit an exponent only.',
+    formula=r'A(F) = 1/f^x',
     func=expo_only_function,
     jacobian=None,
     params=expo_only_params,
@@ -228,7 +229,7 @@ def rectangular_function(xs, *params):
     xs : 1d array
         X-axis values.
     *params : float
-        Parameters that define the component fit.
+        Parameters that define the component fit: ctr, hgt, wid.
 
     Returns
     -------
@@ -270,6 +271,7 @@ rectangular_mode = Mode(
     name='rectangular',
     component='periodic',
     description='Custom rectangular (boxcar) peak fit function.',
+    formula=None,
     func=rectangular_function,
     jacobian=None,
     params=rectangular_params,

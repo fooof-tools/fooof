@@ -67,30 +67,14 @@ Functions to manipulate, examine, and analyze model objects.
    average_reconstructions
    fit_models_3d
 
-Component Objects
+Model Sub-Objects
 -----------------
 
 The model object combines multiple sub-objects that define and store different
-elements of the model definition, data, and results.
-
-Here, the main sub-objects are listed, some of which can also be used independently.
-
-Bands
-~~~~~
-
-An object for defining frequency band definitions.
-
-.. currentmodule:: specparam
-
-.. autosummary::
-   :toctree: generated/
-
-   Bands
+elements of the model definition, data, and results. Here, the main sub-objects are listed.
 
 Algorithm
 ~~~~~~~~~
-
-An object for defining fit algorithms.
 
 .. currentmodule:: specparam.algorithms.algorithm
 
@@ -102,58 +86,15 @@ An object for defining fit algorithms.
 Modes
 ~~~~~
 
-An object for defining fit modes.
-
-.. currentmodule:: specparam.modes.mode
+.. currentmodule:: specparam.modes.modes
 
 .. autosummary::
    :toctree: generated/
 
-   Mode
-
-Associated objects allow for defining mode parameters.
-
-.. currentmodule:: specparam.modes.params
-
-.. autosummary::
-   :toctree: generated/
-
-   ParamDefinition
-
-Utility to check for available fit modes.
-
-.. currentmodule:: specparam.modes.definitions
-
-.. autosummary::
-   :toctree: generated/
-
-   check_modes
-
-Metrics
-~~~~~~~
-
-An object for defining metrics.
-
-.. currentmodule:: specparam.metrics.metric
-
-.. autosummary::
-   :toctree: generated/
-
-   Metric
-
-Utility to check for available metrics.
-
-.. currentmodule:: specparam.metrics.definitions
-
-.. autosummary::
-   :toctree: generated/
-
-   check_metrics
+   Modes
 
 Data
 ~~~~
-
-An object for managing data to be modeled.
 
 .. currentmodule:: specparam.data.data
 
@@ -165,14 +106,96 @@ An object for managing data to be modeled.
 Results
 ~~~~~~~
 
-An object for managing model results.
-
 .. currentmodule:: specparam.results.results
 
 .. autosummary::
    :toctree: generated/
 
    Results
+
+Model Definitions
+-----------------
+
+Spectral models are defined by the defining fit Modes. This section
+
+Mode
+~~~~
+
+The Mode object & related utilties, providing functionality for defining fit modes.
+
+.. currentmodule:: specparam.modes
+
+.. autosummary::
+   :toctree: generated/
+
+   Mode
+   ParamDefinition
+   check_modes
+
+Fit Functions (Aperiodic)
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. currentmodule:: specparam.modes.funcs
+
+.. autosummary::
+   :toctree: generated/
+
+   powerlaw_function
+   lorentzian_function
+   double_expo_function
+
+Fit Functions (Peaks)
+~~~~~~~~~~~~~~~~~~~~~
+
+.. currentmodule:: specparam.modes.funcs
+
+.. autosummary::
+   :toctree: generated/
+
+   gaussian_function
+   skewed_gaussian_function
+   cauchy_function
+   gamma_function
+   triangle_function
+
+Metrics
+-------
+
+The Metric object & related utilties, providing functionality for definining metrics to evaluate model fitting performance.
+
+Metric Object
+~~~~~~~~~~~~~
+
+.. currentmodule:: specparam.metrics
+
+.. autosummary::
+   :toctree: generated/
+
+   Metric
+
+Metric Functions (Error)
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. currentmodule:: specparam.metrics.error
+
+.. autosummary::
+   :toctree: generated/
+
+   compute_mean_abs_error
+   compute_mean_squared_error
+   compute_root_mean_squared_error
+   compute_median_abs_error
+
+Metric Functions (GoF)
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. currentmodule:: specparam.metrics.gof
+
+.. autosummary::
+   :toctree: generated/
+
+   compute_r_squared
+   compute_adj_r_squared
 
 Data Objects
 ------------
@@ -239,6 +262,18 @@ The following functions operate on arrays of peak parameters, which may be usefu
     get_highest_peak
     threshold_peaks
     sort_peaks
+
+Bands
+~~~~~
+
+An object for defining frequency band definitions.
+
+.. currentmodule:: specparam
+
+.. autosummary::
+   :toctree: generated/
+
+   Bands
 
 Measures
 --------

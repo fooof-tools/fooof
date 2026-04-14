@@ -5,7 +5,7 @@ from copy import deepcopy
 import numpy as np
 
 from specparam.metrics.metric import Metric
-from specparam.metrics.definitions import METRICS, check_metric_definition
+from specparam.metrics.definitions import check_metric_definition
 from specparam.reports.strings import gen_metrics_str
 
 ###################################################################################################
@@ -63,7 +63,7 @@ class Metrics():
         if isinstance(metric, dict):
             metric = Metric(**metric)
 
-        metric = check_metric_definition(metric, METRICS)
+        metric = check_metric_definition(metric)
 
         self.metrics.append(deepcopy(metric))
 
