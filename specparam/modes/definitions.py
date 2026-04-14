@@ -6,7 +6,8 @@ from collections import OrderedDict
 from specparam.modes.mode import Mode
 from specparam.modes.params import ParamDefinition
 from specparam.modes.funcs import (powerlaw_function, lorentzian_function, double_expo_function,
-                                   gaussian_function, skewed_gaussian_function, cauchy_function)
+                                   gaussian_function, skewed_gaussian_function,
+                                   cauchy_function, gamma_function, triangle_function)
 from specparam.modes.jacobians import jacobian_gauss
 from specparam.utils.checks import check_selection
 
@@ -146,7 +147,7 @@ pe_skewed_gaussian = Mode(
     name='skewed_gaussian',
     component='periodic',
     description='Skewed Gaussian peak fit function.',
-    formula=r'P(F)_n = \frac{2}{w\sqrt{2\pi}} e^{\frac{(F - \epsilon)^2} {2w^2}}',
+    formula=r'P(F)_n = a * \frac{2}{w\sqrt{2\pi}} e^{-\frac{(F - \epsilon)^2} {2w^2}} * 0.5 * (1 + erf(s + \frac{F - c}{w\sqrt{2}})',
     func=skewed_gaussian_function,
     jacobian=None,
     params=params_skewed_gaussian,
@@ -178,11 +179,58 @@ pe_cauchy = Mode(
 )
 
 
+## PE - Gamma Mode
+
+params_gamma = ParamDefinition(OrderedDict({
+    'cf' : 'Center frequency of the peak.',
+    'pw' : 'Power of the peak, over and above the aperiodic component.',
+    'shape' : 'Shape parameter of the gamma function.',
+    'scale' : 'Scale parameter of the gamma function.',
+}))
+
+pe_gamma = Mode(
+    name='gamma',
+    component='periodic',
+    description='Fit a gamma peak function.',
+    formula=r'P(F)_n = a * \frac{1}{\Gamma (s)\theta^{s}}(F-c)^{s-1}e^{-\frac{F-c}{\theta}}',
+    func=gamma_function,
+    jacobian=None,
+    params=params_gamma,
+    ndim=2,
+    freq_space='linear',
+    powers_space='log10',
+)
+
+
+## PE - Triangle Mode
+
+params_triangle = ParamDefinition(OrderedDict({
+    'cf' : 'Center frequency of the peak.',
+    'pw' : 'Power of the peak, over and above the aperiodic component.',
+    'bw' : 'Bandwidth of the peak.',
+}))
+
+pe_triangle = Mode(
+    name='triangle',
+    component='periodic',
+    description='Triangle peak fit function.',
+    formula=r'\text{tri}(x) = \begin{cases} 1 - |x| & \text{if } |x| < 1 \\ 0 & \text{if } |x| \geq 1 \end{cases}',
+    func=triangle_function,
+    jacobian=None,
+    params=params_triangle,
+    ndim=2,
+    freq_space='linear',
+    powers_space='log10',
+)
+
+
 # Collect available periodic modes
 PE_MODES = {
     'gaussian' : pe_gaussian,
     'skewed_gaussian' : pe_skewed_gaussian,
     'cauchy' : pe_cauchy,
+    'gamma' : pe_gamma,
+    'triangle' : pe_triangle,
 }
 
 ###################################################################################################

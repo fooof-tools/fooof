@@ -22,7 +22,7 @@ from specparam.utils.download import load_example_data
 from specparam.convert.params import compute_peak_height
 
 # Import the default parameter conversions
-from specparam.modes.convert import DEFAULT_CONVERTERS
+from specparam.convert.definitions import DEFAULT_CONVERTERS
 
 # sphinx_gallery_start_ignore
 from specparam.plts.utils import check_ax

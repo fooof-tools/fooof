@@ -1,21 +1,34 @@
 """Functions that can be used for model fitting.
 
+Conventions:
+- Each function in this file should be named as `{LABEL}_function`
+- Each function takes as input:
+    - `xs` : the input frequency vector
+    - `*params` : a variable number of input parameters
+        - For aperiodic functions, this is the number of input parameters for the function
+        - For peak functions, this is the number of function parameters * n_peaks
+- Each function should define the input parameters and function formula in the docstring
+    - When defining a fit mode, this information should be consistent in the Mode object
+
 For defining the formulas, the following standard variable definitions are used (formula / code):
 
 - `F` / `xs` : frequency vector
 - `a` / `ctr` : the height of a peak function, corresponding to 'power' (pw).
 - `c` / `hgt` : the center of a peak function, corresponding to 'center frequency' (cf).
 - `w` / `wid` : the width of a peak function, corresponding to 'bandwidth' (bw).
-- `\chi` / `exp` : an exponent of a 1/f function. Can be subscripted if there are multiple.
-- `k` / `knee` : a knee of a Lorentzian function. Can be subscripted if there are multiple.
+- `\chi` / `exp` : an exponent of a 1/f function. Can be subscripted for multiple.
+- `k` / `knee` : a knee of a multi-fractal powerlaw function. Can be subscripted for multiple.
 - `b` / `offset` : the offset of an aperiodic function.
 - `A` : relating to the aperiodic component.
 - `P` : relating to the periodic component.
 """
 
+from math import gamma
+
 import numpy as np
 from scipy.special import erf
 
+from specparam.utils.array import normalize
 from specparam.utils.array import normalize
 
 ###################################################################################################
@@ -32,6 +45,7 @@ def gaussian_function(xs, *params):
         Input x-axis values.
     *params : float
         Parameters that define the gaussian function.
+        Each gaussian has 3 parameters: ctr, hgt, wid.
 
     Returns
     -------
@@ -65,6 +79,7 @@ def skewed_gaussian_function(xs, *params):
         Input x-axis values.
     *params : float
         Parameters that define the skewed normal distribution function.
+        Each skewed normal peak has 4 parameters: ctr, hgt, wid, skew.
 
     Returns
     -------
@@ -77,16 +92,20 @@ def skewed_gaussian_function(xs, *params):
 
     .. math::
 
-        P(F)_n = a * \frac{2}{w\sqrt{2\pi}} e^{-\frac{(F - \epsilon)^2} {2w^2}} * 0.5 * (1 + erf(k + \frac{F - c}{w\sqrt{2}})
+        P(F)_n = a * \frac{2}{w\sqrt{2\pi}} e^{-\frac{(F - c)^2} {2w^2}} * 0.5 * (1 + erf(s + \frac{F - c}{w\sqrt{2}})
 
-    where `k` is the skew factor, and `erf` is the error function.
+    where `s` is the skew factor, and `erf` is the error function.
+
+    This maps to conventional parameter definitions of a skewed normal distribution as:
+
+    - :math:`\epsilon` (location) is mapped to ctr (c)
+    - :math:`\omega` (scale) is mapped to wid (w)
+    - :math:`\alpha` (shape) is mapped to skew (s)
     """
 
     ys = np.zeros_like(xs)
 
-    for ii in range(0, len(params), 4):
-
-        ctr, hgt, wid, skew = params[ii:ii+4]
+    for ctr, hgt, wid, skew in zip(*[iter(params)] * 4):
 
         ts = (xs - ctr) / wid
         temp = 2 / wid * (1 / np.sqrt(2 * np.pi) * np.exp(-ts**2 / 2)) * \
@@ -105,6 +124,7 @@ def cauchy_function(xs, *params):
         Input x-axis values.
     *params : float
         Parameters that define the cauchy function.
+        Each cauchy peak has 3 parameters: ctr, hgt, wid.
 
     Returns
     -------
@@ -129,6 +149,79 @@ def cauchy_function(xs, *params):
     return ys
 
 
+def gamma_function(xs, *params):
+    r"""Gamma fitting function.
+
+    Parameters
+    ----------
+    xs : 1d array
+        Input x-axis values.
+    *params : float
+        Parameters that define a gamma function.
+        Each gamma peak has 4 parameters: ctr, hgt, shape (shp), scale (scl).
+
+    Returns
+    -------
+    ys : 1d array
+        Output values for gamma function.
+
+    Notes
+    -----
+    Defines a gamma fit function as:
+
+        P(F)_n = a * \frac{1}{\Gamma (s)\theta^{s}}(F-c)^{s-1}e^{-\frac{F-c}{\theta}}
+
+    where s is the shape parameter and theta is the scale parameter.
+    """
+
+    ys = np.zeros_like(xs)
+
+    for ctr, hgt, shp, scl in zip(*[iter(params)] * 4):
+        cxs = xs-ctr
+        cxs = cxs.clip(min=0)
+        ys = ys + hgt * normalize((1 / (gamma(shp) * scl**shp) * cxs**(shp-1) * np.exp(-cxs/scl)))
+
+
+def triangle_function(xs, *params):
+    r"""Triangle fitting function.
+
+    Parameters
+    ----------
+    xs : 1d array
+        Input x-axis values.
+    *params : float
+        Parameters that define a triangle function.
+        Each triangle peak has 3 parameters: ctr, hgt, wid.
+
+    Returns
+    -------
+    ys : 1d array
+        Output values for triangle function.
+
+    Notes
+    -----
+    Defines a triangular fit function as:
+
+    .. math::
+
+        \text{tri}(x) = \begin{cases} 1 - |x| & \text{if } |x| < 1 \\ 0 & \text{if } |x| \geq 1 \end{cases}
+
+    To use this function as a peak function, this function is scaled by hgt and wid, and moved to ctr.
+    """
+
+    ys = np.zeros_like(xs)
+    fres = xs[1] - xs[0]
+
+    for ctr, hgt, wid in zip(*[iter(params)] * 3):
+
+        n_samples = int(np.ceil(2 * wid / fres))
+        n_samples += 1 if n_samples % 2 == 0 else 0
+        temp = np.arccos(np.cos(np.linspace(0, 2 * np.pi, n_samples)))
+        ys[np.abs(xs - ctr) <= (n_samples / 2) * fres] += hgt * normalize(temp)
+
+    return ys
+
+
 ## APERIODIC FUNCTIONS
 
 def powerlaw_function(xs, *params):
@@ -139,7 +232,7 @@ def powerlaw_function(xs, *params):
     xs : 1d array
         Input x-axis values.
     *params : float
-        Parameters (offset, exponent) that define the 1/f function.
+        Parameters the powerlaw (1/f) function: offset, exponent.
 
     Returns
     -------
@@ -178,7 +271,7 @@ def lorentzian_function(xs, *params):
     xs : 1d array
         Input x-axis values.
     *params : float
-        Parameters (offset, knee, exponent) that define the Lorentzian function.
+        Parameters that define the Lorentzian function: offset, knee, exponent.
 
     Returns
     -------
@@ -217,7 +310,7 @@ def double_expo_function(xs, *params):
     xs : 1d array
         Input x-axis values.
     *params : float
-        Parameters (offset, exp0, knee, exp1) that define the the double exponent function.
+        Parameters that define the the double exponent function: offset, exp0, knee, exp1.
 
     Returns
     -------
@@ -284,7 +377,7 @@ def linear_function(xs, *params):
     xs : 1d array
         Input x-axis values.
     *params : float
-        Parameters that define the linear function.
+        Parameters that define the linear function: offset, slope.
 
     Returns
     -------
@@ -316,7 +409,7 @@ def quadratic_function(xs, *params):
     xs : 1d array
         Input x-axis values.
     *params : float
-        Parameters that define the quadratic function.
+        Parameters that define the quadratic function: offset, slope, curve.
 
     Returns
     -------
@@ -327,7 +420,7 @@ def quadratic_function(xs, *params):
     -----
     This is an aperiodic fit function.
 
-    Defines a quaratic fit function as:
+    Defines a quadratic fit function as:
 
     .. math::
 
