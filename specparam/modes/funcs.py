@@ -1,4 +1,17 @@
-"""Functions that can be used for model fitting."""
+"""Functions that can be used for model fitting.
+
+For defining the formulas, the following standard variable definitions are used (formula / code):
+
+- `F` / `xs` : frequency vector
+- `a` / `ctr` : the height of a peak function, corresponding to 'power' (pw).
+- `c` / `hgt` : the center of a peak function, corresponding to 'center frequency' (cf).
+- `w` / `wid` : the width of a peak function, corresponding to 'bandwidth' (bw).
+- `\chi` / `exp` : an exponent of a 1/f function. Can be subscripted if there are multiple.
+- `k` / `knee` : a knee of a Lorentzian function. Can be subscripted if there are multiple.
+- `b` / `offset` : the offset of an aperiodic function.
+- `A` : relating to the aperiodic component.
+- `P` : relating to the periodic component.
+"""
 
 import numpy as np
 from scipy.special import erf
@@ -11,32 +24,40 @@ from specparam.utils.array import normalize
 ## PEAK FUNCTIONS
 
 def gaussian_function(xs, *params):
-    """Gaussian fitting function.
+    r"""Gaussian fitting function.
 
     Parameters
     ----------
     xs : 1d array
         Input x-axis values.
     *params : float
-        Parameters that define gaussian function.
+        Parameters that define the gaussian function.
 
     Returns
     -------
     ys : 1d array
         Output values for gaussian function.
+
+    Notes
+    -----
+    Defines a Gaussian fit function as:
+
+    .. math::
+
+        P(F)_n = a * \frac {w^2} {(F - c)^2 + w^2}
     """
 
     ys = np.zeros_like(xs)
 
     for ctr, hgt, wid in zip(*[iter(params)] * 3):
 
-        ys = ys + hgt * np.exp(-(xs-ctr)**2 / (2*wid**2))
+        ys = ys + hgt * np.exp(-(xs - ctr)**2 / (2 * wid**2))
 
     return ys
 
 
 def skewed_gaussian_function(xs, *params):
-    """Skewed gaussian fitting function.
+    r"""Skewed gaussian fitting function.
 
     Parameters
     ----------
@@ -49,6 +70,16 @@ def skewed_gaussian_function(xs, *params):
     -------
     ys : 1d array
         Output values for skewed normal distribution function.
+
+    Notes
+    -----
+    Defines a skewed Gaussian fit function as:
+
+    .. math::
+
+        P(F)_n = a * \frac{2}{w\sqrt{2\pi}} e^{-\frac{(F - \epsilon)^2} {2w^2}} * 0.5 * (1 + erf(k + \frac{F - c}{w\sqrt{2}})
+
+    where `k` is the skew factor, and `erf` is the error function.
     """
 
     ys = np.zeros_like(xs)
@@ -66,74 +97,71 @@ def skewed_gaussian_function(xs, *params):
 
 
 def cauchy_function(xs, *params):
-    """Cauchy fitting function.
+    r"""Cauchy fitting function.
 
     Parameters
     ----------
     xs : 1d array
         Input x-axis values.
     *params : float
-        Parameters that define a cauchy function.
+        Parameters that define the cauchy function.
 
     Returns
     -------
     ys : 1d array
         Output values for cauchy function.
+
+    Notes
+    -----
+    Defines a cauchy fit function as:
+
+    .. math::
+
+        P(F)_n = a * \frac {w^2} {(F - c)^2 + w^2}
     """
 
     ys = np.zeros_like(xs)
 
     for ctr, hgt, wid in zip(*[iter(params)] * 3):
 
-        ys = ys + hgt*wid**2/((xs-ctr)**2+wid**2)
+        ys = ys + hgt * wid**2 / ((xs - ctr)**2 + wid**2)
 
     return ys
 
 
 ## APERIODIC FUNCTIONS
 
-def expo_function(xs, *params):
-    """Exponential function, for fitting aperiodic component with a 'knee'.
-
-    NOTE: this function requires linear frequency (not log).
+def powerlaw_function(xs, *params):
+    r"""Powerlaw function, for fitting aperiodic component as 1/f.
 
     Parameters
     ----------
     xs : 1d array
         Input x-axis values.
     *params : float
-        Parameters (offset, knee, exp) that define Lorentzian function:
-        y = 10^offset * (1/(knee + x^exp))
+        Parameters (offset, exponent) that define the 1/f function.
 
     Returns
     -------
     ys : 1d array
         Output values for exponential function.
-    """
 
-    offset, knee, exp = params
-    ys = offset - np.log10(knee + xs**exp)
+    Notes
+    -----
+    This is an aperiodic fit function, defined for use with LINEAR freqs and LOG power.
 
-    return ys
+    Defines a 1/f fit function as:
 
+    .. math::
 
-def expo_nk_function(xs, *params):
-    """Exponential function, for fitting aperiodic component without a 'knee'.
+        A(F) = 10^b * \frac{1}{F^\chi}
 
-    NOTE: this function requires linear frequency (not log).
+    Note that the above function form is defined in linear/linear space.
+    The equivalent for linear/log, as implemented in the code, is:
 
-    Parameters
-    ----------
-    xs : 1d array
-        Input x-axis values.
-    *params : float
-        Parameters (offset, exp) that define Lorentzian function:
-        y = 10^off * (1/(x^exp))
+    .. math::
 
-    Returns
-    -------
-    ys : 1d array
-        Output values for exponential function, without a knee.
+        A(F) = b - \log(F^\chi)
     """
 
     offset, exp = params
@@ -142,23 +170,76 @@ def expo_nk_function(xs, *params):
     return ys
 
 
-def double_expo_function(xs, *params):
-    """Double exponential function, for fitting aperiodic component with two exponents and a knee.
-
-    NOTE: this function requires linear frequency (not log).
+def lorentzian_function(xs, *params):
+    r"""Lorentzian function, for fitting aperiodic component as a 1/f function with a knee.
 
     Parameters
     ----------
     xs : 1d array
         Input x-axis values.
     *params : float
-        Parameters (offset, exp0, knee, exp1) that define the function:
-        y = 10^offset * (1/((x**exp0) * (knee + x^exp1))
+        Parameters (offset, knee, exponent) that define the Lorentzian function.
 
     Returns
     -------
     ys : 1d array
         Output values for exponential function.
+
+    Notes
+    -----
+    This is an aperiodic fit function, defined for use with LINEAR freqs and LOG power.
+
+    Defines a Lorentzian fit function as:
+
+    .. math::
+
+        A(F) = 10^b * \frac{1}{(k + F^\chi)}
+
+    Note that the above function form is defined in linear/linear space.
+    The equivalent for linear/log, as implemented in the code, is:
+
+    .. math::
+
+        A(F) = b - \log(k + F^\chi)
+    """
+
+    offset, knee, exp = params
+    ys = offset - np.log10(knee + xs**exp)
+
+    return ys
+
+
+def double_expo_function(xs, *params):
+    r"""Double exponential function, for fitting aperiodic component with two exponents and a knee.
+
+    Parameters
+    ----------
+    xs : 1d array
+        Input x-axis values.
+    *params : float
+        Parameters (offset, exp0, knee, exp1) that define the the double exponent function.
+
+    Returns
+    -------
+    ys : 1d array
+        Output values for exponential function.
+
+    Notes
+    -----
+    This is an aperiodic fit function, defined for use with LINEAR freqs and LOG power.
+
+    Defines a double-exponent 1/f fit function as:
+
+    .. math::
+
+        A(F) = 10^b * \frac{1}{F^{\chi_{0}} * (k + F^{\chi_{1}})}
+
+    Note that the above function form is defined in linear/linear space.
+    The equivalent for linear/log, as implemented in the code, is:
+
+    .. math::
+
+        A(F) = b - \log(F^{\chi_{0}} * (k + F^{\chi_{1}}))
     """
 
     ys = np.zeros_like(xs)
@@ -171,19 +252,29 @@ def double_expo_function(xs, *params):
 
 
 def linear_function(xs, *params):
-    """Linear fitting function.
+    r"""Linear fitting function.
 
     Parameters
     ----------
     xs : 1d array
         Input x-axis values.
     *params : float
-        Parameters that define linear function.
+        Parameters that define the linear function.
 
     Returns
     -------
     ys : 1d array
         Output values for linear function.
+
+    Notes
+    -----
+    This is an aperiodic fit function, defined for use with LOG freqs and LOG power.
+
+    Defines a linear fit function as:
+
+    .. math::
+
+        A(F) = b + \chi * F
     """
 
     offset, slope = params
@@ -193,19 +284,29 @@ def linear_function(xs, *params):
 
 
 def quadratic_function(xs, *params):
-    """Quadratic fitting function.
+    r"""Quadratic fitting function.
 
     Parameters
     ----------
     xs : 1d array
         Input x-axis values.
     *params : float
-        Parameters that define quadratic function.
+        Parameters that define the quadratic function.
 
     Returns
     -------
     ys : 1d array
         Output values for quadratic function.
+
+    Notes
+    -----
+    This is an aperiodic fit function.
+
+    Defines a quaratic fit function as:
+
+    .. math::
+
+        A(F) = b + \chi * F + F^2 * v
     """
 
     offset, slope, curve = params
