@@ -1,13 +1,23 @@
 """Functions that can be used for model fitting.
 
+Conventions:
+- Each function in this file should be named as `{LABEL}_function`
+- Each function takes as input:
+    - `xs` : the input frequency vector
+    - `*params` : a variable number of input parameters
+        - For aperiodic functions, this is the number of input parameters for the function
+        - For peak functions, this is the number of function parameters * n_peaks
+- Each function should define the input parameters and function formula in the docstring
+    - When defining a fit mode, this information should be consistent in the Mode object
+
 For defining the formulas, the following standard variable definitions are used (formula / code):
 
 - `F` / `xs` : frequency vector
 - `a` / `ctr` : the height of a peak function, corresponding to 'power' (pw).
 - `c` / `hgt` : the center of a peak function, corresponding to 'center frequency' (cf).
 - `w` / `wid` : the width of a peak function, corresponding to 'bandwidth' (bw).
-- `\chi` / `exp` : an exponent of a 1/f function. Can be subscripted if there are multiple.
-- `k` / `knee` : a knee of a Lorentzian function. Can be subscripted if there are multiple.
+- `\chi` / `exp` : an exponent of a 1/f function. Can be subscripted for multiple.
+- `k` / `knee` : a knee of a multi-fractal powerlaw function. Can be subscripted for multiple.
 - `b` / `offset` : the offset of an aperiodic function.
 - `A` : relating to the aperiodic component.
 - `P` : relating to the periodic component.
@@ -35,6 +45,7 @@ def gaussian_function(xs, *params):
         Input x-axis values.
     *params : float
         Parameters that define the gaussian function.
+        Each gaussian has 3 parameters: ctr, hgt, wid.
 
     Returns
     -------
@@ -68,6 +79,7 @@ def skewed_gaussian_function(xs, *params):
         Input x-axis values.
     *params : float
         Parameters that define the skewed normal distribution function.
+        Each skewed normal peak has 4 parameters: ctr, hgt, wid, skew.
 
     Returns
     -------
@@ -80,9 +92,15 @@ def skewed_gaussian_function(xs, *params):
 
     .. math::
 
-        P(F)_n = a * \frac{2}{w\sqrt{2\pi}} e^{-\frac{(F - \epsilon)^2} {2w^2}} * 0.5 * (1 + erf(k + \frac{F - c}{w\sqrt{2}})
+        P(F)_n = a * \frac{2}{w\sqrt{2\pi}} e^{-\frac{(F - c)^2} {2w^2}} * 0.5 * (1 + erf(s + \frac{F - c}{w\sqrt{2}})
 
-    where `k` is the skew factor, and `erf` is the error function.
+    where `s` is the skew factor, and `erf` is the error function.
+
+    This maps to conventional parameter definitions of a skewed normal distribution as:
+
+    - :math:`\epsilon` (location) is mapped to ctr (c)
+    - :math:`\omega` (scale) is mapped to wid (w)
+    - :math:`\alpha` (shape) is mapped to skew (s)
     """
 
     ys = np.zeros_like(xs)
@@ -106,6 +124,7 @@ def cauchy_function(xs, *params):
         Input x-axis values.
     *params : float
         Parameters that define the cauchy function.
+        Each cauchy peak has 3 parameters: ctr, hgt, wid.
 
     Returns
     -------
@@ -139,6 +158,7 @@ def gamma_function(xs, *params):
         Input x-axis values.
     *params : float
         Parameters that define a gamma function.
+        Each gamma peak has 4 parameters: ctr, hgt, shape (shp), scale (scl).
 
     Returns
     -------
@@ -149,18 +169,17 @@ def gamma_function(xs, *params):
     -----
     Defines a gamma fit function as:
 
-        P(F)_n = a * \frac{1}{\Gamma (k)\theta^{k}}F_c^{k-1}e^{-\frac{F_c}{\theta}}
+        P(F)_n = a * \frac{1}{\Gamma (s)\theta^{s}}(F-c)^{s-1}e^{-\frac{F-c}{\theta}}
 
-    where k is the shape parameter, theta is the scale parameter, and F_c is the
-    frequency values scaled to center the peak at the desired center frequency.
+    where s is the shape parameter and theta is the scale parameter.
     """
 
     ys = np.zeros_like(xs)
 
-    for ctr, hgt, shp, scale in zip(*[iter(params)] * 4):
+    for ctr, hgt, shp, scl in zip(*[iter(params)] * 4):
         cxs = xs-ctr
         cxs = cxs.clip(min=0)
-        ys = ys + hgt * normalize((1 / (gamma(shp) * scale**shp) * cxs**(shp-1) * np.exp(-cxs/scale)))
+        ys = ys + hgt * normalize((1 / (gamma(shp) * scl**shp) * cxs**(shp-1) * np.exp(-cxs/scl)))
 
 
 def triangle_function(xs, *params):
@@ -172,6 +191,7 @@ def triangle_function(xs, *params):
         Input x-axis values.
     *params : float
         Parameters that define a triangle function.
+        Each triangle peak has 3 parameters: ctr, hgt, wid.
 
     Returns
     -------
@@ -212,7 +232,7 @@ def powerlaw_function(xs, *params):
     xs : 1d array
         Input x-axis values.
     *params : float
-        Parameters (offset, exponent) that define the 1/f function.
+        Parameters the powerlaw (1/f) function: offset, exponent.
 
     Returns
     -------
@@ -251,7 +271,7 @@ def lorentzian_function(xs, *params):
     xs : 1d array
         Input x-axis values.
     *params : float
-        Parameters (offset, knee, exponent) that define the Lorentzian function.
+        Parameters that define the Lorentzian function: offset, knee, exponent.
 
     Returns
     -------
@@ -290,7 +310,7 @@ def double_expo_function(xs, *params):
     xs : 1d array
         Input x-axis values.
     *params : float
-        Parameters (offset, exp0, knee, exp1) that define the the double exponent function.
+        Parameters that define the the double exponent function: offset, exp0, knee, exp1.
 
     Returns
     -------
@@ -332,7 +352,7 @@ def linear_function(xs, *params):
     xs : 1d array
         Input x-axis values.
     *params : float
-        Parameters that define the linear function.
+        Parameters that define the linear function: offset, slope.
 
     Returns
     -------
@@ -364,7 +384,7 @@ def quadratic_function(xs, *params):
     xs : 1d array
         Input x-axis values.
     *params : float
-        Parameters that define the quadratic function.
+        Parameters that define the quadratic function: offset, slope, curve.
 
     Returns
     -------
@@ -375,7 +395,7 @@ def quadratic_function(xs, *params):
     -----
     This is an aperiodic fit function.
 
-    Defines a quaratic fit function as:
+    Defines a quadratic fit function as:
 
     .. math::
 
