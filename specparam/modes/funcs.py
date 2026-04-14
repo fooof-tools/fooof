@@ -16,8 +16,8 @@ For defining the formulas, the following standard variable definitions are used 
 - `a` / `ctr` : the height of a peak function, corresponding to 'power' (pw).
 - `c` / `hgt` : the center of a peak function, corresponding to 'center frequency' (cf).
 - `w` / `wid` : the width of a peak function, corresponding to 'bandwidth' (bw).
-- `\chi` / `exp` : an exponent of a 1/f function. Can be subscripted if there are multiple.
-- `k` / `knee` : a knee of a Lorentzian function. Can be subscripted if there are multiple.
+- `\chi` / `exp` : an exponent of a 1/f function. Can be subscripted for multiple.
+- `k` / `knee` : a knee of a multi-fractal powerlaw function. Can be subscripted for multiple.
 - `b` / `offset` : the offset of an aperiodic function.
 - `A` : relating to the aperiodic component.
 - `P` : relating to the periodic component.
@@ -92,9 +92,9 @@ def skewed_gaussian_function(xs, *params):
 
     .. math::
 
-        P(F)_n = a * \frac{2}{w\sqrt{2\pi}} e^{-\frac{(F - \epsilon)^2} {2w^2}} * 0.5 * (1 + erf(k + \frac{F - c}{w\sqrt{2}})
+        P(F)_n = a * \frac{2}{w\sqrt{2\pi}} e^{-\frac{(F - \epsilon)^2} {2w^2}} * 0.5 * (1 + erf(s + \frac{F - c}{w\sqrt{2}})
 
-    where `k` is the skew factor, and `erf` is the error function.
+    where `s` is the skew factor, and `erf` is the error function.
     """
 
     ys = np.zeros_like(xs)
@@ -163,10 +163,9 @@ def gamma_function(xs, *params):
     -----
     Defines a gamma fit function as:
 
-        P(F)_n = a * \frac{1}{\Gamma (k)\theta^{k}}F_c^{k-1}e^{-\frac{F_c}{\theta}}
+        P(F)_n = a * \frac{1}{\Gamma (s)\theta^{s}}(F-c)^{s-1}e^{-\frac{F-c}{\theta}}
 
-    where k is the shape parameter, theta is the scale parameter, and F_c is the
-    frequency values scaled to center the peak at the desired center frequency.
+    where s is the shape parameter and theta is the scale parameter.
     """
 
     ys = np.zeros_like(xs)
