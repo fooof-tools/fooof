@@ -73,12 +73,13 @@ def skewed_gaussian_function(xs, *params):
 
     Notes
     -----
-    ToDo - Check & Fix:
     Defines a skewed Gaussian fit function as:
 
     .. math::
 
-        P(F)_n = a * \frac{2}{w\sqrt{2\pi}} e^{\frac{(F - \epsilon)^2} {2w^2}}
+        P(F)_n = a * \frac{2}{w\sqrt{2\pi}} e^{-\frac{(F - \epsilon)^2} {2w^2}} * 0.5 * (1 + erf(k + \frac{F - c}{w\sqrt{2}})
+
+    where `k` is the skew factor, and `erf` is the error function.
     """
 
     ys = np.zeros_like(xs)
