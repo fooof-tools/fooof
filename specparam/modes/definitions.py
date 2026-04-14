@@ -7,7 +7,7 @@ from specparam.modes.mode import Mode
 from specparam.modes.params import ParamDefinition
 from specparam.modes.funcs import (powerlaw_function, lorentzian_function, double_expo_function,
                                    gaussian_function, skewed_gaussian_function,
-                                   cauchy_function, triangle_function)
+                                   cauchy_function, gamma_function, triangle_function)
 from specparam.modes.jacobians import jacobian_gauss
 from specparam.utils.checks import check_selection
 
@@ -156,6 +156,30 @@ pe_cauchy = Mode(
     powers_space='log10',
 )
 
+
+## PE - Gamma Mode
+
+params_gamma = ParamDefinition(OrderedDict({
+    'cf' : 'Center frequency of the peak.',
+    'pw' : 'Power of the peak, over and above the aperiodic component.',
+    'shape' : 'Shape parameter of the gamma function.',
+    'scale' : 'Scale parameter of the gamma function.',
+}))
+
+pe_gamma = Mode(
+    name='gamma',
+    component='periodic',
+    description='Fit a gamma peak function.',
+    formula=r'P(F)_n = a * \frac{1}{\Gamma (k)\theta^{k}}F_c^{k-1}e^{-\frac{F_c}{\theta}}',
+    func=gamma_function,
+    jacobian=None,
+    params=params_gamma,
+    ndim=2,
+    freq_space='linear',
+    powers_space='log10',
+)
+
+
 ## PE - Triangle Mode
 
 params_triangle = ParamDefinition(OrderedDict({
@@ -183,6 +207,7 @@ PE_MODES = {
     'gaussian' : pe_gaussian,
     'skewed_gaussian' : pe_skewed_gaussian,
     'cauchy' : pe_cauchy,
+    'gamma' : pe_gamma,
     'triangle' : pe_triangle,
 }
 

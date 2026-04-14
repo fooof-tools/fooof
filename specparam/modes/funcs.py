@@ -13,9 +13,12 @@ For defining the formulas, the following standard variable definitions are used 
 - `P` : relating to the periodic component.
 """
 
+from math import gamma
+
 import numpy as np
 from scipy.special import erf
 
+from specparam.utils.array import normalize
 from specparam.utils.array import normalize
 
 ###################################################################################################
@@ -125,6 +128,39 @@ def cauchy_function(xs, *params):
         ys = ys + hgt * wid**2 / ((xs - ctr)**2 + wid**2)
 
     return ys
+
+
+def gamma_function(xs, *params):
+    r"""Gamma fitting function.
+
+    Parameters
+    ----------
+    xs : 1d array
+        Input x-axis values.
+    *params : float
+        Parameters that define a gamma function.
+
+    Returns
+    -------
+    ys : 1d array
+        Output values for gamma function.
+
+    Notes
+    -----
+    Defines a gamma fit function as:
+
+        P(F)_n = a * \frac{1}{\Gamma (k)\theta^{k}}F_c^{k-1}e^{-\frac{F_c}{\theta}}
+
+    where k is the shape parameter, theta is the scale parameter, and F_c is the
+    frequency values scaled to center the peak at the desired center frequency.
+    """
+
+    ys = np.zeros_like(xs)
+
+    for ctr, hgt, shp, scale in zip(*[iter(params)] * 4):
+        cxs = xs-ctr
+        cxs = cxs.clip(min=0)
+        ys = ys + hgt * normalize((1 / (gamma(shp) * scale**shp) * cxs**(shp-1) * np.exp(-cxs/scale)))
 
 
 def triangle_function(xs, *params):
