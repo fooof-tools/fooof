@@ -92,9 +92,15 @@ def skewed_gaussian_function(xs, *params):
 
     .. math::
 
-        P(F)_n = a * \frac{2}{w\sqrt{2\pi}} e^{-\frac{(F - \epsilon)^2} {2w^2}} * 0.5 * (1 + erf(s + \frac{F - c}{w\sqrt{2}})
+        P(F)_n = a * \frac{2}{w\sqrt{2\pi}} e^{-\frac{(F - c)^2} {2w^2}} * 0.5 * (1 + erf(s + \frac{F - c}{w\sqrt{2}})
 
     where `s` is the skew factor, and `erf` is the error function.
+
+    This maps to conventional parameter definitions of a skewed normal distribution as:
+
+    - :math:`\epsilon` (location) is mapped to ctr (c)
+    - :math:`\omega` (scale) is mapped to wid (w)
+    - :math:`\alpha` (shape) is mapped to skew (s)
     """
 
     ys = np.zeros_like(xs)
@@ -389,7 +395,7 @@ def quadratic_function(xs, *params):
     -----
     This is an aperiodic fit function.
 
-    Defines a quaratic fit function as:
+    Defines a quadratic fit function as:
 
     .. math::
 
