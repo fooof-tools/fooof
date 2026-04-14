@@ -112,4 +112,4 @@ def check_metrics():
         print('    {:8s} {:12s} : {:s}'.format(metric.category, metric.measure, metric.description))
 
 
-check_metric_definition = partial(check_selection, definition=Metric)
+check_metric_definition = partial(check_selection, options=METRICS, definition=Metric)
