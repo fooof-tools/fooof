@@ -13,10 +13,8 @@ from specparam.modes.funcs import *
 def test_gaussian_function():
 
     ctr, hgt, wid = 50, 5, 10
-
-    xs = np.arange(1, 100)
+    xs = np.arange(1, 100, 1.)
     ys = gaussian_function(xs, ctr, hgt, wid)
-
     assert np.all(ys)
 
     # Check distribution matches generated gaussian from scipy
@@ -28,7 +26,7 @@ def test_skewed_gaussian_function():
 
     # Check that with no skew, approximate gaussian
     ctr, hgt, wid, skew = 50, 5, 10, 1
-    xs = np.arange(1, 100)
+    xs = np.arange(1, 100, 1.)
     ys_gaus = gaussian_function(xs, ctr, hgt, wid)
     ys_skew = skewed_gaussian_function(xs, ctr, hgt, wid, skew)
     np.allclose(ys_gaus, ys_skew, atol=0.001)
@@ -46,8 +44,7 @@ def test_skewed_gaussian_function():
 def test_cauchy_function():
 
     ctr, hgt, wid = 50, 5, 10
-
-    xs = np.arange(1, 100)
+    xs = np.arange(1, 100, 1.)
     ys = cauchy_function(xs, ctr, hgt, wid)
 
     assert np.all(ys)
@@ -59,6 +56,12 @@ def test_gamma_function():
     xs = np.arange(1, 100, 1.)
     ys = gamma_function(xs, ctr, hgt, shp, scl)
 
+def test_triangle_function():
+
+    ctr, hgt, wid = 50, 5, 10
+    xs = np.arange(1, 100, 1.)
+    ys = triangle_function(xs, ctr, hgt, wid)
+
     assert np.any(ys)
 
 ## Aperiodic functions
@@ -67,7 +70,7 @@ def test_powerlaw_function():
 
     off, exp = 10, 2
 
-    xs = np.arange(1, 100)
+    xs = np.arange(1, 100, 1.)
     ys = powerlaw_function(xs, off, exp)
 
     assert np.all(ys)
@@ -82,7 +85,7 @@ def test_lorentzian_function():
 
     off, knee, exp = 10, 5, 2
 
-    xs = np.arange(1, 100)
+    xs = np.arange(1, 100, 1.)
     ys = lorentzian_function(xs, off, knee, exp)
 
     assert np.all(ys)
@@ -115,7 +118,7 @@ def test_linear_function():
 
     off, sl = 10, 2
 
-    xs = np.arange(1, 100)
+    xs = np.arange(1, 100, 1.)
     ys = linear_function(xs, off, sl)
 
     assert np.all(ys)
@@ -129,7 +132,7 @@ def test_quadratic_function():
 
     off, sl, curve = 10, 3, 2
 
-    xs = np.arange(1, 100)
+    xs = np.arange(1, 100, 1.)
     ys = quadratic_function(xs, off, sl, curve)
 
     assert np.all(ys)
