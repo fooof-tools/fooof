@@ -17,9 +17,11 @@ class Modes():
         Aperiodic mode.
     periodic : str or Mode
         Periodic mode.
+    model : SpectralModel, optional
+        The model object this object is linked to, to provide access to other attributes.
     """
 
-    def __init__(self, aperiodic, periodic):
+    def __init__(self, aperiodic, periodic, model=None):
         """Initialize modes."""
 
         # Set list of component names
@@ -28,6 +30,8 @@ class Modes():
         # Add mode definitions for each component
         self.aperiodic = check_mode_definition(aperiodic, AP_MODES)
         self.periodic = check_mode_definition(periodic, PE_MODES)
+
+        self.model = model
 
 
     def check_params(self):

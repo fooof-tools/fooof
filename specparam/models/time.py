@@ -53,11 +53,12 @@ class SpectralTimeModel(SpectralGroupModel):
                                     verbose=kwargs.pop('verbose', True),
                                     **kwargs)
 
-        self.data = Data2DT()
+        self.data = Data2DT(model=self)
 
         self.results = Results2DT(modes=self.modes,
                                   metrics=kwargs.pop('metrics', None),
-                                  bands=kwargs.pop('bands', None))
+                                  bands=kwargs.pop('bands', None),
+                                  model=self)
 
         self.algorithm._reset_subobjects(data=self.data, results=self.results)
 
