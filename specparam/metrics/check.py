@@ -19,5 +19,4 @@ def check_metrics(category='all'):
     for cat in category:
         print('Available {} metrics:'.format(cat))
         for metric in METRICS[cat].values():
-            print('    {:8s} {:12s} : {:s}'.format(\
-                metric.category, metric.measure, metric.description))
+            print('    {:14s}    {:s}'.format(metric.measure, metric.description))
