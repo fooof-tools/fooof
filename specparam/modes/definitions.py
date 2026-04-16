@@ -1,6 +1,5 @@
 """Define fitting modes."""
 
-from functools import partial
 from collections import OrderedDict
 
 from specparam.modes.mode import Mode
@@ -223,4 +222,21 @@ MODES = {
 ###################################################################################################
 ## CHECKER FUNCTION
 
-check_mode_definition = partial(check_selection, definition=Mode)
+def check_mode_definition(mode, component):
+    """Check a mode definition.
+
+    Parameters
+    ----------
+    mode : Mode or str
+        Definition for a mode to check.
+        If str, should be the label corresponding to a defined mode (see `check_modes`).
+    component : {'aperiodic', 'periodic'}
+        Which component the mode corresponds to.
+
+    Returns
+    -------
+    Mode
+        Mode definition.
+    """
+
+    return check_selection(mode, MODES[component], definition=Mode)

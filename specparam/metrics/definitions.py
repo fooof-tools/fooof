@@ -1,7 +1,5 @@
 """Collect together library of available built in metrics."""
 
-from functools import partial
-
 from specparam.metrics.metrics import Metric
 from specparam.metrics.error import (compute_mean_abs_error, compute_mean_squared_error,
                                      compute_root_mean_squared_error, compute_median_abs_error)
@@ -77,7 +75,6 @@ GOF_METRICS = {
 
 # Collect a store of all available metrics
 METRICS = {
-
     'error' : ERROR_METRICS,
     'gof' : GOF_METRICS,
 }
@@ -91,7 +88,7 @@ def check_metric_definition(metric):
     Parameters
     ----------
     metric : Metric or dict or str
-        Metric to add to the object.
+        Definition for a metric to check.
         If dict, should have keys corresponding to a metric definition.
         If str, should be the label corresponding to a defined metric (see `check_metrics`).
 

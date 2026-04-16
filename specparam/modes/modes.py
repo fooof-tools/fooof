@@ -2,7 +2,7 @@
 
 from specparam.data import ModelModes
 from specparam.modes.mode import VALID_COMPONENTS
-from specparam.modes.definitions import check_mode_definition, AP_MODES, PE_MODES
+from specparam.modes.definitions import check_mode_definition
 from specparam.reports.strings import gen_modes_str
 
 ###################################################################################################
@@ -28,8 +28,8 @@ class Modes():
         self.components = VALID_COMPONENTS
 
         # Add mode definitions for each component
-        self.aperiodic = check_mode_definition(aperiodic, AP_MODES)
-        self.periodic = check_mode_definition(periodic, PE_MODES)
+        self.aperiodic = check_mode_definition(aperiodic, 'aperiodic')
+        self.periodic = check_mode_definition(periodic, 'periodic')
 
         self.model = model
 
