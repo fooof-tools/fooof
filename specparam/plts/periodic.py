@@ -7,7 +7,6 @@ import numpy as np
 from specparam.sim import gen_freqs
 from specparam.modutils.dependencies import safe_import, check_dependency
 from specparam.modes.modes import check_mode_definition
-from specparam.modes.definitions import PE_MODES
 from specparam.plts.settings import ITERABLES, PLT_FIGSIZES
 from specparam.plts.templates import plot_yshade
 from specparam.plts.style import style_param_plot, style_plot
@@ -103,7 +102,7 @@ def plot_peak_fits(peaks, periodic_mode, freq_range=None, average='mean', shade=
         Additional plot related keyword arguments, with styling options managed by ``style_plot``.
     """
 
-    periodic_mode = check_mode_definition(periodic_mode, PE_MODES)
+    periodic_mode = check_mode_definition(periodic_mode, 'periodic')
 
     ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['params']))
 

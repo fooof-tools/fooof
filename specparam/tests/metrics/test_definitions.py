@@ -9,10 +9,21 @@ from specparam.metrics.definitions import *
 
 def test_metrics_library():
 
-    for key, metric in METRICS.items():
-        assert isinstance(metric, Metric)
-        assert metric.label == key
+    for category, collection in METRICS.items():
+        for key, metric in collection.items():
+            assert isinstance(metric, Metric)
+            assert metric.label == category + '_' + key
 
-def test_check_metrics():
+def test_check_metric_definition():
 
-    check_metrics()
+    mdict = {'category' : 'test', 'measure' : 'test',
+             'description' : 'test', 'func' : lambda x: x}
+
+    m1 = check_metric_definition(Metric(**mdict))
+    assert isinstance(m1, Metric)
+
+    m2 = check_metric_definition(mdict)
+    assert isinstance(m2, Metric)
+
+    m3 = check_metric_definition('error_mae')
+    assert isinstance(m3, Metric)

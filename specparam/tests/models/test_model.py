@@ -11,7 +11,6 @@ from pytest import raises
 
 from specparam.utils.select import groupby
 from specparam.modutils.errors import FitError
-from specparam.metrics.definitions import METRICS
 from specparam.sim import gen_freqs, sim_power_spectrum
 from specparam.modes.definitions import AP_MODES, PE_MODES
 from specparam.models.utils import compare_model_objs
@@ -127,8 +126,9 @@ def test_fit_default_metrics():
 
 def test_fit_custom_metrics():
 
-    metrics = list(METRICS.keys())
-    tfm = SpectralModel(metrics=metrics)
+    cmetrics = ['error_mse', 'gof_adjrsquared']
+
+    tfm = SpectralModel(metrics=cmetrics)
 
     ap_params = [50, 2]
     gauss_params = [10, 0.5, 2, 20, 0.3, 4]
@@ -137,7 +137,7 @@ def test_fit_custom_metrics():
 
     tfm.fit(xs, ys)
     for key, val in tfm.results.metrics.results.items():
-        assert key in metrics
+        assert key in cmetrics
         assert isinstance(val, float)
 
 def test_fit_null_conversions(tfm):
