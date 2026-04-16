@@ -172,6 +172,7 @@ Metric Object
    :toctree: generated/
 
    Metric
+   check_metrics
 
 Metric Functions (Error)
 ~~~~~~~~~~~~~~~~~~~~~~~~
