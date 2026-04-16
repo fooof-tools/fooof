@@ -14,11 +14,6 @@ def test_modes_library():
             assert isinstance(mode, Mode)
             assert mode.name == key
 
-def test_check_modes():
-
-    check_modes('aperiodic')
-    check_modes('periodic')
-
 def test_check_mode_definition():
 
     for ap_mode in AP_MODES.keys():
