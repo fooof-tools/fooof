@@ -22,7 +22,7 @@ def check_modes(component='all', check_params=False):
         print('Available {:s} modes:'.format(comp))
         for mode in MODES[comp].values():
             if not check_params:
-                print('    {:14s}    {:s}'.format(mode.name, mode.description))
+                print('    {:15s}    {:s}'.format(mode.name, mode.description))
             else:
                 print('\n{:s}'.format(mode.name))
                 print('    {:s}'.format(mode.description))
