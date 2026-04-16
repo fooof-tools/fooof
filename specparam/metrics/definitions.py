@@ -39,6 +39,14 @@ error_medae = Metric(
     func=compute_median_abs_error,
 )
 
+# Collect available error metrics
+ERROR_METRICS = {
+    'mae' : error_mae,
+    'mse' : error_mse,
+    'rmse' : error_rmse,
+    'medae' : error_medae,
+}
+
 ###################################################################################################
 ## GOF
 
@@ -58,21 +66,47 @@ gof_adjrsquared = Metric(
             results.params.periodic.params.size + results.params.aperiodic.params.size},
 )
 
+# Collect available error metrics
+GOF_METRICS = {
+    'rsquared' : gof_rsquared,
+    'adjrsquared' : gof_adjrsquared,
+}
+
 ###################################################################################################
 ## COLLECT ALL METRICS TOGETHER
 
+# Collect a store of all available metrics
 METRICS = {
 
-    # Available error metrics
-    'error_mae' : error_mae,
-    'error_mse' : error_mse,
-    'error_rmse' : error_rmse,
-    'error_medae' : error_medae,
-
-    # Available GOF / r-squared metrics
-    'gof_rsquared' : gof_rsquared,
-    'gof_adjrsquared' : gof_adjrsquared,
-
+    'error' : ERROR_METRICS,
+    'gof' : GOF_METRICS,
 }
 
-check_metric_definition = partial(check_selection, options=METRICS, definition=Metric)
+###################################################################################################
+## CHECKER FUNCTION
+
+def check_metric_definition(metric):
+    """Check a metric definition.
+
+    Parameters
+    ----------
+    metric : Metric or dict or str
+        Metric to add to the object.
+        If dict, should have keys corresponding to a metric definition.
+        If str, should be the label corresponding to a defined metric (see `check_metrics`).
+
+    Returns
+    -------
+    Metric
+        Metric definition.
+    """
+
+    if isinstance(metric, dict):
+        metric = Metric(**metric)
+    elif isinstance(metric, str):
+        category, label = metric.split('_')
+        metric = check_selection(label, METRICS[category], Metric)
+    else:
+        metric = check_selection(metric, [], Metric)
+
+    return metric
