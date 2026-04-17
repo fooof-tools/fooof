@@ -344,6 +344,31 @@ def double_expo_function(xs, *params):
     return ys
 
 
+def knee_constant_function(xs, *params):
+    """Knee function with a constant, for fitting aperiodic component.
+
+    Parameters
+    ----------
+    xs : 1d array
+        Input x-axis values.
+    *params : float
+        Parameters (offset, exp, knee, constant) that define the function.
+
+    Returns
+    -------
+    ys : 1d array
+        Output values for the fit function.
+    """
+
+    ys = np.zeros_like(xs)
+
+    offset, exp, knee, constant = params
+
+    ys = ys + offset - np.log10(1 / (knee**(exp) + xs**(exp)) + constant)
+
+    return ys
+
+
 def linear_function(xs, *params):
     r"""Linear fitting function.
 

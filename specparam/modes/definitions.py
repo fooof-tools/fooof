@@ -78,6 +78,28 @@ ap_doublexp = Mode(
     powers_space='log10',
 )
 
+## AP - Knee with Constant Mode
+
+params_knee_constant = ParamDefinition(OrderedDict({
+    'offset' : 'Offset of the aperiodic component.',
+    'exponent' : 'Exponent of the aperiodic component.',
+    'knee' : 'Knee of the aperiodic component.',
+    'constant' : 'Constant value which the aperiodic component decays to, after the exponent.',
+}))
+
+ap_knee_constant = Mode(
+    name='knee_constant',
+    component='aperiodic',
+    description='Fit a Lorentzian function that decays to a constant.',
+    formula=r'XX',
+    func=knee_constant_function,
+    jacobian=None,
+    params=params_knee_constant,
+    ndim=1,
+    freq_space='linear',
+    powers_space='log10',
+)
+
 
 # Collect available aperiodic modes
 AP_MODES = {
