@@ -22,17 +22,22 @@ def sim_power_spectrum(freq_range, aperiodic_params, periodic_params,
         Frequency range to simulate power spectrum across, as [f_low, f_high], inclusive.
     aperiodic_params : dict of {str : array}
         Mode definition and parameters to create the aperiodic component of a power spectrum.
-        Should be organized as {mode : params}.
+        Should be organized as {mode : params}, where `mode` is a string label for a mode to
+        simulate with and `params` is a set of parameter values of length aperiodic_mode.n_params.
     periodic_params : dict of {str : list of float or list of list of float}
         Mode definition and parameters to create the periodic component of a power spectrum.
-        Should be organized as {mode : params}.
+        Should be organized as {mode : params}, where `mode` is a string label for a mode to
+        simulate with and `params` corresponds to the number of desired peaks, with a total number
+        of values matching periodic_mode.n_params * n_peaks.
+        This can can be a flat list (ex: [10, 1, 1, 20, 0.5, 1]) or be grouped into a
+        list of lists (ex: [[10, 1, 1], [20, 0.5, 1]]).
     nlv : float, optional, default: 0.005
         Noise level to add to generated power spectrum.
     freq_res : float, optional, default: 0.5
         Frequency resolution for the simulated power spectrum.
     f_rotation : float, optional
-        Frequency value, in Hz, to rotate around.
-        Should only be set if spectrum is to be rotated.
+        Frequency value, in Hz, to rotate around. Should only be set if spectrum is to be rotated.
+        Can only be used with `powerlaw` aperiodic mode.
     return_params : bool, optional, default: False
         Whether to return the parameters for the simulated spectrum.
 
@@ -48,44 +53,21 @@ def sim_power_spectrum(freq_range, aperiodic_params, periodic_params,
 
     Notes
     -----
-    Aperiodic Parameters:
-
-    - The function for the aperiodic process to use is inferred from the provided parameters.
-    - If length of 2, the 'fixed' aperiodic mode is used, if length of 3, 'knee' is used.
-
-    Periodic Parameters:
-
-    - The periodic component is comprised of a set of 'peaks', each of which is described as:
-
-      * Mean (Center Frequency), height (Power), and standard deviation (Bandwidth).
-      * Make sure any center frequencies you request are within the simulated frequency range.
-
-    - The total number of parameters that need to be specified is number of peaks * 3
-
-      * These can be specified in as all together in a flat list (ex: [10, 1, 1, 20, 0.5, 1])
-      * They can also be grouped into a list of lists (ex: [[10, 1, 1], [20, 0.5, 1]])
+    - See `check_modes` for more information on the available modes to use to simulate,
+      as well as descriptions of the parameters for each mode.
 
     Rotating Power Spectra:
 
-    - You can optionally specify a rotation frequency, such that power spectra will be
-      simulated and rotated around that point to the specified aperiodic exponent.
+    - For the powerlaw aperiodic component only, you can optionally specify a rotation frequency,
+      such that power spectra will be simulated and rotated around that point to the specified
+      aperiodic exponent. Any power spectra simulated with the same rotation frequency will relate
+      to each other by having the specified rotation point.
 
-      * This can be used so that any power spectra simulated with the same 'f_rotation'
-        will relate to each other by having the specified rotation point.
-
-    - Note that rotating power spectra changes the offset.
-
-      * If you specify an offset value to simulate as well as 'f_rotation', the returned
-        spectrum will NOT have the requested offset. It instead will have the offset
-        value required to create the requested aperiodic exponent with the requested
-        rotation point.
-      * If you return SimParams, the recorded offset will be the calculated offset
-        of the data post rotation, and not the entered value.
-
-    - You cannot rotate power spectra simulated with a knee.
-
-      * The procedure we use to rotate does not support spectra with a knee, and so
-        setting 'f_rotation' with a knee will lead to an error.
+    - Note that rotating power spectra changes the offset. If a simulated spectrum is rotated,
+      the returned spectrum will NOT have the offset of the input parameters, and will instead
+      have offset value required to create the given aperiodic exponent with the requested
+      rotation point. If you return SimParams, the recorded offset will be the calculated offset
+      of the data post rotation, and not the entered value.
 
     Examples
     --------
@@ -139,22 +121,22 @@ def sim_group_power_spectra(n_spectra, freq_range, aperiodic_params, periodic_pa
         The number of power spectra to generate.
     freq_range : list of [float, float]
         Frequency range to simulate power spectra across, as [f_low, f_high], inclusive.
-    aperiodic_params : list of float or generator
-        Parameters for the aperiodic component of the power spectra.
-    aperiodic_mode : Mode or str
-        Which kind of aperiodic component to simulate.
-    periodic_params : list of float or generator
-        Parameters for the periodic component of the power spectra.
-        Length of n_peaks * 3.
-    periodic_mode : Mode or str
-        Which kind of periodic component to simulate.
+    aperiodic_params : dict of {str : array}
+        Mode definition and parameters to create the aperiodic components of the power spectra.
+        Should be organized as {mode : params}, where `mode` is a string label for a mode to
+        simulate with and `params` (array_like or generator) defines the aperiodic parameters.
+    periodic_params : dict of {str : list of float or list of list of float}
+        Mode definition and parameters to create the periodic components of the power spectras.
+        Should be organized as {mode : params}, where `mode` is a string label for a mode to
+        simulate with and `params` (array_like or generator) defines the periodic parameters.
     nlvs : float or list of float or generator, optional, default: 0.005
         Noise level to add to generated power spectrum.
     freq_res : float, optional, default: 0.5
         Frequency resolution for the simulated power spectra.
     f_rotation : float, optional
-        Frequency value, in Hz, to rotate around.
-        Should only be set if spectra are to be rotated.
+        Frequency value, in Hz, to rotate around. Should only be set if spectrum is to be rotated.
+        Can only be used with `powerlaw` aperiodic mode.
+        See additional notes in `sim_power_spectra` on rotating simulated power spectra.
     return_params : bool, optional, default: False
         Whether to return the parameters for the simulated spectra.
 
@@ -178,40 +160,6 @@ def sim_group_power_spectra(n_spectra, freq_range, aperiodic_params, periodic_pa
       If so, each successive parameter set is such for each successive spectrum.
     - A generator object that returns parameters for a power spectrum.
       If so, each spectrum has parameters sampled from the generator.
-
-    Aperiodic Parameters:
-
-    - The function for the aperiodic process to use is inferred from the provided parameters.
-    - If length of 2, the 'fixed' aperiodic mode is used, if length of 3, 'knee' is used.
-
-    Periodic Parameters:
-
-    - The periodic component is comprised of a set of 'peaks', each of which is described as:
-
-      * Mean (Center Frequency), height (Power), and standard deviation (Bandwidth).
-      * Make sure any center frequencies you request are within the simulated frequency range.
-
-    Rotating Power Spectra:
-
-    - You can optionally specify a rotation frequency, such that power spectra will be
-      simulated and rotated around that point to the specified aperiodic exponent.
-
-      * This can be used so that any power spectra simulated with the same 'f_rotation'
-        will relate to each other by having the specified rotation point.
-
-    - Note that rotating power spectra changes the offset.
-
-      * If you specify an offset value to simulate as well as 'f_rotation', the returned
-        spectrum will NOT have the requested offset. It instead will have the offset
-        value required to create the requested aperiodic exponent with the requested
-        rotation point.
-      * If you return SimParams, the recorded offset will be the calculated offset
-        of the data post rotation, and not the entered value.
-
-    - You cannot rotate power spectra simulated with a knee.
-
-      * The procedure we use to rotate does not support spectra with a knee, and so
-        setting 'f_rotation' with a knee will lead to an error.
 
     Examples
     --------
