@@ -59,8 +59,7 @@ def gen_aperiodic(freqs, aperiodic_mode, aperiodic_params):
     """
 
     ap_mode = check_mode_definition(aperiodic_mode, 'aperiodic')
-
-    ap_vals = ap_mode.func(freqs, *aperiodic_params)
+    ap_vals = ap_mode.generate(freqs, *aperiodic_params)
 
     return ap_vals
 
@@ -84,8 +83,7 @@ def gen_periodic(freqs, periodic_mode, periodic_params):
     """
 
     pe_mode = check_mode_definition(periodic_mode, 'periodic')
-
-    pe_vals = pe_mode.func(freqs, *check_flat(periodic_params))
+    pe_vals = pe_mode.generate(freqs, *check_flat(periodic_params))
 
     return pe_vals
 

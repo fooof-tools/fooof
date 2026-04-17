@@ -23,7 +23,7 @@ def sim_power_spectrum(freq_range, aperiodic_params, periodic_params,
     aperiodic_params : dict of {str : array}
         Mode definition and parameters to create the aperiodic component of a power spectrum.
         Should be organized as {mode : params}.
-    periodic_params : list of float or list of list of float
+    periodic_params : dict of {str : list of float or list of list of float}
         Mode definition and parameters to create the periodic component of a power spectrum.
         Should be organized as {mode : params}.
     nlv : float, optional, default: 0.005
