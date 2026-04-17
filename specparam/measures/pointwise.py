@@ -1,4 +1,7 @@
-"""Functions to analyze and investigate model fit results, in terms of model fit error."""
+"""Functions to analyze and investigate model fit results, in terms of model fit error.
+
+MOVE TARGET: metrics (?)
+"""
 
 import numpy as np
 
