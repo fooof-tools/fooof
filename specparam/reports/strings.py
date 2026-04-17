@@ -23,7 +23,7 @@ def gen_issue_str(concise=False):
 
     Returns
     -------
-    output : str
+    str
         Formatted string of how to provide feedback.
     """
 
@@ -47,9 +47,7 @@ def gen_issue_str(concise=False):
         'You can attach the generated files to a Github issue.',
     ]
 
-    output = _format(str_lst, concise)
-
-    return output
+    return _format(str_lst, concise)
 
 
 def gen_width_warning_str(freq_res, bwl):
@@ -64,7 +62,7 @@ def gen_width_warning_str(freq_res, bwl):
 
     Returns
     -------
-    output : str
+    str
         Formatted string of a warning about the peak width limits setting.
     """
 
@@ -92,7 +90,7 @@ def gen_version_str(concise=False):
 
     Returns
     -------
-    output : str
+    str
         Formatted string of current version.
     """
 
@@ -102,9 +100,7 @@ def gen_version_str(concise=False):
         '{}'.format(MODULE_VERSION),
     ]
 
-    output = _format(str_lst, concise)
-
-    return output
+    return _format(str_lst, concise)
 
 
 def gen_data_str(data, concise=False):
@@ -120,7 +116,7 @@ def gen_data_str(data, concise=False):
 
     Returns
     -------
-    output : str
+    str
         Formatted string of data summary.
     """
 
@@ -152,9 +148,7 @@ def gen_data_str(data, concise=False):
 
         str_lst.extend(str_lst_add)
 
-    output = _format(str_lst, concise)
-
-    return output
+    return _format(str_lst, concise)
 
 
 def gen_modes_str(modes, description=False, concise=False):
@@ -171,7 +165,7 @@ def gen_modes_str(modes, description=False, concise=False):
 
     Returns
     -------
-    output : str
+    str
         Formatted string of fit modes.
     """
 
@@ -192,12 +186,10 @@ def gen_modes_str(modes, description=False, concise=False):
         *[el for el in ['Periodic Mode : {}'.format(modes.periodic.name),
                         '{}'.format(desc['aperiodic_mode']),
                         'Aperiodic Mode : {}'.format(modes.aperiodic.name),
-                        '{}'.format(desc['aperiodic_mode'])] if el != ''],
+                        '{}'.format(desc['periodic_mode'])] if el != ''],
     ]
 
-    output = _format(str_lst, concise)
-
-    return output
+    return _format(str_lst, concise)
 
 
 def gen_settings_str(algorithm, description=False, concise=False):
@@ -214,7 +206,7 @@ def gen_settings_str(algorithm, description=False, concise=False):
 
     Returns
     -------
-    output : str
+    str
         Formatted string of current settings.
     """
 
@@ -238,9 +230,7 @@ def gen_settings_str(algorithm, description=False, concise=False):
         if description:
             str_lst.append(algorithm.public_settings.descriptions[name].split('\n ')[0])
 
-    output = _format(str_lst, concise)
-
-    return output
+    return _format(str_lst, concise)
 
 
 def gen_bands_str(bands, concise=False):
@@ -255,7 +245,7 @@ def gen_bands_str(bands, concise=False):
 
     Returns
     -------
-    output : str
+    str
         Formatted string of bands definition.
     """
 
@@ -267,9 +257,7 @@ def gen_bands_str(bands, concise=False):
     for label, definition in bands.bands.items():
         str_lst.append('{}: {}'.format(label, definition))
 
-    output = _format(str_lst, concise)
-
-    return output
+    return _format(str_lst, concise)
 
 
 def gen_metrics_str(metrics, description=False, concise=False):
@@ -286,7 +274,7 @@ def gen_metrics_str(metrics, description=False, concise=False):
 
     Returns
     -------
-    output : str
+    str
         Formatted string of metrics.
     """
 
@@ -302,9 +290,7 @@ def gen_metrics_str(metrics, description=False, concise=False):
         *[el for el in prints],
     ]
 
-    output = _format(str_lst, concise)
-
-    return output
+    return _format(str_lst, concise)
 
 
 def gen_freq_range_str(model, concise=False):
@@ -317,9 +303,11 @@ def gen_freq_range_str(model, concise=False):
     concise : bool, optional, default: False
         Whether to generate the string in concise mode.
 
-    Notes
-    -----
-    If fit range is not available, will print out 'XX' for missing values.
+    Returns
+    -------
+    str
+        String representation of the fit range.
+        If fit range is not available, missing values will be set as 'XX'.
     """
 
     freq_range = model.data.freq_range if model.data.has_data else ('XX', 'XX')
@@ -330,9 +318,7 @@ def gen_freq_range_str(model, concise=False):
         'The model was fit from {} to {} Hz.'.format(*freq_range),
     ]
 
-    output = _format(str_lst, concise)
-
-    return output
+    return _format(str_lst, concise)
 
 
 def gen_methods_report_str(concise=False):
@@ -345,7 +331,7 @@ def gen_methods_report_str(concise=False):
 
     Returns
     -------
-    output : str
+    str
         Formatted string of instructions for methods reporting.
     """
 
@@ -360,9 +346,7 @@ def gen_methods_report_str(concise=False):
         '- the frequency range that was fit',
     ]
 
-    output = _format(str_lst, concise)
-
-    return output
+    return _format(str_lst, concise)
 
 
 # NOTE: move this function? It's text - not a print report
@@ -374,6 +358,11 @@ def gen_methods_text_str(model=None):
     model : SpectralModel or Spectral*Model, optional
         A model object with settings information available.
         If None, the text is returned as a template, without values.
+
+    Returns
+    -------
+    str
+        Formatted string of a template methods report.
     """
 
     if model:
@@ -431,7 +420,7 @@ def gen_params_str(params, description=False, concise=False):
 
     Returns
     -------
-    output : str
+    str
         Formatted string of the fit mode parameters description.
     """
 
@@ -445,9 +434,7 @@ def gen_params_str(params, description=False, concise=False):
             param = param + ' : {}'.format(desc)
         str_lst.append(param)
 
-    output = _format(str_lst, concise)
-
-    return output
+    return _format(str_lst, concise)
 
 
 ## MODEL OBJECT RESULT STRINGS
@@ -464,7 +451,7 @@ def gen_model_results_str(model, concise=False):
 
     Returns
     -------
-    output : str
+    str
         Formatted string of model results.
     """
 
@@ -504,9 +491,7 @@ def gen_model_results_str(model, concise=False):
             for key, res in model.results.metrics.results.items()],
     ]
 
-    output = _format(str_lst, concise)
-
-    return output
+    return _format(str_lst, concise)
 
 
 def gen_group_results_str(group, concise=False):
@@ -521,7 +506,7 @@ def gen_group_results_str(group, concise=False):
 
     Returns
     -------
-    output : str
+    str
         Formatted string of results.
     """
 
@@ -560,9 +545,7 @@ def gen_group_results_str(group, concise=False):
                     for label in group.results.metrics.labels],
             ])
 
-    output = _format(str_lst, concise)
-
-    return output
+    return _format(str_lst, concise)
 
 
 def gen_time_results_str(time, concise=False):
@@ -577,7 +560,7 @@ def gen_time_results_str(time, concise=False):
 
     Returns
     -------
-    output : str
+    str
         Formatted string of results.
     """
 
@@ -623,9 +606,7 @@ def gen_time_results_str(time, concise=False):
                 for key in time.results.metrics.results],
     ]
 
-    output = _format(str_lst, concise)
-
-    return output
+    return _format(str_lst, concise)
 
 
 def gen_event_results_str(event, concise=False):
@@ -640,7 +621,7 @@ def gen_event_results_str(event, concise=False):
 
     Returns
     -------
-    output : str
+    str
         Formatted string of results.
     """
 
@@ -688,15 +669,24 @@ def gen_event_results_str(event, concise=False):
                 for key in event.results.metrics.results],
     ]
 
-    output = _format(str_lst, concise)
-
-    return output
+    return _format(str_lst, concise)
 
 
 ## HELPER SUB-FUNCTIONS FOR MODEL REPORT STRINGS
 
 def _report_str_algo(model):
-    """Create report string section to report on algorithm."""
+    """Create string about algorithm.
+
+    Parameters
+    ----------
+    model : SpectralModel
+        Object to access information from.
+
+    Returns
+    -------
+    str
+        Report string about algorithm.
+    """
 
     output = 'The model was fit with the \'{}\' algorithm'.format(model.algorithm.name)
 
@@ -704,7 +694,18 @@ def _report_str_algo(model):
 
 
 def _report_str_model(model):
-    """Create report string section to report on data."""
+    """Create string about data.
+
+    Parameters
+    ----------
+    model : SpectralModel
+        Object to access information from.
+
+    Returns
+    -------
+    str
+        Report string about data.
+    """
 
     output = \
         'Model was fit to the {}-{} Hz frequency range '.format(
@@ -716,7 +717,18 @@ def _report_str_model(model):
 
 
 def _report_str_n_null(model):
-    """Create report string section to on number of failed fit / null models."""
+    """Create string on number of failed fit / null models.
+
+    Parameters
+    ----------
+    model : SpectralModel
+        Object to access information from.
+
+    Returns
+    -------
+    str
+        Report string about number of failed fits.
+    """
 
     output = \
             [el for el in ['{} power spectra failed to fit'.format(\
@@ -732,15 +744,18 @@ def _no_model_str(concise=False):
     ----------
     concise : bool, optional, default: False
         Whether to generate the string in concise mode.
+
+    Returns
+    -------
+    str
+        Report string for a null model.
     """
 
     str_lst = [
         'Model fit has not been run, or fitting was unsuccessful.',
     ]
 
-    output = _format(str_lst, concise)
-
-    return output
+    return _format(str_lst, concise)
 
 
 ## UTILITIES
