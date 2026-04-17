@@ -59,7 +59,7 @@ ERROR_METRICS = {
     'medae' : error_medae,
 
     # linear spacing
-    'error_maelin' : error_maelin,
+    'maelin' : error_maelin,
 }
 
 ###################################################################################################
@@ -99,7 +99,7 @@ GOF_METRICS = {
     'adjrsquared' : gof_adjrsquared,
 
     # linear spacing
-    'gof_rsquaredlin' : gof_rsquaredlin,
+    'rsquaredlin' : gof_rsquaredlin,
 }
 
 ###################################################################################################
