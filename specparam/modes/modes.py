@@ -34,15 +34,6 @@ class Modes():
         self.model = model
 
 
-    def check_params(self):
-        """Check the description of the parameters for each mode."""
-
-        if self.aperiodic:
-            self.aperiodic.check_params()
-        if self.periodic:
-            self.periodic.check_params()
-
-
     def get_modes(self):
         """Get the modes definition.
 
@@ -81,6 +72,15 @@ class Modes():
                 for component in params.keys()}
 
         return params
+
+
+    def check_params(self):
+        """Check the description of the parameters for each mode."""
+
+        if self.aperiodic:
+            self.aperiodic.check_params()
+        if self.periodic:
+            self.periodic.check_params()
 
 
     def print(self, description=False, concise=False):

@@ -51,7 +51,7 @@ class ParamDefinition():
         return {label : index for index, label in enumerate(self.params)}
 
 
-    def print(self):
+    def print(self, description=False, concise=False):
         """Print out the fit mode parameters.
 
         Parameters

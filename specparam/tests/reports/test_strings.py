@@ -54,6 +54,11 @@ def test_gen_methods_text_str(tfm):
     assert gen_methods_text_str()
     assert gen_methods_text_str(tfm)
 
+def test_gen_params_str(tfm):
+
+    assert gen_params_str(tfm.modes.aperiodic.params)
+    assert gen_params_str(tfm.modes.aperiodic.params, True)
+
 def test_gen_model_results_str(tfm):
 
     assert gen_model_results_str(tfm)
