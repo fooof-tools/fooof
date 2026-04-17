@@ -1,5 +1,7 @@
 """Parameter definition for Modes."""
 
+from specparam.reports.strings import gen_params_str
+
 ###################################################################################################
 ###################################################################################################
 
@@ -47,3 +49,17 @@ class ParamDefinition():
         """Define property attribute for parameter indices."""
 
         return {label : index for index, label in enumerate(self.params)}
+
+
+    def print(self):
+        """Print out the fit mode parameters.
+
+        Parameters
+        ----------
+        description : bool, optional, default: False
+            Whether to print out a description of the fit mode parameters.
+        concise : bool, optional, default: False
+            Whether to print the report concisely.
+        """
+
+        print(gen_params_str(self, description, concise))

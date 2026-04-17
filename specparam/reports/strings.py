@@ -417,6 +417,41 @@ def gen_methods_text_str(model=None):
     return methods_str
 
 
+def gen_params_str(params, description=False, concise=False):
+    """Generate a string representation of the parameters of a fit mode.
+
+    Parameters
+    ----------
+    params : ParamDefinition
+        Parameter definition object for a fit mode
+    description : bool, optional, default: False
+        Whether to also print out a description of the fit mode parameters.
+    concise : bool, optional, default: False
+        Whether to print the report in concise mode.
+
+    Returns
+    -------
+    output : str
+        Formatted string of the fit mode parameters description.
+    """
+
+    str_lst = [
+        'FIT MODE PARAMETERS',
+        '',
+    ]
+
+    for param, desc in params.descriptions.items():
+        if description:
+            param = param + ' : {}'.format(desc)
+        str_lst.append(param)
+
+    output = _format(str_lst, concise)
+
+    return output
+
+
+## MODEL OBJECT RESULT STRINGS
+
 def gen_model_results_str(model, concise=False):
     """Generate a string representation of model fit results.
 
