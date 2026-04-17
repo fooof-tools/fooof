@@ -1,4 +1,4 @@
-"""Utilities related to simulations."""
+"""Utilities related to managing randomness."""
 
 import numpy as np
 
