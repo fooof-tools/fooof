@@ -6,7 +6,6 @@ import numpy as np
 
 from specparam.data import SimParams
 from specparam.modes.modes import check_mode_definition
-from specparam.modes.definitions import AP_MODES
 from specparam.utils.checks import check_flat
 from specparam.modutils.errors import InconsistentDataError
 
@@ -74,7 +73,7 @@ def update_sim_ap_params(sim_params, delta, field=None):
     # If labels are given, update deltas according to their labels
     else:
 
-        aperiodic_mode = check_mode_definition(ap_mode, AP_MODES)
+        aperiodic_mode = check_mode_definition(ap_mode, 'aperiodic')
 
         # This loop checks & casts to list, to work for single or multiple passed in values
         for cur_field, cur_delta in zip(list([field]) if not isinstance(field, list) else field,

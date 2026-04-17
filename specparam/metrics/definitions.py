@@ -1,7 +1,5 @@
 """Collect together library of available built in metrics."""
 
-from functools import partial
-
 from specparam.metrics.metrics import Metric
 from specparam.metrics.error import (compute_mean_abs_error, compute_mean_squared_error,
                                      compute_root_mean_squared_error, compute_median_abs_error)
@@ -51,6 +49,19 @@ error_maelin = Metric(
     space='linear',
 )
 
+# Collect available error metrics
+ERROR_METRICS = {
+
+    # log spacing
+    'mae' : error_mae,
+    'mse' : error_mse,
+    'rmse' : error_rmse,
+    'medae' : error_medae,
+
+    # linear spacing
+    'error_maelin' : error_maelin,
+}
+
 ###################################################################################################
 ## GOF
 
@@ -80,36 +91,51 @@ gof_adjrsquared = Metric(
     space='log',
 )
 
+# Collect available error metrics
+GOF_METRICS = {
+
+    # log spacing
+    'rsquared' : gof_rsquared,
+    'adjrsquared' : gof_adjrsquared,
+
+    # linear spacing
+    'gof_rsquaredlin' : gof_rsquaredlin,
+}
+
 ###################################################################################################
 ## COLLECT ALL METRICS TOGETHER
 
+# Collect a store of all available metrics
 METRICS = {
-
-    # Error metrics - log spacing
-    'error_mae' : error_mae,
-    'error_mse' : error_mse,
-    'error_rmse' : error_rmse,
-    'error_medae' : error_medae,
-
-    # Error metrics - linear spacing
-    'error_maelin' : error_maelin,
-
-    # GOF / r-squared metrics - log spacing
-    'gof_rsquared' : gof_rsquared,
-    'gof_adjrsquared' : gof_adjrsquared,
-
-    # GOF / r-squared metrics - linear spacing
-    'gof_rsquaredlin' : gof_rsquaredlin,
-
+    'error' : ERROR_METRICS,
+    'gof' : GOF_METRICS,
 }
 
+###################################################################################################
+## CHECKER FUNCTION
 
-def check_metrics():
-    """Check the set of available metrics."""
+def check_metric_definition(metric):
+    """Check a metric definition.
 
-    print('Available metrics:')
-    for metric in METRICS.values():
-        print('    {:8s} {:12s} : {:s}'.format(metric.category, metric.measure, metric.description))
+    Parameters
+    ----------
+    metric : Metric or dict or str
+        Definition for a metric to check.
+        If dict, should have keys corresponding to a metric definition.
+        If str, should be the label corresponding to a defined metric (see `check_metrics`).
 
+    Returns
+    -------
+    Metric
+        Metric definition.
+    """
 
-check_metric_definition = partial(check_selection, options=METRICS, definition=Metric)
+    if isinstance(metric, dict):
+        metric = Metric(**metric)
+    elif isinstance(metric, str):
+        category, label = metric.split('_')
+        metric = check_selection(label, METRICS[category], Metric)
+    else:
+        metric = check_selection(metric, [], Metric)
+
+    return metric

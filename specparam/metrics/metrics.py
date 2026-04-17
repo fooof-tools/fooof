@@ -16,7 +16,7 @@ class Metrics():
 
     Parameters
     ----------
-    metrics : list of Metric or list of dict
+    metrics : list of Metric or list of dict or list of str
         Metric(s) to add to the object.
     """
 
@@ -55,17 +55,13 @@ class Metrics():
 
         Parameters
         ----------
-        metric : Metric or dict
+        metric : Metric or dict or str
             Metric to add to the object.
             If dict, should have keys corresponding to a metric definition.
+            If str, should be the label corresponding to a defined metric (see `check_metrics`).
         """
 
-        if isinstance(metric, dict):
-            metric = Metric(**metric)
-
-        metric = check_metric_definition(metric)
-
-        self.metrics.append(deepcopy(metric))
+        self.metrics.append(deepcopy(check_metric_definition(metric)))
 
 
     def add_metrics(self, metrics):
@@ -73,7 +69,7 @@ class Metrics():
 
         Parameters
         ----------
-        metrics : list of Metric or list of dict
+        metrics : list of Metric or list of dict or list of str
             Metric(s) to add to the object.
         """
 
