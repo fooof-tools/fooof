@@ -19,7 +19,7 @@ def gen_issue_str(concise=False):
     Parameters
     ----------
     concise : bool, optional, default: False
-        Whether to print the report in a concise mode, or not.
+        Whether to generate the string in concise mode.
 
     Returns
     -------
@@ -88,7 +88,7 @@ def gen_version_str(concise=False):
     Parameters
     ----------
     concise : bool, optional, default: False
-        Whether to print the report in concise mode.
+        Whether to generate the string in concise mode.
 
     Returns
     -------
@@ -116,7 +116,7 @@ def gen_data_str(data, concise=False):
         Data object to summarize data for.
         Can also be any derived data object (e.g. Data2D).
     concise : bool, optional, default: False
-        Whether to print the report in concise mode.
+        Whether to generate the string in concise mode.
 
     Returns
     -------
@@ -167,7 +167,7 @@ def gen_modes_str(modes, description=False, concise=False):
     description : bool, optional, default: False
         Whether to also print out a description of the fit modes.
     concise : bool, optional, default: False
-        Whether to print the report in concise mode.
+        Whether to generate the string in concise mode.
 
     Returns
     -------
@@ -210,7 +210,7 @@ def gen_settings_str(algorithm, description=False, concise=False):
     description : bool, optional, default: False
         Whether to also print out a description of the settings.
     concise : bool, optional, default: False
-        Whether to print the report in concise mode.
+        Whether to generate the string in concise mode.
 
     Returns
     -------
@@ -251,7 +251,7 @@ def gen_bands_str(bands, concise=False):
     bands : Bands
         Bands definition.
     concise : bool, optional, default: False
-        Whether to create the string in concise mode.
+        Whether to generate the string in concise mode.
 
     Returns
     -------
@@ -282,7 +282,7 @@ def gen_metrics_str(metrics, description=False, concise=False):
     description : bool, optional, default: False
         Whether to also print out a description of the settings.
     concise : bool, optional, default: False
-        Whether to print the report in concise mode.
+        Whether to generate the string in concise mode.
 
     Returns
     -------
@@ -315,7 +315,7 @@ def gen_freq_range_str(model, concise=False):
     model : SpectralModel or Spectral*Model
         Object to access settings from.
     concise : bool, optional, default: False
-        Whether to print the report in concise mode.
+        Whether to generate the string in concise mode.
 
     Notes
     -----
@@ -341,7 +341,7 @@ def gen_methods_report_str(concise=False):
     Parameters
     ----------
     concise : bool, optional, default: False
-        Whether to print the report in concise mode.
+        Whether to generate the string in concise mode.
 
     Returns
     -------
@@ -425,7 +425,7 @@ def gen_model_results_str(model, concise=False):
     model : SpectralModel
         Object to access results from.
     concise : bool, optional, default: False
-        Whether to print the report in concise mode.
+        Whether to generate the string in concise mode.
 
     Returns
     -------
@@ -482,7 +482,7 @@ def gen_group_results_str(group, concise=False):
     group : SpectralGroupModel
         Object to access results from.
     concise : bool, optional, default: False
-        Whether to print the report in concise mode.
+        Whether to generate the string in concise mode.
 
     Returns
     -------
@@ -538,7 +538,7 @@ def gen_time_results_str(time, concise=False):
     time : SpectralTimeModel
         Object to access results from.
     concise : bool, optional, default: False
-        Whether to print the report in concise mode.
+        Whether to generate the string in concise mode.
 
     Returns
     -------
@@ -601,7 +601,7 @@ def gen_event_results_str(event, concise=False):
     event : SpectralTimeEventModel
         Object to access results from.
     concise : bool, optional, default: False
-        Whether to print the report in concise mode.
+        Whether to generate the string in concise mode.
 
     Returns
     -------
@@ -696,7 +696,7 @@ def _no_model_str(concise=False):
     Parameters
     ----------
     concise : bool, optional, default: False
-        Whether to print the report in a concise mode, or not.
+        Whether to generate the string in concise mode.
     """
 
     str_lst = [
@@ -718,7 +718,7 @@ def _format(str_lst, concise):
     str_lst : list of str
         List containing all elements for the string, each element representing a line.
     concise : bool, optional, default: False
-        Whether to print the report in a concise mode, or not.
+        Whether to format the string in concise mode.
 
     Returns
     -------
