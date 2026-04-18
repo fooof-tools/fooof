@@ -254,9 +254,9 @@ def test_fit_par():
     assert len(gofs) == n_spectra
 
 def test_print(tfg):
-    """Check print method (alias)."""
 
-    tfg.print('results')
+    for val in ['results', 'algorithm', 'settings', 'data', 'modes', 'metrics', 'bands', 'issue']:
+        tfg.print(val)
 
 def test_save_model_report(tfg, skip_if_no_mpl):
 

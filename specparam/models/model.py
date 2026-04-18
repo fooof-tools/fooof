@@ -228,10 +228,8 @@ class SpectralModel(BaseModel):
 
         if info == 'results':
             print(gen_model_results_str(self, concise))
-        elif info == 'metrics':
-            self.results.metrics.print(concise=concise)
-        elif info == 'bands':
-            self.results.bands.print(concise=concise)
+        elif info in ['metrics', 'bands']:
+            getattr(self.results, info).print(concise=concise)
         else:
             super().print(info, concise=concise)
 

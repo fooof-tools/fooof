@@ -72,7 +72,7 @@ class BaseModel():
         ----------
         info : {'algorithm', 'settings', 'data', 'modes', 'issue'}
             Which information to print:
-                'algorithm' or 'settings: print information on the fit algorithm & settings
+                'algorithm' or 'settings': print information on the fit algorithm & settings
                 'data' : print a description of the data
                 'modes' : print a description of the fit modes
                 'issue' : print instructions on how to report bugs and/or problematic fits
@@ -89,8 +89,11 @@ class BaseModel():
         if info in ['algorithm', 'data', 'modes']:
             getattr(self, info).print(concise=concise)
 
-        if info == 'issue':
+        elif info == 'issue':
             print(gen_issue_str(concise))
+
+        else:
+            raise ValueError('Requested info input for printing not understood.')
 
 
     def _add_from_dict(self, data):

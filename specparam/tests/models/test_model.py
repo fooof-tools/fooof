@@ -304,10 +304,9 @@ def test_get_component(tfm):
             assert isinstance(tfm.results.model.get_component(comp, space), np.ndarray)
 
 def test_prints(tfm):
-    """Test printing method."""
 
-    for info in ['results', 'algorithm', 'data', 'modes', 'settings', 'issue']:
-        tfm.print(info)
+    for val in ['results', 'algorithm', 'settings', 'data', 'modes', 'metrics', 'bands', 'issue']:
+        tfm.print(val)
 
 @plot_test
 def test_plot(tfm, skip_if_no_mpl):
