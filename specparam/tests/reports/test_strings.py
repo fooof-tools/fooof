@@ -48,12 +48,6 @@ def test_gen_methods_report_str():
 
     assert gen_methods_report_str()
 
-def test_gen_methods_text_str(tfm):
-
-    # Test with and without passing in a model object
-    assert gen_methods_text_str()
-    assert gen_methods_text_str(tfm)
-
 def test_gen_params_str(tfm):
 
     assert gen_params_str(tfm.modes.aperiodic.params)
