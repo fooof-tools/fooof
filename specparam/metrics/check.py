@@ -1,12 +1,11 @@
 """Functionality to check available metrics."""
 
-from specparam.reports.settings import LCV
-from specparam.reports.strings import gen_metrics_str
+from specparam.reports.strings import gen_metric_str_lst, _format
 
 ###################################################################################################
 ###################################################################################################
 
-def check_metrics(category='all'):
+def check_metrics(category='all', concise=False):
     """Check the set of available metrics.
 
     Parameters
@@ -15,18 +14,16 @@ def check_metrics(category='all'):
         Which category of metrics to check.
     """
 
-    from specparam.metrics.metrics import Metrics
     from specparam.metrics.definitions import METRICS
 
-    category = ['error', 'gof'] if category == 'all' else [category]
+    category = list(METRICS.keys()) if category == 'all' else [category]
 
-    out = ''
+    str_lst = []
     for cat in category:
 
-        met_str = gen_metrics_str(Metrics(METRICS[cat].values()), True)
-        met_str = met_str.replace('CURRENT METRICS', 'AVAILABLE {} METRICS'.format(cat.upper()))
-        out += met_str
+        str_lst.extend(['', 'AVAILABLE {} METRICS'.format(cat.upper()), ''])
 
-    out = out.replace('\n' + '=' * LCV * 2 + '\n', '')
+        for metric in METRICS[cat].values():
+            str_lst.extend(gen_metric_str_lst(metric, True))
 
-    print(out)
+    print(_format(str_lst[1:], concise))
