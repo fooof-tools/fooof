@@ -332,15 +332,13 @@ class SpectralGroupModel(SpectralModel):
         save_group_report(self, file_name, file_path, add_settings)
 
 
+    @replace_docstring_sections([docs_get_section(SpectralModel.print.__doc__, 'Parameters')])
     def print(self, info='results', concise=False):
-        """Print out requested information.
+        """Print out information.
 
         Parameters
         ----------
-        info : {'results', ...}
-            xx
-        concise : bool, optional, default: False
-            Whether to print the report in a concise mode, or not.
+        % copied in from SpectralModel object
         """
 
         if info == 'results':

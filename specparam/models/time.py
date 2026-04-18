@@ -137,18 +137,15 @@ class SpectralTimeModel(SpectralGroupModel):
         self.plot(report_type)
         self.print('results', report_type)
 
-
-    def print(self, info='results', report_type='time', concise=False):
-        """Print out requested information.
+    @replace_docstring_sections([docs_get_section(SpectralModel.print.__doc__, 'Parameters')])
+    def print(self, info='results', concise=False, report_type='time'):
+        """Print out information.
 
         Parameters
         ----------
-        info : {'results', ...}
-            xxx
+        % copied in from SpectralModel object
         report_type : {'time', 'group'}
             Which report type to print results in. Only used if 'info' is 'results'.
-        concise : bool, optional, default: False
-            Whether to print the report in a concise mode, or not.
         """
 
         if info == 'results':

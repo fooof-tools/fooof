@@ -190,16 +190,13 @@ class SpectralTimeEventModel(SpectralTimeModel):
         self.plot()
         self.print('results')
 
-
+    @replace_docstring_sections([docs_get_section(SpectralModel.print.__doc__, 'Parameters')])
     def print(self, info='results', concise=False):
-        """Print out SpectralTimeEventModel results.
+        """Print out information.
 
         Parameters
         ----------
-        info : {'results', ...}
-            XX
-        concise : bool, optional, default: False
-            Whether to print the report in a concise mode, or not.
+        % copied in from SpectralModel object
         """
 
         if info == 'results':

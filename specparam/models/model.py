@@ -209,12 +209,17 @@ class SpectralModel(BaseModel):
 
 
     def print(self, info='results', concise=False):
-        """Print out requested information.
+        """Print out information.
 
         Parameters
         ----------
-        info : {'results', ...}
-            xx
+        info : {'results', 'algorithm', 'settings', 'data', 'modes', 'issue'}
+            Which information to print:
+                'results' : print information on the fit results
+                'algorithm' or 'settings: print information on the fit algorithm & settings
+                'data' : print a description of the data
+                'modes' : print a description of the fit modes
+                'issue' : print instructions on how to report bugs and/or problematic fits
         concise : bool, optional, default: False
             Whether to print the report in a concise mode, or not.
         """

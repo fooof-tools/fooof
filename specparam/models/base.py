@@ -66,7 +66,7 @@ class BaseModel():
 
 
     def print(self, info, description=False, concise=False):
-        """Print out requested information.
+        """Print out information.
 
         Parameters
         ----------
