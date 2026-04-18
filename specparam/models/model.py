@@ -213,13 +213,14 @@ class SpectralModel(BaseModel):
 
         Parameters
         ----------
-        info : {'results', 'algorithm', 'settings', 'data', 'modes', 'metrics', 'issue'}
+        info : {'results', 'algorithm', 'settings', 'data', 'modes', 'metrics', 'bands', 'issue'}
             Which information to print:
                 'results' : print information on the fit results
                 'algorithm' or 'settings: print information on the fit algorithm & settings
                 'data' : print information on the data
                 'modes' : print information on the fit modes
-                'metrics' : print a information on the defined fit metrics
+                'metrics' : print information on the defined fit metrics
+                'bands' : print information on any defined frequency bands
                 'issue' : print instructions on how to report bugs and/or problematic fits
         concise : bool, optional, default: False
             Whether to print the report in a concise mode, or not.
@@ -229,6 +230,8 @@ class SpectralModel(BaseModel):
             print(gen_model_results_str(self, concise))
         elif info == 'metrics':
             self.results.metrics.print(concise=concise)
+        elif info == 'bands':
+            self.results.bands.print(concise=concise)
         else:
             super().print(info, concise=concise)
 
