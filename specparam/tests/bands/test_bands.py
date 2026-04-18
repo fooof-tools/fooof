@@ -11,12 +11,14 @@ def test_bands():
 
     bands = Bands()
     assert isinstance(bands, Bands)
+    bands.print()
 
 def test_bands_add_band():
 
     bands = Bands()
     bands.add_band('test', (5, 10))
     assert bands.bands == {'test' : (5, 10)}
+    bands.print()
 
 def test_bands_remove_band():
 
