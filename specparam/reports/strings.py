@@ -260,6 +260,52 @@ def gen_bands_str(bands, concise=False):
     return _format(str_lst, concise)
 
 
+def gen_metric_str_lst(metric, description=False, concise=False):
+    """Generate a list of string components for representating a metric.
+
+    Parameters
+    ----------
+    metrics : Metric
+        Metric object.
+    description : bool, optional, default: False
+        Whether to also print out a description of the settings.
+    concise : bool, optional, default: False
+        Whether to generate the string in concise mode.
+
+    Returns
+    -------
+    lst
+        List of string elements for a string representation of a metric.
+    """
+
+    str_lst = [metric.label, metric.description] if description else [metric.label]
+
+    return str_lst
+
+
+def gen_metric_str(metric, description=False, concise=False):
+    """Generate a string representation of a metric.
+
+    Parameters
+    ----------
+    metrics : Metric
+        Metric object.
+    description : bool, optional, default: False
+        Whether to also print out a description of the settings.
+    concise : bool, optional, default: False
+        Whether to generate the string in concise mode.
+
+    Returns
+    -------
+    str
+        Formatted string of metric.
+    """
+
+    str_lst = gen_metric_str_lst(metric, description, concise)
+
+    return _format(['CURRENT METRIC', ''] + str_lst, concise)
+
+
 def gen_metrics_str(metrics, description=False, concise=False):
     """Generate a string representation of a set of metrics.
 
@@ -278,19 +324,11 @@ def gen_metrics_str(metrics, description=False, concise=False):
         Formatted string of metrics.
     """
 
-    if description:
-        prints = [(metric.label, metric.description) for metric in metrics.metrics]
-        prints = list(chain(*prints))
-    else:
-        prints = [metric.label for metric in metrics.metrics]
+    str_lst = []
+    for metric in metrics.metrics:
+        str_lst.extend(gen_metric_str_lst(metric, description, concise))
 
-    str_lst = [
-        'CURRENT METRICS',
-        '',
-        *[el for el in prints],
-    ]
-
-    return _format(str_lst, concise)
+    return _format(['CURRENT METRICS', ''] + str_lst, concise)
 
 
 def gen_freq_range_str(model, concise=False):

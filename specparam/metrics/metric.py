@@ -2,6 +2,8 @@
 
 import numpy as np
 
+from specparam.reports.strings import gen_metric_str
+
 ###################################################################################################
 ###################################################################################################
 
@@ -77,6 +79,20 @@ class Metric():
             kwargs[key] = lfunc(data, results)
 
         self.result = self.func(data.power_spectrum, results.model.modeled_spectrum, **kwargs)
+
+
+    def print(self, description=False, concise=False):
+        """Print out current metric.
+
+        Parameters
+        ----------
+        description : bool, optional, default: False
+            Whether to print out a description with current metric.
+        concise : bool, optional, default: False
+            Whether to print the report in a concise mode, or not.
+        """
+
+        print(gen_metric_str(self, description, concise))
 
 
     def reset(self):

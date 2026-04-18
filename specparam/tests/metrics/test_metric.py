@@ -16,6 +16,7 @@ def test_metric(tfm):
 
     metric.compute_metric(tfm.data, tfm.results)
     assert isinstance(metric.result, float)
+    metric.print()
 
 def test_metric_kwargs(tfm):
 

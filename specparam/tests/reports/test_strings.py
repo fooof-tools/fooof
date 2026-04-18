@@ -35,6 +35,15 @@ def test_gen_bands_str(tbands):
 
     assert gen_bands_str(tbands)
 
+def test_gen_metric_str_lst(tfm):
+
+    assert isinstance(gen_metric_str_lst(tfm.results.metrics.metrics[0]), list)
+
+def test_gen_metric_str(tfm):
+
+    assert gen_metric_str(tfm.results.metrics.metrics[0])
+    assert gen_metric_str(tfm.results.metrics.metrics[0], True)
+
 def test_gen_metrics_str(tfm):
 
     assert gen_metrics_str(tfm.results.metrics)
