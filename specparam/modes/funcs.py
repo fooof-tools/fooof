@@ -1,4 +1,4 @@
-"""Functions that can be used for model fitting.
+r"""Functions that can be used for model fitting.
 
 Conventions:
 - Each function in this file should be named as `{LABEL}_function`
@@ -28,7 +28,6 @@ from math import gamma
 import numpy as np
 from scipy.special import erf
 
-from specparam.utils.array import normalize
 from specparam.utils.array import normalize
 
 ###################################################################################################

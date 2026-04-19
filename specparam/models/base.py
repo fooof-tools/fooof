@@ -4,7 +4,6 @@ from copy import deepcopy
 
 from specparam.utils.checks import check_array_dim
 from specparam.modes.modes import Modes
-from specparam.modutils.errors import NoDataError
 from specparam.reports.strings import gen_issue_str
 
 ###################################################################################################
