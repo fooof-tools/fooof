@@ -13,6 +13,8 @@ from specparam.reports.settings import LCV, SCV, DIVIDER
 ###################################################################################################
 ###################################################################################################
 
+## GENERAL
+
 def gen_issue_str(concise=False):
     """Generate a string representation of instructions to report an issue.
 
@@ -50,36 +52,6 @@ def gen_issue_str(concise=False):
     return _format(str_lst, concise)
 
 
-def gen_width_warning_str(freq_res, bwl):
-    """Generate a string representation of the warning about peak width limits.
-
-    Parameters
-    ----------
-    freq_res : float
-        Frequency resolution.
-    bwl : float
-        Lower bound peak width limit.
-
-    Returns
-    -------
-    str
-        Formatted string of a warning about the peak width limits setting.
-    """
-
-    output = '\n'.join([
-        '',
-        'WARNING: Lower-bound peak width limit is < or ~= the frequency resolution: ' + \
-        '{:1.2f} <= {:1.2f}'.format(bwl, freq_res),
-        '\tLower bounds below frequency-resolution have no effect ' + \
-        '(effective lower bound is the frequency resolution).',
-        '\tToo low a limit may lead to overfitting noise as small bandwidth peaks.',
-        '\tWe recommend a lower bound of approximately 2x the frequency resolution.',
-        ''
-    ])
-
-    return output
-
-
 def gen_version_str(concise=False):
     """Generate a string representation of the current version of the module.
 
@@ -98,6 +70,63 @@ def gen_version_str(concise=False):
         'CODE VERSION',
         '',
         '{}'.format(MODULE_VERSION),
+    ]
+
+    return _format(str_lst, concise)
+
+
+def gen_methods_report_str(concise=False):
+    """Generate a string representation of instructions for reporting on using the module.
+
+    Parameters
+    ----------
+    concise : bool, optional, default: False
+        Whether to generate the string in concise mode.
+
+    Returns
+    -------
+    str
+        Formatted string of instructions for methods reporting.
+    """
+
+    str_lst = [
+        'REPORTING',
+        '',
+        'Reports using spectral parameterization should include (at minimum):',
+        '',
+        '- the code version that was used',
+        '- the fit modes that were used',
+        '- the algorithm & settings that were used',
+        '- the frequency range that was fit',
+    ]
+
+    return _format(str_lst, concise)
+
+## DATA
+
+def gen_freq_range_str(model, concise=False):
+    """Generate a string representation of the fit range that was used for the model.
+
+    Parameters
+    ----------
+    model : SpectralModel or Spectral*Model
+        Object to access settings from.
+    concise : bool, optional, default: False
+        Whether to generate the string in concise mode.
+
+    Returns
+    -------
+    str
+        String representation of the fit range.
+        If fit range is not available, missing values will be set as 'XX'.
+    """
+
+    freq_range = model.data.freq_range if model.data.has_data else ('XX', 'XX')
+
+    str_lst = [
+        'FIT RANGE',
+        '',
+        'The model was fit from {} to {} Hz.'.format(*freq_range),
     ]
 
     return _format(str_lst, concise)
@@ -151,6 +180,8 @@ def gen_data_str(data, concise=False):
     return _format(str_lst, concise)
 
 
+## MODES
+
 def gen_modes_str(modes, description=False, concise=False):
     """Generate a string representation of fit modes.
 
@@ -191,6 +222,38 @@ def gen_modes_str(modes, description=False, concise=False):
 
     return _format(str_lst, concise)
 
+
+def gen_params_str(params, description=False, concise=False):
+    """Generate a string representation of the parameters of a fit mode.
+
+    Parameters
+    ----------
+    params : ParamDefinition
+        Parameter definition object for a fit mode
+    description : bool, optional, default: False
+        Whether to also print out a description of the fit mode parameters.
+    concise : bool, optional, default: False
+        Whether to print the report in concise mode.
+
+    Returns
+    -------
+    str
+        Formatted string of the fit mode parameters description.
+    """
+
+    str_lst = [
+        'FIT MODE PARAMETERS',
+        '',
+    ]
+
+    for param, desc in params.descriptions.items():
+        if description:
+            param = param + ' : {}'.format(desc)
+        str_lst.append(param)
+
+    return _format(str_lst, concise)
+
+## ALGORITHM / SETTINGS
 
 def gen_settings_str(algorithm, description=False, concise=False):
     """Generate a string representation of algorithm and fit settings.
@@ -233,6 +296,38 @@ def gen_settings_str(algorithm, description=False, concise=False):
     return _format(str_lst, concise)
 
 
+def gen_width_warning_str(freq_res, bwl):
+    """Generate a string representation of the warning about peak width limits.
+
+    Parameters
+    ----------
+    freq_res : float
+        Frequency resolution.
+    bwl : float
+        Lower bound peak width limit.
+
+    Returns
+    -------
+    str
+        Formatted string of a warning about the peak width limits setting.
+    """
+
+    output = '\n'.join([
+        '',
+        'WARNING: Lower-bound peak width limit is < or ~= the frequency resolution: ' + \
+        '{:1.2f} <= {:1.2f}'.format(bwl, freq_res),
+        '\tLower bounds below frequency-resolution have no effect ' + \
+        '(effective lower bound is the frequency resolution).',
+        '\tToo low a limit may lead to overfitting noise as small bandwidth peaks.',
+        '\tWe recommend a lower bound of approximately 2x the frequency resolution.',
+        ''
+    ])
+
+    return output
+
+
+## BANDS
+
 def gen_bands_str(bands, concise=False):
     """Generate a string representation of a set of bands definitions.
 
@@ -259,6 +354,8 @@ def gen_bands_str(bands, concise=False):
 
     return _format(str_lst, concise)
 
+
+## METRICS
 
 def gen_metric_str_lst(metric, description=False, concise=False):
     """Generate a list of string components for representating a metric.
@@ -331,94 +428,7 @@ def gen_metrics_str(metrics, description=False, concise=False):
     return _format(['CURRENT METRICS', ''] + str_lst, concise)
 
 
-def gen_freq_range_str(model, concise=False):
-    """Generate a string representation of the fit range that was used for the model.
-
-    Parameters
-    ----------
-    model : SpectralModel or Spectral*Model
-        Object to access settings from.
-    concise : bool, optional, default: False
-        Whether to generate the string in concise mode.
-
-    Returns
-    -------
-    str
-        String representation of the fit range.
-        If fit range is not available, missing values will be set as 'XX'.
-    """
-
-    freq_range = model.data.freq_range if model.data.has_data else ('XX', 'XX')
-
-    str_lst = [
-        'FIT RANGE',
-        '',
-        'The model was fit from {} to {} Hz.'.format(*freq_range),
-    ]
-
-    return _format(str_lst, concise)
-
-
-def gen_methods_report_str(concise=False):
-    """Generate a string representation of instructions for reporting on using the module.
-
-    Parameters
-    ----------
-    concise : bool, optional, default: False
-        Whether to generate the string in concise mode.
-
-    Returns
-    -------
-    str
-        Formatted string of instructions for methods reporting.
-    """
-
-    str_lst = [
-        'REPORTING',
-        '',
-        'Reports using spectral parameterization should include (at minimum):',
-        '',
-        '- the code version that was used',
-        '- the fit modes that were used',
-        '- the algorithm & settings that were used',
-        '- the frequency range that was fit',
-    ]
-
-    return _format(str_lst, concise)
-
-
-def gen_params_str(params, description=False, concise=False):
-    """Generate a string representation of the parameters of a fit mode.
-
-    Parameters
-    ----------
-    params : ParamDefinition
-        Parameter definition object for a fit mode
-    description : bool, optional, default: False
-        Whether to also print out a description of the fit mode parameters.
-    concise : bool, optional, default: False
-        Whether to print the report in concise mode.
-
-    Returns
-    -------
-    str
-        Formatted string of the fit mode parameters description.
-    """
-
-    str_lst = [
-        'FIT MODE PARAMETERS',
-        '',
-    ]
-
-    for param, desc in params.descriptions.items():
-        if description:
-            param = param + ' : {}'.format(desc)
-        str_lst.append(param)
-
-    return _format(str_lst, concise)
-
-
-## MODEL OBJECT RESULT STRINGS
+## MODEL OBJECTS
 
 def gen_model_results_str(model, concise=False):
     """Generate a string representation of model fit results.
