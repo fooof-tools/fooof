@@ -65,31 +65,35 @@ class BaseModel():
             self.algorithm._reset_subobjects(modes=self.modes, results=self.results)
 
 
-    def print_settings(self, description=False, concise=False):
-        """Print out the current settings.
+    def print(self, info, description=False, concise=False):
+        """Print out information.
 
         Parameters
         ----------
+        info : {'algorithm', 'settings', 'data', 'modes', 'issue'}
+            Which information to print:
+                'algorithm' or 'settings': print information on the fit algorithm & settings
+                'data' : print a description of the data
+                'modes' : print a description of the fit modes
+                'issue' : print instructions on how to report bugs and/or problematic fits
         description : bool, optional, default: False
             Whether to print out a description with current settings.
         concise : bool, optional, default: False
-            Whether to print the report in a concise mode, or not.
+            Whether to print the report in a concise mode.
         """
 
-        self.algorithm.print()
+        # Special case - treat 'settings' as request to print algorithm info
+        if info == 'settings':
+            info = 'algorithm'
 
+        if info in ['algorithm', 'data', 'modes']:
+            getattr(self, info).print(concise=concise)
 
-    @staticmethod
-    def print_report_issue(concise=False):
-        """Prints instructions on how to report bugs and/or problematic fits.
+        elif info == 'issue':
+            print(gen_issue_str(concise))
 
-        Parameters
-        ----------
-        concise : bool, optional, default: False
-            Whether to print the report in a concise mode, or not.
-        """
-
-        print(gen_issue_str(concise))
+        else:
+            raise ValueError('Requested info input for printing not understood.')
 
 
     def _add_from_dict(self, data):

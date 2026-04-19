@@ -25,6 +25,7 @@ def test_algorithm():
     assert algo.public_settings == tsettings
     for setting in algo.public_settings.names:
         assert getattr(algo.settings, setting) is None
+    algo.print()
 
 def test_algorithm_settings():
 

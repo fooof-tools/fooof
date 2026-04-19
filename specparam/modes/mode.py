@@ -1,6 +1,7 @@
 """Mode object."""
 
 from specparam.modes.params import ParamDefinition
+from specparam.reports.strings import gen_mode_str
 from specparam.utils.checks import check_input_options
 
 ###################################################################################################
@@ -86,6 +87,20 @@ class Mode():
         """Define property attribute to access the number of parameters."""
 
         return self.params.n_params
+
+
+    def print(self, description=False, concise=False):
+        """Print out current mode.
+
+        Parameters
+        ----------
+        description : bool, optional, default: False
+            Whether to print out a description with current mode.
+        concise : bool, optional, default: False
+            Whether to print the report in a concise mode, or not.
+        """
+
+        print(gen_mode_str(self, description, concise))
 
 
     def check_params(self):

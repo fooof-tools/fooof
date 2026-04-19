@@ -188,19 +188,21 @@ class SpectralTimeEventModel(SpectralTimeModel):
 
         self.fit(freqs, spectrograms, freq_range, bands, n_jobs, progress)
         self.plot()
-        self.print_results()
+        self.print('results')
 
-
-    def print_results(self, concise=False):
-        """Print out SpectralTimeEventModel results.
+    @replace_docstring_sections([docs_get_section(SpectralModel.print.__doc__, 'Parameters')])
+    def print(self, info='results', concise=False):
+        """Print out information.
 
         Parameters
         ----------
-        concise : bool, optional, default: False
-            Whether to print the report in a concise mode, or not.
+        % copied in from SpectralModel object
         """
 
-        print(gen_event_results_str(self, concise))
+        if info == 'results':
+            print(gen_event_results_str(self, concise=concise))
+        else:
+            super().print(info, concise=concise)
 
 
     @copy_doc_func_to_method(plot_event_model)

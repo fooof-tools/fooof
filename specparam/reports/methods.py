@@ -1,7 +1,8 @@
 """Utilities to create reports and useful print outs."""
 
-from specparam.reports.strings import (gen_version_str, gen_settings_str, gen_freq_range_str,
-                                       gen_methods_report_str, gen_methods_text_str)
+from specparam.reports.text import gen_methods_text
+from specparam.reports.strings import (gen_version_str, gen_settings_str,
+                                       gen_freq_range_str, gen_methods_report_str)
 
 ###################################################################################################
 ###################################################################################################
@@ -44,4 +45,4 @@ def methods_report_text(model_obj=None):
     Any missing values (information that is not available) will be printed out as 'XX'.
     """
 
-    print(gen_methods_text_str(model_obj))
+    print(gen_methods_text(model_obj))

@@ -24,6 +24,7 @@ def test_mode():
                  ndim=1, freq_space='linear', powers_space='linear')
     assert tmode
     assert tmode.n_params == params.n_params
+    tmode.print()
     tmode.check_params()
 
 def test_mode_params_dict():

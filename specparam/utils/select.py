@@ -116,3 +116,30 @@ def find_first_ind(options, search):
             break
 
     return oind
+
+
+def list_insert(lst, inserts, ind):
+    """Insert new elements to a specified index of a list.
+
+    Parameters
+    ----------
+    lst : list
+        List to insert elements into.
+    inserts : list
+        Additional elements to insert in lst.
+    ind : int
+        Starting index to add the new elements
+
+    Returns
+    -------
+    lst : list
+        Updated list, with inserted elements.
+    """
+
+    if isinstance(inserts, list):
+        for el in reversed(inserts):
+            lst.insert(ind, el)
+    else:
+        lst.insert(ind, inserts)
+
+    return lst

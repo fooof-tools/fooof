@@ -1,9 +1,11 @@
 """Functionality to check available metrics."""
 
+from specparam.reports.strings import gen_metric_str_lst, _format
+
 ###################################################################################################
 ###################################################################################################
 
-def check_metrics(category='all'):
+def check_metrics(category='all', concise=False):
     """Check the set of available metrics.
 
     Parameters
@@ -14,9 +16,14 @@ def check_metrics(category='all'):
 
     from specparam.metrics.definitions import METRICS
 
-    category = ['error', 'gof'] if category == 'all' else [category]
+    categories = list(METRICS.keys()) if category == 'all' else [category]
 
-    for cat in category:
-        print('Available {} metrics:'.format(cat))
-        for metric in METRICS[cat].values():
-            print('    {:15s}    {:s}'.format(metric.measure, metric.description))
+    str_lst = []
+    for category in categories:
+
+        str_lst.extend(['', 'AVAILABLE {} METRICS'.format(category.upper()), ''])
+
+        for metric in METRICS[category].values():
+            str_lst.extend(gen_metric_str_lst(metric, True))
+
+    print(_format(str_lst[1:], concise))

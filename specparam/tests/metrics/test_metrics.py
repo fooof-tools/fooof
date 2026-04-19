@@ -39,6 +39,13 @@ def test_metrics_obj(tfm):
     out2 = metrics.get_metrics('gof', 'rsquared')
     assert out2 == metrics.results['gof_rsquared']
 
+    # Test properties & methods
+    for prop in ['categories', 'measures', 'labels', 'flabels']:
+        oprop = getattr(metrics, prop)
+        assert isinstance(oprop, list)
+        assert len(oprop) == 2
+    metrics.print()
+
 def test_metrics_dict(tfm):
 
     er_met_def = {'category' : 'error', 'measure' : 'mae',

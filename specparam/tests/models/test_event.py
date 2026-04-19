@@ -78,7 +78,8 @@ def test_event_fit_par():
 
 def test_event_print(tfe):
 
-    tfe.print_results()
+    for val in ['results', 'algorithm', 'settings', 'data', 'modes', 'metrics', 'bands', 'issue']:
+        tfe.print(val)
 
 @plot_test
 def test_event_plot(tfe, skip_if_no_mpl):
