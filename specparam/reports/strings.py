@@ -182,7 +182,7 @@ def gen_data_str(data, concise=False):
 
 ## MODES
 
-def gen_mode_str_lst(mode, description=False, concise=False):
+def gen_mode_str_lst(mode, description=False, concise=False, label_component=True):
     """Generate a list of string components for representating a mode.
 
     Parameters
@@ -200,7 +200,10 @@ def gen_mode_str_lst(mode, description=False, concise=False):
         List of string elements for a string representation of a mode.
     """
 
-    str_lst = [mode.component.capitalize() + ' Mode : ' + mode.name]
+    if label_component:
+        str_lst = [mode.component.capitalize() + ' Mode : ' + mode.name]
+    else:
+        str_lst = [mode.name]
     if description:
         str_lst.append(mode.description)
 
