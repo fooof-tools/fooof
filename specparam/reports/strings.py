@@ -1,7 +1,5 @@
 """Generate formatted strings for printing out information in report format."""
 
-from itertools import chain
-
 import numpy as np
 
 from specparam.utils.select import list_insert
@@ -182,8 +180,8 @@ def gen_data_str(data, concise=False):
 
 ## MODES
 
-def gen_mode_str_lst(mode, description=False, concise=False, label_component=True):
-    """Generate a list of string components for representating a mode.
+def gen_mode_str_lst(mode, description=False, label_component=True):
+    """Generate a list of string components for representing a mode.
 
     Parameters
     ----------
@@ -191,8 +189,8 @@ def gen_mode_str_lst(mode, description=False, concise=False, label_component=Tru
         Mode object.
     description : bool, optional, default: False
         Whether to also print out a description of the fit mode.
-    concise : bool, optional, default: False
-        Whether to generate the string in concise mode.
+    label_component : bool, optional, default: True
+        Whether to add information about which component this mode is for.
 
     Returns
     -------
@@ -228,7 +226,7 @@ def gen_mode_str(mode, description=False, concise=False):
         Formatted string of fit modes.
     """
 
-    str_lst = gen_mode_str_lst(mode, description, concise)
+    str_lst = gen_mode_str_lst(mode, description)
 
     return _format(['FIT MODE', ''] + str_lst, concise)
 
@@ -354,7 +352,7 @@ def gen_width_warning_str(freq_res, bwl):
         '{:1.2f} <= {:1.2f}'.format(bwl, freq_res),
         '\tLower bounds below frequency-resolution have no effect ' + \
         '(effective lower bound is the frequency resolution).',
-        '\tToo low a limit may lead to overfitting noise as small bandwidth peaks.',
+        '\tToo low a limit may lead to over-fitting noise as small bandwidth peaks.',
         '\tWe recommend a lower bound of approximately 2x the frequency resolution.',
         ''
     ])
@@ -393,8 +391,8 @@ def gen_bands_str(bands, concise=False):
 
 ## METRICS
 
-def gen_metric_str_lst(metric, description=False, concise=False):
-    """Generate a list of string components for representating a metric.
+def gen_metric_str_lst(metric, description=False):
+    """Generate a list of string components for representing a metric.
 
     Parameters
     ----------
@@ -402,8 +400,6 @@ def gen_metric_str_lst(metric, description=False, concise=False):
         Metric object.
     description : bool, optional, default: False
         Whether to also print out a description of the metric.
-    concise : bool, optional, default: False
-        Whether to generate the string in concise mode.
 
     Returns
     -------
@@ -434,7 +430,7 @@ def gen_metric_str(metric, description=False, concise=False):
         Formatted string of metric.
     """
 
-    str_lst = gen_metric_str_lst(metric, description, concise)
+    str_lst = gen_metric_str_lst(metric, description)
 
     return _format(['CURRENT METRIC', ''] + str_lst, concise)
 
@@ -459,7 +455,7 @@ def gen_metrics_str(metrics, description=False, concise=False):
 
     str_lst = []
     for metric in metrics.metrics:
-        str_lst.extend(gen_metric_str_lst(metric, description, concise))
+        str_lst.extend(gen_metric_str_lst(metric, description))
 
     return _format(['CURRENT METRICS', ''] + str_lst, concise)
 
