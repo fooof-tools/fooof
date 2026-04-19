@@ -205,7 +205,7 @@ def gen_mode_str_lst(mode, description=False, concise=False, label_component=Tru
     else:
         str_lst = [mode.name]
     if description:
-        str_lst.append(mode.description)
+        str_lst.append(mode.description + ' Params: {}.'.format(', '.join(mode.params.labels)))
 
     return str_lst
 
