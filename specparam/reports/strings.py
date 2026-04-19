@@ -182,6 +182,54 @@ def gen_data_str(data, concise=False):
 
 ## MODES
 
+def gen_mode_str_lst(mode, description=False, concise=False):
+    """Generate a list of string components for representating a mode.
+
+    Parameters
+    ----------
+    mode : Mode
+        Mode object.
+    description : bool, optional, default: False
+        Whether to also print out a description of the fit mode.
+    concise : bool, optional, default: False
+        Whether to generate the string in concise mode.
+
+    Returns
+    -------
+    lst
+        List of string elements for a string representation of a mode.
+    """
+
+    str_lst = [mode.component.capitalize() + ' Mode : ' + mode.name]
+    if description:
+        str_lst.append(mode.description)
+
+    return str_lst
+
+
+def gen_mode_str(mode, description=False, concise=False):
+    """Generate a string representation of a fit mode.
+
+    Parameters
+    ----------
+    mode : Mode
+        Mode definition.
+    description : bool, optional, default: False
+        Whether to also print out a description the fit mode.
+    concise : bool, optional, default: False
+        Whether to generate the string in concise mode.
+
+    Returns
+    -------
+    str
+        Formatted string of fit modes.
+    """
+
+    str_lst = gen_mode_str_lst(mode, description, concise)
+
+    return _format(['FIT MODE', ''] + str_lst, concise)
+
+
 def gen_modes_str(modes, description=False, concise=False):
     """Generate a string representation of fit modes.
 
@@ -365,7 +413,7 @@ def gen_metric_str_lst(metric, description=False, concise=False):
     metrics : Metric
         Metric object.
     description : bool, optional, default: False
-        Whether to also print out a description of the settings.
+        Whether to also print out a description of the metric.
     concise : bool, optional, default: False
         Whether to generate the string in concise mode.
 
