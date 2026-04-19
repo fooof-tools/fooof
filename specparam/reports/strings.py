@@ -248,27 +248,12 @@ def gen_modes_str(modes, description=False, concise=False):
         Formatted string of fit modes.
     """
 
-    desc = {
-        'aperiodic_mode' : 'The approach taken for fitting the aperiodic component.',
-        'periodic_mode'  : 'The approach taken for fitting the periodic component.',
-    }
 
-    # Clear description for printing, if not requested
-    if not description:
-        desc = {k : '' for k, v in desc.items()}
+    str_lst = []
+    for mode in [modes.aperiodic, modes.periodic]:
+        str_lst.extend(gen_mode_str_lst(mode, description, concise))
 
-    # Create output string
-    str_lst = [
-        'FIT MODES',
-        '',
-        # Settings - include descriptions if requested
-        *[el for el in ['Periodic Mode : {}'.format(modes.periodic.name),
-                        '{}'.format(desc['aperiodic_mode']),
-                        'Aperiodic Mode : {}'.format(modes.aperiodic.name),
-                        '{}'.format(desc['periodic_mode'])] if el != ''],
-    ]
-
-    return _format(str_lst, concise)
+    return _format(['FIT MODES', ''] + str_lst, concise)
 
 
 def gen_params_str(params, description=False, concise=False):
