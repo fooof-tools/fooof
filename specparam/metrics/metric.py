@@ -18,6 +18,8 @@ class Metric():
         Description of the metric.
     func : callable
         The function that computes the metric.
+    space : {'log', 'linear'}
+        Spacing of the data & model to use for metric evaluation.
     kwargs : dictionary
         Additional keyword argument to compute the metric.
         Each key should be the name of the additional argument.
@@ -25,13 +27,14 @@ class Metric():
         and returns the desired parameter / computed value.
     """
 
-    def __init__(self, category, measure, description, func, kwargs=None):
+    def __init__(self, category, measure, description, func, space='log', kwargs=None):
         """Initialize metric."""
 
         self.category = category
         self.measure = measure
         self.description = description
         self.func = func
+        self.space = space
         self.result = np.nan
         self.kwargs = {} if not kwargs else kwargs
 
@@ -76,7 +79,10 @@ class Metric():
         for key, lfunc in self.kwargs.items():
             kwargs[key] = lfunc(data, results)
 
-        self.result = self.func(data.power_spectrum, results.model.modeled_spectrum, **kwargs)
+        self.result = self.func(
+            data.get_data('full', space=self.space),
+            results.model.get_component('full', space=self.space),
+            **kwargs)
 
 
     def reset(self):
