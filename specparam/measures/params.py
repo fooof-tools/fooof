@@ -1,4 +1,7 @@
-"""Utilities for working with parameters."""
+"""Utilities for working with parameters.
+
+MOVE TARGET: modes (?)
+"""
 
 import numpy as np
 
