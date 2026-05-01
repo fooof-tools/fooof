@@ -160,7 +160,7 @@ class SpectralFitAlgorithm(AlgorithmCF):
 
         # Take an initial fit of the aperiodic component
         temp_aperiodic_params = self._robust_ap_fit(self.data.freqs, self.data.power_spectrum)
-        temp_ap_fit = self.modes.aperiodic.func(self.data.freqs, *temp_aperiodic_params)
+        temp_ap_fit = self.modes.aperiodic.generate(self.data.freqs, *temp_aperiodic_params)
 
         # Find peaks from the flattened power spectrum, and fit them
         temp_spectrum_flat = self.data.power_spectrum - temp_ap_fit
@@ -168,7 +168,7 @@ class SpectralFitAlgorithm(AlgorithmCF):
 
         # Calculate the peak fit
         #   Note: if no peaks are found, this creates a flat (all zero) peak fit
-        self.results.model._peak_fit = self.modes.periodic.func(\
+        self.results.model._peak_fit = self.modes.periodic.generate(\
             self.data.freqs, *np.ndarray.flatten(self.results.params.periodic.get_params('fit')))
 
         # Create peak-removed (but not flattened) power spectrum
@@ -178,7 +178,7 @@ class SpectralFitAlgorithm(AlgorithmCF):
         # Run final aperiodic fit on peak-removed power spectrum
         self.results.params.aperiodic.add_params('fit', \
             self._simple_ap_fit(self.data.freqs, self.results.model._spectrum_peak_rm))
-        self.results.model._ap_fit = self.modes.aperiodic.func(\
+        self.results.model._ap_fit = self.modes.aperiodic.generate(\
             self.data.freqs, *self.results.params.aperiodic.params)
 
         # Create remaining model components: flatspec & full power_spectrum model fit
@@ -305,7 +305,7 @@ class SpectralFitAlgorithm(AlgorithmCF):
 
         # Do a quick, initial aperiodic fit
         popt = self._simple_ap_fit(freqs, power_spectrum)
-        initial_fit = self.modes.aperiodic.func(freqs, *popt)
+        initial_fit = self.modes.aperiodic.generate(freqs, *popt)
 
         # Flatten power_spectrum based on initial aperiodic fit
         flatspec = power_spectrum - initial_fit
@@ -406,7 +406,7 @@ class SpectralFitAlgorithm(AlgorithmCF):
 
             # Fit and subtract guess peak from the spectrum
             guess = np.vstack((guess, cur_guess))
-            peak_fit = self.modes.periodic.func(self.data.freqs, *cur_guess)
+            peak_fit = self.modes.periodic.generate(self.data.freqs, *cur_guess)
             flat_iter = flat_iter - peak_fit
 
         # Check peaks based on edges, and on overlap, dropping any that violate requirements
