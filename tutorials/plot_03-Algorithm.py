@@ -288,7 +288,7 @@ fm.plot(plt_log)
 #
 # Stored data attributes:
 #
-# - Flattened Spectrum: (``SpectralModel.get_data('aperiodic')``)
+# - Flattened Spectrum: (``SpectralModel.get_data('peak')``)
 #
 #   - The original data, with the aperiodic component removed
 #   - This is computed as the power_spectrum minus the model aperiodic fit
