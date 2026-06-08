@@ -1,4 +1,4 @@
-"""Test functions for specparam.utils.download."""
+"""Test functions for specparam.modutils.download."""
 
 import os
 import shutil
@@ -6,7 +6,7 @@ from pathlib import Path
 
 import numpy as np
 
-from specparam.utils.download import *
+from specparam.modutils.download import *
 
 ###################################################################################################
 ###################################################################################################
