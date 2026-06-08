@@ -68,7 +68,7 @@ params_doublexp = ParamDefinition(OrderedDict({
 ap_doublexp = Mode(
     name='doublexp',
     component='aperiodic',
-    description='Multi-fractal powerlaw function with 2 exponents and a knee.',
+    description='Multi-fractal powerlaw function (2 exponents & a knee).',
     formula=r'A(F) = 10^b * \frac{1}{F^{\chi_{0}} * (k + F^{\chi_{1}})}',
     func=double_expo_function,
     jacobian=None,

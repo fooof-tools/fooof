@@ -384,4 +384,4 @@ def plot_formula(formula, ax=None):
 
     ax = check_ax(ax, figsize=(4, 0.5))
     ax.axis('off')
-    ax.text(.5, .5, "${}$".format(formula), fontsize=24, ha='center', va='center');
+    ax.text(.5, .5, "${}$".format(formula), fontsize=24, ha='center', va='center')
