@@ -9,7 +9,7 @@ from itertools import cycle
 
 from specparam.modutils.errors import NoModelError
 from specparam.modutils.dependencies import safe_import, check_dependency
-from specparam.measures.properties import compute_presence
+from specparam.utils.properties import compute_presence
 from specparam.plts.utils import savefig
 from specparam.plts.templates import plot_param_over_time_yshade
 from specparam.plts.settings import PARAM_COLORS

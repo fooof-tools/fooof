@@ -4,8 +4,8 @@ from collections import OrderedDict
 
 import numpy as np
 
-from specparam.modes.params import ParamDefinition
 from specparam.modes.definitions import ap_powerlaw
+from specparam.modes.paramdef import ParamDefinition
 
 from specparam.modes.mode import *
 

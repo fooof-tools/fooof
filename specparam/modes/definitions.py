@@ -3,7 +3,7 @@
 from collections import OrderedDict
 
 from specparam.modes.mode import Mode
-from specparam.modes.params import ParamDefinition
+from specparam.modes.paramdef import ParamDefinition
 from specparam.modes.funcs import (powerlaw_function, lorentzian_function, double_expo_function,
                                    gaussian_function, skewed_gaussian_function,
                                    cauchy_function, gamma_function, triangle_function)
