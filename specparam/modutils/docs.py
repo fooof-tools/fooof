@@ -224,8 +224,31 @@ def docs_add_section(docstring, section):
     return new_docstring
 
 
-def copy_doc_func_to_method(source):
-    """Decorator that copies method docstring from function, dropping first parameter.
+def copy_func_docstring(source):
+    """Decorator that copies docstring from source.
+
+    Parameters
+    ----------
+    source : function
+        Source function to copy docstring from.
+
+    Returns
+    -------
+    wrapper : function
+        The decorated function, with updated docs.
+    """
+
+    def wrapper(func):
+
+        func.__doc__ = deepcopy(source.__doc__)
+
+        return func
+
+    return wrapper
+
+
+def copy_func_docstring_drop_first(source):
+    """Decorator that copies docstring from source, dropping first parameter.
 
     Parameters
     ----------

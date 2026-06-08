@@ -21,8 +21,8 @@ from specparam.algorithms.definitions import ALGORITHMS, check_algorithm_definit
 from specparam.reports.save import save_model_report
 from specparam.reports.strings import gen_model_results_str
 from specparam.modutils.errors import NoDataError, FitError
-from specparam.modutils.docs import (copy_doc_func_to_method, replace_docstring_sections,
-                                     docs_get_section)
+from specparam.modutils.docs import (copy_func_docstring, copy_func_docstring_drop_first,
+                                     docs_get_section, replace_docstring_sections)
 from specparam.utils.checks import check_all_none
 from specparam.io.files import load_json
 from specparam.io.models import save_model
@@ -234,7 +234,7 @@ class SpectralModel(BaseModel):
             super().print(info, concise=concise)
 
 
-    @copy_doc_func_to_method(plot_model)
+    @copy_func_docstring_drop_first(plot_model)
     def plot(self, plot_peaks=None, plot_aperiodic=True, freqs=None, power_spectrum=None,
              freq_range=None, plt_log=False, add_legend=True, ax=None, data_kwargs=None,
              model_kwargs=None, aperiodic_kwargs=None, peak_kwargs=None, **plot_kwargs):
@@ -245,7 +245,7 @@ class SpectralModel(BaseModel):
                    aperiodic_kwargs=aperiodic_kwargs, peak_kwargs=peak_kwargs, **plot_kwargs)
 
 
-    @copy_doc_func_to_method(save_model)
+    @copy_func_docstring_drop_first(save_model)
     def save(self, file_name, file_path=None, append=False,
              save_results=False, save_settings=False, save_data=False):
 
@@ -286,19 +286,19 @@ class SpectralModel(BaseModel):
                 self.results._regenerate_model(self.data.freqs)
 
 
-    @copy_doc_func_to_method(Results.get_params)
+    @copy_func_docstring(Results.get_params)
     def get_params(self, component, field=None):
 
         return self.results.get_params(component, field)
 
 
-    @copy_doc_func_to_method(Results.get_metrics)
+    @copy_func_docstring(Results.get_metrics)
     def get_metrics(self, category, measure=None):
 
         return self.results.get_metrics(category, measure)
 
 
-    @copy_doc_func_to_method(save_model_report)
+    @copy_func_docstring_drop_first(save_model_report)
     def save_report(self, file_name, file_path=None, add_settings=True, **plot_kwargs):
 
         save_model_report(self, file_name, file_path, add_settings, **plot_kwargs)

@@ -9,7 +9,7 @@ from specparam.io.models import save_time
 from specparam.plts.time import plot_time_model
 from specparam.reports.save import save_time_report
 from specparam.reports.strings import gen_time_results_str
-from specparam.modutils.docs import (copy_doc_func_to_method, docs_get_section,
+from specparam.modutils.docs import (copy_func_docstring_drop_first, docs_get_section,
                                      replace_docstring_sections)
 from specparam.utils.checks import check_inds
 
@@ -157,7 +157,7 @@ class SpectralTimeModel(SpectralGroupModel):
             super().print(info, concise=concise)
 
 
-    @copy_doc_func_to_method(plot_time_model)
+    @copy_func_docstring_drop_first(plot_time_model)
     def plot(self, plot_type='time', save_fig=False, file_name=None, file_path=None, **plot_kwargs):
 
         if plot_type == 'time':
@@ -167,14 +167,14 @@ class SpectralTimeModel(SpectralGroupModel):
             super().plot(save_fig=save_fig, file_name=file_name, file_path=file_path, **plot_kwargs)
 
 
-    @copy_doc_func_to_method(save_time)
+    @copy_func_docstring_drop_first(save_time)
     def save(self, file_name, file_path=None, append=False,
              save_results=False, save_settings=False, save_data=False):
 
         save_time(self, file_name, file_path, append, save_results, save_settings, save_data)
 
 
-    @copy_doc_func_to_method(save_time_report)
+    @copy_func_docstring_drop_first(save_time_report)
     def save_report(self, file_name, file_path=None, add_settings=True):
 
         save_time_report(self, file_name, file_path, add_settings)
