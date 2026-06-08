@@ -34,15 +34,6 @@ class Modes():
         self.model = model
 
 
-    def check_params(self):
-        """Check the description of the parameters for each mode."""
-
-        if self.aperiodic:
-            self.aperiodic.check_params()
-        if self.periodic:
-            self.periodic.check_params()
-
-
     def get_modes(self):
         """Get the modes definition.
 
@@ -91,7 +82,7 @@ class Modes():
         description : bool, optional, default: False
             Whether to print out a description with current fit modes.
         concise : bool, optional, default: False
-            Whether to print the report in a concise mode, or not.
+            Whether to print a concise version of the report.
         """
 
         print(gen_modes_str(self, description, concise))

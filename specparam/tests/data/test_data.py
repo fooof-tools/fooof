@@ -18,6 +18,7 @@ def test_data():
     assert tdata
     assert not tdata.has_data
     assert not tdata.n_freqs
+    tdata.print()
 
 def test_data_add_data():
 
@@ -26,6 +27,7 @@ def test_data_add_data():
     tdata.add_data(freqs, pows)
     assert tdata.has_data
     assert tdata.n_freqs == len(freqs)
+    tdata.print()
 
 def test_data_meta_data():
 
