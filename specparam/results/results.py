@@ -12,7 +12,7 @@ from specparam.results.components import ModelComponents
 from specparam.metrics.metrics import Metrics
 from specparam.utils.checks import check_inds
 from specparam.modutils.errors import NoModelError
-from specparam.modutils.docs import (copy_doc_func_to_method, docs_get_section,
+from specparam.modutils.docs import (copy_func_docstring, docs_get_section,
                                      replace_docstring_sections)
 from specparam.data.stores import FitResults
 from specparam.data.conversions import group_to_dict, event_group_to_dict
@@ -210,7 +210,7 @@ class Results():
         return getattr(self.params, component).get_params(version, field)
 
 
-    @copy_doc_func_to_method(Metrics.get_metrics)
+    @copy_func_docstring(Metrics.get_metrics)
     def get_metrics(self, category, measure=None):
 
         return self.metrics.get_metrics(category, measure)
@@ -419,7 +419,7 @@ class Results2D(Results):
         return get_group_params(self.group_results, self.modes, component, field)
 
 
-    @copy_doc_func_to_method(Metrics.get_metrics)
+    @copy_func_docstring(Metrics.get_metrics)
     def get_metrics(self, category, measure=None):
 
         return get_group_metrics(self.group_results, category, measure)
