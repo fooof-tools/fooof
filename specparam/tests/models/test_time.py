@@ -62,7 +62,8 @@ def test_time_fit():
 
 def test_time_print(tft):
 
-    tft.print_results()
+    for val in ['results', 'algorithm', 'settings', 'data', 'modes', 'metrics', 'bands', 'issue']:
+        tft.print(val)
 
 @plot_test
 def test_time_plot(tft, skip_if_no_mpl):
