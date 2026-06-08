@@ -2,7 +2,7 @@
 
 from specparam.sim.gen import gen_freqs, gen_noise
 from specparam.modes.funcs import gaussian_function
-from specparam.measures.params import compute_fwhm
+from specparam.convert.periodic import compute_fwhm
 
 from specparam.algorithms.estimates import *
 

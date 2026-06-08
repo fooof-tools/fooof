@@ -4,7 +4,8 @@ import numpy as np
 
 from specparam.utils.select import nearest_ind
 from specparam.data.periodic import get_band_peak, sort_peaks
-from specparam.measures.params import compute_knee_frequency, compute_fwhm
+from specparam.convert.periodic import compute_fwhm
+from specparam.convert.aperiodic import compute_knee_frequency
 from specparam.modutils.errors import NoModelError
 from specparam.modutils.dependencies import safe_import, check_dependency
 from specparam.plts.spectra import plot_spectra

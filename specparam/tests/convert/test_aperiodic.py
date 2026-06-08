@@ -1,6 +1,6 @@
-"""Test functions for specparam.measures.params."""
+"""Test functions for specparam.convert.aperiodic."""
 
-from specparam.measures.params import *
+from specparam.convert.aperiodic import *
 
 ###################################################################################################
 ###################################################################################################
@@ -12,11 +12,3 @@ def test_compute_knee_frequency():
 def test_compute_time_constant():
 
     assert compute_time_constant(10)
-
-def test_compute_fwhm():
-
-    assert compute_fwhm(1.5)
-
-def test_compute_gauss_std():
-
-    assert compute_gauss_std(1.0)

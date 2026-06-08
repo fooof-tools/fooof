@@ -3,7 +3,7 @@
 from copy import deepcopy
 
 from specparam.convert.converter import AperiodicParamConverter, PeriodicParamConverter
-from specparam.convert.params import compute_peak_height
+from specparam.convert.periodic import compute_peak_height
 
 ###################################################################################################
 ## DEFINE DEFAULT CONVERTERS
