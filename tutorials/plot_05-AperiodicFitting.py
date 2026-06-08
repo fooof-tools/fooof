@@ -14,7 +14,7 @@ from specparam import SpectralModel
 from specparam.modes.definitions import check_modes
 
 # Import a utility to download and load example data
-from specparam.utils.download import load_example_data
+from specparam.demo import load_example_data
 
 ###################################################################################################
 # Component Fit Modes

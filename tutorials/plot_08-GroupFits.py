@@ -11,7 +11,7 @@ Using the group model object to run fit models across multiple power spectra.
 from specparam import SpectralGroupModel
 
 # Import a utility to download and load example data
-from specparam.utils.download import load_example_data
+from specparam.demo import load_example_data
 
 ###################################################################################################
 # Fitting Multiple Spectra

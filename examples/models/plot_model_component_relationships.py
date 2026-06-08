@@ -16,7 +16,9 @@ from specparam.plts import plot_spectra
 
 from specparam.utils.array import unlog
 from specparam.utils.select import nearest_ind
-from specparam.utils.download import load_example_data
+
+# Import utility to load example data
+from specparam.demo import load_example_data
 
 # Import function to directly compute peak heights
 from specparam.convert.params import compute_peak_height

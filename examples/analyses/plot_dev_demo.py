@@ -48,7 +48,7 @@ from specparam.plts.aperiodic import plot_aperiodic_params, plot_aperiodic_fits
 from specparam.measures.pointwise import compute_pointwise_error, compute_pointwise_error_group
 
 # Import helper utility to access data
-from specparam.utils.download import fetch_example_data
+from specparam.demo.download import fetch_example_data
 
 ###################################################################################################
 # Access Example Data

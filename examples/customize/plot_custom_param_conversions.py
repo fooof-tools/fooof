@@ -7,7 +7,8 @@ This example covers defining and using custom parameter post-fitting conversions
 
 from specparam import SpectralModel
 
-from specparam.utils.download import load_example_data
+# Import utility to load example data
+from specparam.demo import load_example_data
 
 # Import the default set of parameter conversions
 from specparam.convert.definitions import check_converters, DEFAULT_CONVERTERS

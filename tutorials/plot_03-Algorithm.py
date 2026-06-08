@@ -45,7 +45,7 @@ from specparam.plts.spectra import plot_spectra
 from specparam.plts.annotate import plot_annotated_peak_search
 
 # Import a utility to download and load example data
-from specparam.utils.download import load_example_data
+from specparam.demo import load_example_data
 
 ###################################################################################################
 

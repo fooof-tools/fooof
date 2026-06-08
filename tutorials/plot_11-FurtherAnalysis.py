@@ -44,7 +44,7 @@ from specparam.sim.utils import set_random_seed
 from specparam.data.periodic import get_band_peak, get_band_peak_group
 
 # Import a utility to download and load example data
-from specparam.utils.download import load_example_data
+from specparam.demo import load_example_data
 
 ###################################################################################################
 # Load and Fit Example Data

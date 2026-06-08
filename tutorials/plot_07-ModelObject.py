@@ -11,7 +11,7 @@ Further exploring the SpectralModel object, including algorithm settings and ava
 from specparam import SpectralModel
 
 # Import utility to download and load example data
-from specparam.utils.download import load_example_data
+from specparam.demo import load_example_data
 
 ###################################################################################################
 

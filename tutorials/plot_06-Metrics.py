@@ -14,7 +14,7 @@ from specparam import SpectralModel
 from specparam.metrics.definitions import check_metrics
 
 # Import a utility to download and load example data
-from specparam.utils.download import load_example_data
+from specparam.demo import load_example_data
 
 ###################################################################################################
 # Model Metrics

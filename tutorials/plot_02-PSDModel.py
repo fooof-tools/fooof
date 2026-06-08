@@ -11,7 +11,7 @@ Introduction to the module, beginning with the model object.
 from specparam import SpectralModel
 
 # Import a utility to download and load example data
-from specparam.utils.download import load_example_data
+from specparam.demo import load_example_data
 
 ###################################################################################################
 
