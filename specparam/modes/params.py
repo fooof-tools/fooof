@@ -59,7 +59,7 @@ class ParamDefinition():
         description : bool, optional, default: False
             Whether to print out a description of the fit mode parameters.
         concise : bool, optional, default: False
-            Whether to print the report concisely.
+            Whether to print a concise version of the report.
         """
 
         print(gen_params_str(self, description, concise))

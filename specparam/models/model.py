@@ -223,7 +223,7 @@ class SpectralModel(BaseModel):
                 'bands' : print information on any defined frequency bands
                 'issue' : print instructions on how to report bugs and/or problematic fits
         concise : bool, optional, default: False
-            Whether to print the report in a concise mode, or not.
+            Whether to print a concise version of the report.
         """
 
         if info == 'results':

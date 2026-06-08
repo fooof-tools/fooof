@@ -19,7 +19,7 @@ def gen_issue_str(concise=False):
     Parameters
     ----------
     concise : bool, optional, default: False
-        Whether to generate the string in concise mode.
+        Whether to generate a concise version of the string.
 
     Returns
     -------
@@ -56,7 +56,7 @@ def gen_version_str(concise=False):
     Parameters
     ----------
     concise : bool, optional, default: False
-        Whether to generate the string in concise mode.
+        Whether to generate a concise version of the string.
 
     Returns
     -------
@@ -79,7 +79,7 @@ def gen_methods_report_str(concise=False):
     Parameters
     ----------
     concise : bool, optional, default: False
-        Whether to generate the string in concise mode.
+        Whether to generate a concise version of the string.
 
     Returns
     -------
@@ -110,7 +110,7 @@ def gen_freq_range_str(model, concise=False):
     model : SpectralModel or Spectral*Model
         Object to access settings from.
     concise : bool, optional, default: False
-        Whether to generate the string in concise mode.
+        Whether to generate a concise version of the string.
 
     Returns
     -------
@@ -139,7 +139,7 @@ def gen_data_str(data, concise=False):
         Data object to summarize data for.
         Can also be any derived data object (e.g. Data2D).
     concise : bool, optional, default: False
-        Whether to generate the string in concise mode.
+        Whether to generate a concise version of the string.
 
     Returns
     -------
@@ -223,7 +223,7 @@ def gen_mode_str_lst(mode, description=False, label_component=True):
     if label_component:
         str_lst = [mode.component.capitalize() + " Mode : '" + mode.name + "'"]
     else:
-        str_lst = [mode.name]
+        str_lst = ["'" + mode.name + "'"]
     if description:
         str_lst.append(mode.description)
 
@@ -245,7 +245,7 @@ def gen_mode_str(mode, info, description=False, concise=False):
     description : bool, optional, default: False
         Whether to also print out a description the fit mode.
     concise : bool, optional, default: False
-        Whether to generate the string in concise mode.
+        Whether to generate a concise version of the string.
 
     Returns
     -------
@@ -263,17 +263,19 @@ def gen_mode_str(mode, info, description=False, concise=False):
     return _format(['FIT MODE', ''] + str_lst, concise)
 
 
-def gen_modes_str(modes, description=False, concise=False):
+def gen_modes_str(modes, check_params=False, description=False, concise=False):
     """Generate a string representation of fit modes.
 
     Parameters
     ----------
     modes : Modes
         Modes definition.
+    check_params : bool, optional, default: False
+        Whether to print out information on the parameters of the mode.
     description : bool, optional, default: False
         Whether to also print out a description of the fit modes.
     concise : bool, optional, default: False
-        Whether to generate the string in concise mode.
+        Whether to generate a concise version of the string.
 
     Returns
     -------
@@ -284,7 +286,10 @@ def gen_modes_str(modes, description=False, concise=False):
     str_lst = []
     for mode in [modes.aperiodic, modes.periodic]:
         str_lst.extend(gen_mode_str_lst(mode, description, label_component=True))
-        str_lst.append('')
+        if check_params:
+            str_lst.extend(gen_mode_params_str_lst(mode))
+        if mode.component == 'aperiodic':
+            str_lst.append('')
 
     return _format(['FIT MODES', ''] + str_lst, concise)
 
@@ -299,7 +304,7 @@ def gen_params_str(params, description=False, concise=False):
     description : bool, optional, default: False
         Whether to also print out a description of the fit mode parameters.
     concise : bool, optional, default: False
-        Whether to print the report in concise mode.
+        Whether to generate a concise version of the string.
 
     Returns
     -------
@@ -331,7 +336,7 @@ def gen_settings_str(algorithm, description=False, concise=False):
     description : bool, optional, default: False
         Whether to also print out a description of the settings.
     concise : bool, optional, default: False
-        Whether to generate the string in concise mode.
+        Whether to generate a concise version of the string.
 
     Returns
     -------
@@ -402,7 +407,7 @@ def gen_bands_str(bands, concise=False):
     bands : Bands
         Bands definition.
     concise : bool, optional, default: False
-        Whether to generate the string in concise mode.
+        Whether to generate a concise version of the string.
 
     Returns
     -------
@@ -454,7 +459,7 @@ def gen_metric_str(metric, description=False, concise=False):
     description : bool, optional, default: False
         Whether to also print out a description of the settings.
     concise : bool, optional, default: False
-        Whether to generate the string in concise mode.
+        Whether to generate a concise version of the string.
 
     Returns
     -------
@@ -477,7 +482,7 @@ def gen_metrics_str(metrics, description=False, concise=False):
     description : bool, optional, default: False
         Whether to also print out a description of the settings.
     concise : bool, optional, default: False
-        Whether to generate the string in concise mode.
+        Whether to generate a concise version of the string.
 
     Returns
     -------
@@ -502,7 +507,7 @@ def gen_model_results_str(model, concise=False):
     model : SpectralModel
         Object to access results from.
     concise : bool, optional, default: False
-        Whether to generate the string in concise mode.
+        Whether to generate a concise version of the string.
 
     Returns
     -------
@@ -557,7 +562,7 @@ def gen_group_results_str(group, concise=False):
     group : SpectralGroupModel
         Object to access results from.
     concise : bool, optional, default: False
-        Whether to generate the string in concise mode.
+        Whether to generate a concise version of the string.
 
     Returns
     -------
@@ -611,7 +616,7 @@ def gen_time_results_str(time, concise=False):
     time : SpectralTimeModel
         Object to access results from.
     concise : bool, optional, default: False
-        Whether to generate the string in concise mode.
+        Whether to generate a concise version of the string.
 
     Returns
     -------
@@ -672,7 +677,7 @@ def gen_event_results_str(event, concise=False):
     event : SpectralTimeEventModel
         Object to access results from.
     concise : bool, optional, default: False
-        Whether to generate the string in concise mode.
+        Whether to generate a concise version of the string.
 
     Returns
     -------
@@ -798,7 +803,7 @@ def _no_model_str(concise=False):
     Parameters
     ----------
     concise : bool, optional, default: False
-        Whether to generate the string in concise mode.
+        Whether to generate a concise version of the string.
 
     Returns
     -------
@@ -823,7 +828,7 @@ def _format(str_lst, concise):
     str_lst : list of str
         List containing all elements for the string, each element representing a line.
     concise : bool, optional, default: False
-        Whether to format the string in concise mode.
+        Whether to generate a concise version of the string.
 
     Returns
     -------

@@ -16,7 +16,7 @@ def methods_report_info(model_obj=None, concise=False):
         An object with setting information available.
         If provided, is used to collect and print information to be reported.
     concise : bool, optional, default: False
-        Whether to print the report in concise mode.
+        Whether to print a concise version of the report.
 
     Notes
     -----

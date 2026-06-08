@@ -79,7 +79,7 @@ class BaseModel():
         description : bool, optional, default: False
             Whether to print out a description with current settings.
         concise : bool, optional, default: False
-            Whether to print the report in a concise mode.
+            Whether to print a concise version of the report.
         """
 
         # Special case - treat 'settings' as request to print algorithm info

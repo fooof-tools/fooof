@@ -89,7 +89,7 @@ class Metric():
         description : bool, optional, default: False
             Whether to print out a description with current metric.
         concise : bool, optional, default: False
-            Whether to print the report in a concise mode, or not.
+            Whether to print a concise version of the report.
         """
 
         print(gen_metric_str(self, description, concise))

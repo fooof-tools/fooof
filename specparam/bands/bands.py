@@ -134,7 +134,7 @@ class Bands():
         Parameters
         ----------
         concise : bool, optional, default: False
-            Whether to print the report in a concise mode, or not.
+            Whether to print a concise version of the report.
         """
 
         print(gen_bands_str(self, concise))
