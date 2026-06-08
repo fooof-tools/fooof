@@ -1,7 +1,4 @@
-"""Estimate properties from data.
-
-MOVE TARGET: algorithm (?)
-"""
+"""Estimate properties from data."""
 
 import numpy as np
 
