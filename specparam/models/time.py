@@ -120,8 +120,8 @@ class SpectralTimeModel(SpectralGroupModel):
         bands : Bands or dict or int, optional
             How to organize peaks into bands.
             If Bands or dict, uses band definitions. If int, extracts the first 'n' peaks.
-        TODOXX:results_format :
-            xx
+        report_type : {'time', 'group'}
+            Which type of report to print out.
         n_jobs : int, optional, default: 1
             Number of jobs to run in parallel.
             1 is no parallelization. -1 uses all available cores.
@@ -134,8 +134,8 @@ class SpectralTimeModel(SpectralGroupModel):
         """
 
         self.fit(freqs, spectrogram, freq_range, bands, n_jobs=n_jobs, progress=progress)
-        self.plot(report_type)
-        self.print('results', report_type)
+        self.plot(plot_type=report_type)
+        self.print('results', report_type=report_type)
 
     @replace_docstring_sections([docs_get_section(SpectralModel.print.__doc__, 'Parameters')])
     def print(self, info='results', concise=False, report_type='time'):
