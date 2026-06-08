@@ -1,6 +1,6 @@
-"""Test functions for specparam.convert.convert."""
+"""Test functions for specparam.params.convert."""
 
-from specparam.convert.convert import *
+from specparam.params.convert import *
 
 ###################################################################################################
 ###################################################################################################

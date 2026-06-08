@@ -4,7 +4,7 @@ import numpy as np
 
 from specparam.utils.select import list_insert
 from specparam.utils.array import compute_arr_desc
-from specparam.measures.properties import compute_presence
+from specparam.utils.properties import compute_presence
 from specparam.version import __version__ as MODULE_VERSION
 from specparam.reports.settings import LCV, SCV, DIVIDER
 

@@ -9,7 +9,7 @@ Parameter converters should have the following properties, depending on componen
 
 import numpy as np
 
-from specparam.convert.definitions import get_converter
+from specparam.params.definitions import get_converter
 
 ###################################################################################################
 ###################################################################################################
