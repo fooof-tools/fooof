@@ -180,6 +180,28 @@ def gen_data_str(data, concise=False):
 
 ## MODES
 
+def gen_mode_params_str_lst(mode):
+    """Generate a lost of string components for describing the parameters for a mode.
+
+    Parameters
+    ----------
+    mode : Mode
+        Mode object.
+
+    Returns
+    -------
+    lst
+        List of string elements that describe mode parameters.
+    """
+
+    str_lst = []
+    str_lst.append('Parameters for the {} mode'.format(mode.name))
+    for pkey, desc in mode.params.descriptions.items():
+        str_lst.append('{:s}      {:s}'.format(pkey, desc))
+
+    return str_lst
+
+
 def gen_mode_str_lst(mode, description=False, label_component=True):
     """Generate a list of string components for representing a mode.
 
@@ -203,18 +225,23 @@ def gen_mode_str_lst(mode, description=False, label_component=True):
     else:
         str_lst = [mode.name]
     if description:
-        str_lst.append(mode.description + ' Params: {}.'.format(', '.join(mode.params.labels)))
+        str_lst.append(mode.description)
 
     return str_lst
 
 
-def gen_mode_str(mode, description=False, concise=False):
+def gen_mode_str(mode, info, description=False, concise=False):
     """Generate a string representation of a fit mode.
 
     Parameters
     ----------
     mode : Mode
         Mode definition.
+    info : {'all', 'mode', 'params'}
+        Which information to print:
+            'all': print all information on the mode
+            'mode': print information on the mode
+            'params': print information on the parameters of the mode
     description : bool, optional, default: False
         Whether to also print out a description the fit mode.
     concise : bool, optional, default: False
@@ -226,7 +253,12 @@ def gen_mode_str(mode, description=False, concise=False):
         Formatted string of fit modes.
     """
 
-    str_lst = gen_mode_str_lst(mode, description)
+    if info in ['all', 'mode']:
+        str_lst = gen_mode_str_lst(mode, description, label_component=True)
+    elif info == 'params':
+        str_lst = gen_mode_params_str_lst(mode)
+    if info == 'all':
+        str_lst.extend(gen_mode_params_str_lst(mode))
 
     return _format(['FIT MODE', ''] + str_lst, concise)
 
@@ -252,7 +284,8 @@ def gen_modes_str(modes, description=False, concise=False):
 
     str_lst = []
     for mode in [modes.aperiodic, modes.periodic]:
-        str_lst.extend(gen_mode_str_lst(mode, description, concise))
+        str_lst.extend(gen_mode_str_lst(mode, description, label_component=True))
+        str_lst.append('')
 
     return _format(['FIT MODES', ''] + str_lst, concise)
 

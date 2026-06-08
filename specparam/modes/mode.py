@@ -89,18 +89,23 @@ class Mode():
         return self.params.n_params
 
 
-    def print(self, description=False, concise=False):
+    def print(self, info='all', description=False, concise=False):
         """Print out current mode.
 
         Parameters
         ----------
+        info : {'all', 'mode', 'params'}
+            Which information to print:
+                'all': print all information on the mode
+                'mode': print information on the mode
+                'params': print information on the parameters of the mode
         description : bool, optional, default: False
             Whether to print out a description with current mode.
         concise : bool, optional, default: False
             Whether to print the report in a concise mode, or not.
         """
 
-        print(gen_mode_str(self, description, concise))
+        print(gen_mode_str(self, info, description, concise))
 
 
     def check_params(self):
