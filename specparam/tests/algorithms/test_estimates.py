@@ -1,10 +1,10 @@
-"""Test functions for specparam.measures.estimates."""
+"""Test functions for specparam.algorithms.estimates."""
 
 from specparam.sim.gen import gen_freqs, gen_noise
 from specparam.modes.funcs import gaussian_function
 from specparam.measures.params import compute_fwhm
 
-from specparam.measures.estimates import *
+from specparam.algorithms.estimates import *
 
 ###################################################################################################
 ###################################################################################################
