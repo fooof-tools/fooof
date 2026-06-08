@@ -2,7 +2,7 @@
 
 from collections import OrderedDict
 
-from specparam.modes.params import ParamDefinition
+from specparam.modes.paramdef import ParamDefinition
 
 from specparam.modes.mode import *
 

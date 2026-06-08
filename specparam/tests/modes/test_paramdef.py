@@ -1,8 +1,8 @@
-"""Tests for specparam.modes.params."""
+"""Tests for specparam.modes.paramdef."""
 
 from collections import OrderedDict
 
-from specparam.modes.params import *
+from specparam.modes.paramdef import *
 
 ###################################################################################################
 ###################################################################################################
