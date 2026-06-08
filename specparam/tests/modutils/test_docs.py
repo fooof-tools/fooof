@@ -80,7 +80,21 @@ def test_docs_add_section(tdocstring):
     assert '%' not in new_docstring
     assert 'new note' in new_docstring
 
-def test_copy_doc_func_to_method(tdocstring):
+def test_copy_func_docstring(tdocstring):
+
+    def tfunc(): pass
+    tfunc.__doc__ = tdocstring
+
+    @copy_doc_func_to_method(tfunc)
+    def tfunc_out():
+        pass
+
+    assert tfunc_out.__doc__
+
+    for el in ['first', 'second']:
+        assert el in tfunc_out.__doc__
+
+def test_copy_func_docstring_drop_first(tdocstring):
 
     def tfunc(): pass
     tfunc.__doc__ = tdocstring
@@ -94,7 +108,6 @@ def test_copy_doc_func_to_method(tdocstring):
     assert tobj.tmethod.__doc__
     assert 'first' not in tobj.tmethod.__doc__
     assert 'second' in tobj.tmethod.__doc__
-
 
 def test_copy_doc_class(tdocstring):
 
