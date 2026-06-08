@@ -8,7 +8,7 @@ from specparam.results.utils import run_parallel_event, pbar
 from specparam.data.data import Data3D
 from specparam.data.conversions import event_group_to_dataframe, dict_to_df
 from specparam.data.utils import flatten_results_dict
-from specparam.modutils.docs import (copy_doc_func_to_method, docs_get_section,
+from specparam.modutils.docs import (copy_func_docstring_drop_first, docs_get_section,
                                      replace_docstring_sections)
 from specparam.reports.save import save_event_report
 from specparam.reports.strings import gen_event_results_str
@@ -205,20 +205,20 @@ class SpectralTimeEventModel(SpectralTimeModel):
             super().print(info, concise=concise)
 
 
-    @copy_doc_func_to_method(plot_event_model)
+    @copy_func_docstring_drop_first(plot_event_model)
     def plot(self, save_fig=False, file_name=None, file_path=None, **plot_kwargs):
 
         plot_event_model(self, save_fig=save_fig, file_name=file_name,
                          file_path=file_path, **plot_kwargs)
 
 
-    @copy_doc_func_to_method(save_event_report)
+    @copy_func_docstring_drop_first(save_event_report)
     def save_report(self, file_name, file_path=None, add_settings=True):
 
         save_event_report(self, file_name, file_path, add_settings)
 
 
-    @copy_doc_func_to_method(save_event)
+    @copy_func_docstring_drop_first(save_event)
     def save(self, file_name, file_path=None, append=False,
              save_results=False, save_settings=False, save_data=False):
 

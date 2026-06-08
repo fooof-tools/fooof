@@ -17,8 +17,8 @@ from specparam.io.models import save_group
 from specparam.io.files import load_jsonlines
 from specparam.reports.save import save_group_report
 from specparam.reports.strings import gen_group_results_str
-from specparam.modutils.docs import (copy_doc_func_to_method,
-                                     docs_get_section, replace_docstring_sections)
+from specparam.modutils.docs import (copy_func_docstring_drop_first, docs_get_section,
+                                     replace_docstring_sections)
 from specparam.utils.checks import check_inds
 
 ###################################################################################################
@@ -186,13 +186,13 @@ class SpectralGroupModel(SpectralModel):
         self.print('results')
 
 
-    @copy_doc_func_to_method(plot_group_model)
+    @copy_func_docstring_drop_first(plot_group_model)
     def plot(self, **plot_kwargs):
 
         plot_group_model(self, **plot_kwargs)
 
 
-    @copy_doc_func_to_method(save_group)
+    @copy_func_docstring_drop_first(save_group)
     def save(self, file_name, file_path=None, append=False,
              save_results=False, save_settings=False, save_data=False):
 
@@ -326,7 +326,7 @@ class SpectralGroupModel(SpectralModel):
         return group
 
 
-    @copy_doc_func_to_method(save_group_report)
+    @copy_func_docstring_drop_first(save_group_report)
     def save_report(self, file_name, file_path=None, add_settings=True):
 
         save_group_report(self, file_name, file_path, add_settings)
