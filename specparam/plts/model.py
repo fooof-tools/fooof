@@ -10,7 +10,7 @@ import numpy as np
 from specparam.modutils.dependencies import safe_import, check_dependency
 from specparam.utils.select import nearest_ind
 from specparam.utils.spectral import trim_spectrum
-from specparam.convert.periodic import compute_fwhm
+from specparam.params.periodic import compute_fwhm
 from specparam.plts.spectra import plot_spectra
 from specparam.plts.settings import PLT_FIGSIZES, PLT_COLORS
 from specparam.plts.utils import check_ax, check_plot_kwargs, savefig

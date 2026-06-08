@@ -11,7 +11,7 @@ from specparam.modutils.errors import FitError
 from specparam.utils.select import groupby
 from specparam.data.periodic import sort_peaks
 from specparam.reports.strings import gen_width_warning_str
-from specparam.convert.periodic import compute_gauss_std
+from specparam.params.periodic import compute_gauss_std
 from specparam.algorithms.algorithm import AlgorithmCF
 from specparam.algorithms.estimates import estimate_fwhm
 from specparam.algorithms.settings import SettingsDefinition

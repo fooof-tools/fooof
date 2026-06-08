@@ -1,6 +1,6 @@
-"""Test functions for specparam.convert.aperiodic."""
+"""Test functions for specparam.params.aperiodic."""
 
-from specparam.convert.aperiodic import *
+from specparam.params.aperiodic import *
 
 ###################################################################################################
 ###################################################################################################

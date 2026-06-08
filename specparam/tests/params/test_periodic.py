@@ -1,6 +1,6 @@
-"""Test functions for specparam.convert.periodic."""
+"""Test functions for specparam.params.periodic."""
 
-from specparam.convert.periodic import *
+from specparam.params.periodic import *
 
 ###################################################################################################
 ###################################################################################################

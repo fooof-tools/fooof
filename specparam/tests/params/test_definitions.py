@@ -1,9 +1,9 @@
-"""Test functions for specparam.convert.definitions."""
+"""Test functions for specparam.params.definitions."""
 
 from specparam.modes.mode import VALID_COMPONENTS
-from specparam.convert.converter import BaseParamConverter
+from specparam.params.converter import BaseParamConverter
 
-from specparam.convert.definitions import *
+from specparam.params.definitions import *
 
 ###################################################################################################
 ###################################################################################################
