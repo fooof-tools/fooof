@@ -1,7 +1,4 @@
-"""Compute properties of data.
-
-MOVE TARGET: utils (?)
-"""
+"""Compute data properties."""
 
 from inspect import isfunction
 
