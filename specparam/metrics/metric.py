@@ -2,6 +2,8 @@
 
 import numpy as np
 
+from specparam.reports.strings import gen_metric_str
+
 ###################################################################################################
 ###################################################################################################
 
@@ -83,6 +85,20 @@ class Metric():
             data.get_data('full', space=self.space),
             results.model.get_component('full', space=self.space),
             **kwargs)
+
+
+    def print(self, description=False, concise=False):
+        """Print out current metric.
+
+        Parameters
+        ----------
+        description : bool, optional, default: False
+            Whether to print out a description with current metric.
+        concise : bool, optional, default: False
+            Whether to print a concise version of the report.
+        """
+
+        print(gen_metric_str(self, description, concise))
 
 
     def reset(self):

@@ -11,7 +11,7 @@ from specparam.utils.array import unlog
 from specparam.utils.spectral import trim_spectrum
 from specparam.utils.checks import check_input_options
 from specparam.reports.strings import gen_data_str
-from specparam.modutils.errors import DataError, InconsistentDataError
+from specparam.modutils.errors import DataError, NoDataError, InconsistentDataError
 from specparam.modutils.docs import docs_get_section, replace_docstring_sections
 from specparam.plts.settings import PLT_COLORS
 from specparam.plts.spectra import plot_spectra, plot_spectrogram
@@ -221,7 +221,7 @@ class Data():
         Parameters
         ----------
         concise : bool, optional, default: False
-            Whether to print the report in a concise mode, or not.
+            Whether to print a concise version of the report.
         """
 
         print(gen_data_str(self, concise))

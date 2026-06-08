@@ -59,3 +59,13 @@ def test_find_first_ind():
     assert find_first_ind(l1, 'lion') == 2
     assert find_first_ind(l1, 'again') == 3
     assert find_first_ind(l1, 'not') is None
+
+def test_list_insert():
+
+    lsta = [1, 3, 4]
+    outa = list_insert(lsta, 2, 1)
+    assert outa == [1, 2, 3, 4]
+
+    lstb = [1, 4]
+    outb = list_insert(lstb, [2, 3], 1)
+    assert outb == [1, 2, 3, 4]

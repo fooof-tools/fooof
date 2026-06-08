@@ -2,7 +2,7 @@
 
 from collections import OrderedDict
 
-from specparam.modes.params import ParamDefinition
+from specparam.modes.paramdef import ParamDefinition
 
 from specparam.modes.mode import *
 
@@ -24,7 +24,7 @@ def test_mode():
                  ndim=1, freq_space='linear', powers_space='linear')
     assert tmode
     assert tmode.n_params == params.n_params
-    tmode.check_params()
+    tmode.print()
 
 def test_mode_params_dict():
 
