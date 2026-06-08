@@ -1,6 +1,7 @@
 """Mode object."""
 
 from specparam.modes.params import ParamDefinition
+from specparam.reports.strings import gen_mode_str
 from specparam.utils.checks import check_input_options
 
 ###################################################################################################
@@ -107,9 +108,20 @@ class Mode():
         return self.func(freqs, *params)
 
 
-    def check_params(self):
-        """Check the description of the parameters for the current mode."""
+    def print(self, info='all', description=False, concise=False):
+        """Print out current mode.
 
-        print('Parameters for the {} mode:'.format(self.name))
-        for pkey, desc in self.params.descriptions.items():
-            print('    {:15s} {:s}'.format(pkey, desc))
+        Parameters
+        ----------
+        info : {'all', 'mode', 'params'}
+            Which information to print:
+                'all': print all information on the mode
+                'mode': print information on the mode
+                'params': print information on the parameters of the mode
+        description : bool, optional, default: False
+            Whether to print out a description with current mode.
+        concise : bool, optional, default: False
+            Whether to print a concise version of the report.
+        """
+
+        print(gen_mode_str(self, info, description, concise))

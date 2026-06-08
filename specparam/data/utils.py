@@ -67,7 +67,7 @@ def get_model_params(fit_results, modes, component, field=None, version=None):
         Name of the component to extract.
     field : str or int, optional
         Column name / index to extract from selected data, if requested.
-        See `SpectralModel.modes.check_params` for a description of parameter field names.
+        See `SpectralModel.modes.{mode}.params` for information on parameters & names.
 
     Returns
     -------
@@ -115,7 +115,7 @@ def get_group_params(group_results, modes, component, field=None, version=None):
         Name of the data field to extract across the group.
     field : str or int, optional
         Column name / index to extract from selected data, if requested.
-        See `SpectralModel.modes.check_params` for a description of parameter field names.
+        See `SpectralModel.modes.{mode}.params` for information on parameters & names.
     version : {'fit', 'converted'}, optional
         TODO
 
