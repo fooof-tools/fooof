@@ -1,6 +1,6 @@
-"""Test functions for specparam.utils.debug"""
+"""Test functions for specparam.modutils.debug"""
 
-from specparam.utils.debug import *
+from specparam.modutils.debug import *
 
 ###################################################################################################
 ###################################################################################################

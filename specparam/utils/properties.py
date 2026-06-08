@@ -1,4 +1,4 @@
-"""Compute properties of data."""
+"""Compute data properties."""
 
 from inspect import isfunction
 

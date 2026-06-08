@@ -12,8 +12,8 @@ from specparam.data.data import Data
 from specparam.data.conversions import model_to_dataframe
 from specparam.results.results import Results
 
-from specparam.convert.convert import convert_aperiodic_params, convert_periodic_params
-from specparam.convert.definitions import update_converters, DEFAULT_CONVERTERS
+from specparam.params.convert import convert_aperiodic_params, convert_periodic_params
+from specparam.params.definitions import update_converters, DEFAULT_CONVERTERS
 
 from specparam.algorithms.spectral_fit import SPECTRAL_FIT_SETTINGS_DEF
 from specparam.algorithms.definitions import ALGORITHMS, check_algorithm_definition
