@@ -85,7 +85,7 @@ def test_copy_func_docstring(tdocstring):
     def tfunc(): pass
     tfunc.__doc__ = tdocstring
 
-    @copy_doc_func_to_method(tfunc)
+    @copy_func_docstring(tfunc)
     def tfunc_out():
         pass
 
@@ -101,7 +101,7 @@ def test_copy_func_docstring_drop_first(tdocstring):
 
     class tobj():
 
-        @copy_doc_func_to_method(tfunc)
+        @copy_func_docstring_drop_first(tfunc)
         def tmethod():
             pass
 
