@@ -195,9 +195,9 @@ def gen_mode_params_str_lst(mode):
     """
 
     str_lst = []
-    str_lst.append('Parameters for the {} mode'.format(mode.name))
+    str_lst.append('The {} mode has {} parameters:'.format(mode.name, mode.n_params))
     for pkey, desc in mode.params.descriptions.items():
-        str_lst.append('{:s}      {:s}'.format(pkey, desc))
+        str_lst.append("'{:s}' - {:s}".format(pkey, desc))
 
     return str_lst
 
@@ -221,7 +221,7 @@ def gen_mode_str_lst(mode, description=False, label_component=True):
     """
 
     if label_component:
-        str_lst = [mode.component.capitalize() + ' Mode : ' + mode.name]
+        str_lst = [mode.component.capitalize() + " Mode : '" + mode.name + "'"]
     else:
         str_lst = [mode.name]
     if description:
@@ -280,7 +280,6 @@ def gen_modes_str(modes, description=False, concise=False):
     str
         Formatted string of fit modes.
     """
-
 
     str_lst = []
     for mode in [modes.aperiodic, modes.periodic]:

@@ -1,7 +1,7 @@
 """Functionality to check available modes."""
 
 from specparam.modes.mode import VALID_COMPONENTS
-from specparam.reports.strings import gen_mode_str_lst, _format
+from specparam.reports.strings import gen_mode_str_lst, gen_mode_params_str_lst, _format
 
 ###################################################################################################
 ###################################################################################################
@@ -28,6 +28,9 @@ def check_modes(component='all', check_params=False, concise=False):
 
         for mode in MODES[component].values():
             str_lst.extend(gen_mode_str_lst(mode, True, label_component=False))
+            if check_params:
+                str_lst.extend(gen_mode_params_str_lst(mode))
+                str_lst.append('')
 
     print(_format(str_lst[1:], concise))
 
