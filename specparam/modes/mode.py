@@ -106,11 +106,3 @@ class Mode():
         """
 
         print(gen_mode_str(self, info, description, concise))
-
-
-    def check_params(self):
-        """Check the description of the parameters for the current mode."""
-
-        print('Parameters for the {} mode:'.format(self.name))
-        for pkey, desc in self.params.descriptions.items():
-            print('    {:15s} {:s}'.format(pkey, desc))

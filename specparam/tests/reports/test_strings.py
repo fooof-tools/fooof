@@ -37,8 +37,8 @@ def test_gen_data_str(tdata, tdata2d, tdata2dt, tdata3d):
 
 def test_gen_modes_str(tfm):
 
-    assert gen_modes_str(tfm.modes)
-    assert gen_modes_str(tfm.modes, True)
+    for info in ['all', 'mode', 'params']:
+        assert gen_modes_str(tfm.modes, info)
 
 def test_gen_params_str(tfm):
 
@@ -80,9 +80,7 @@ def test_gen_metrics_str(tfm):
 
 ## METHODS REPORTING
 
-
-
-
+...
 
 ## MODEL OBJECTS
 

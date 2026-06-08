@@ -25,7 +25,6 @@ def test_mode():
     assert tmode
     assert tmode.n_params == params.n_params
     tmode.print()
-    tmode.check_params()
 
 def test_mode_params_dict():
 

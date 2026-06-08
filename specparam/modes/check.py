@@ -33,13 +33,3 @@ def check_modes(component='all', check_params=False, concise=False):
                 str_lst.append('')
 
     print(_format(str_lst[1:], concise))
-
-    # for comp in component:
-    #     print('Available {:s} modes:'.format(comp))
-    #     for mode in MODES[comp].values():
-    #         if not check_params:
-    #             print('    {:15s}    {:s}'.format(mode.name, mode.description))
-    #         else:
-    #             print('\n{:s}'.format(mode.name))
-    #             print('    {:s}'.format(mode.description))
-    #             mode.check_params()

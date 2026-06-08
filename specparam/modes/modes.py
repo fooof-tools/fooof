@@ -74,15 +74,6 @@ class Modes():
         return params
 
 
-    def check_params(self):
-        """Check the description of the parameters for each mode."""
-
-        if self.aperiodic:
-            self.aperiodic.check_params()
-        if self.periodic:
-            self.periodic.check_params()
-
-
     def print(self, description=False, concise=False):
         """Print out the current fit modes.
 
