@@ -1,4 +1,4 @@
-"""Conversion functions for specific parameters."""
+"""Functions and converters for periodic parameters."""
 
 import numpy as np
 
@@ -13,6 +13,41 @@ PEAK_HEIGHT_OPERATIONS = {
     'subtract' : np.subtract,
     'divide' : np.divide,
 }
+
+
+def compute_fwhm(std):
+    """Compute the full-width half-max, given the gaussian standard deviation.
+
+    Parameters
+    ----------
+    std : float
+        Gaussian standard deviation.
+
+    Returns
+    -------
+    float
+        Calculated full-width half-max.
+    """
+
+    return 2 * np.sqrt(2 * np.log(2)) * std
+
+
+def compute_gauss_std(fwhm):
+    """Compute the gaussian standard deviation, given the full-width half-max.
+
+    Parameters
+    ----------
+    fwhm : float
+        Full-width half-max.
+
+    Returns
+    -------
+    float
+        Calculated standard deviation of a gaussian.
+    """
+
+    return fwhm / (2 * np.sqrt(2 * np.log(2)))
+
 
 def compute_peak_height(model, peak_ind, spacing, operation):
     """Compute peak heights, based on specified approach & spacing.

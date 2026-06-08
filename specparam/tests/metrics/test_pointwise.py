@@ -1,6 +1,6 @@
-"""Test functions for specparam.measures.pointwise."""
+"""Test functions for specparam.metrics.pointwise."""
 
-from specparam.measures.pointwise import *
+from specparam.metrics.pointwise import *
 
 ###################################################################################################
 ###################################################################################################

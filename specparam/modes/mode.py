@@ -1,6 +1,6 @@
 """Mode object."""
 
-from specparam.modes.params import ParamDefinition
+from specparam.modes.paramdef import ParamDefinition
 from specparam.reports.strings import gen_mode_str
 from specparam.utils.checks import check_input_options
 
