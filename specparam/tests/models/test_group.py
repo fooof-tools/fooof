@@ -11,7 +11,6 @@ import os
 import numpy as np
 from numpy.testing import assert_equal
 
-from specparam.metrics.definitions import METRICS
 from specparam.models.utils import compare_model_objs
 from specparam.modutils.dependencies import safe_import
 from specparam.sim import sim_group_power_spectra
@@ -124,16 +123,16 @@ def test_fit_knee():
 
 def test_fit_custom_metrics():
 
-    metrics = list(METRICS.keys())
+    cmetrics = ['error_mse', 'gof_adjrsquared']
 
     n_spectra = 2
     xs, ys = sim_group_power_spectra(n_spectra, *default_group_params(), nlvs=0)
 
-    tfg = SpectralGroupModel(metrics=metrics, verbose=False)
+    tfg = SpectralGroupModel(metrics=cmetrics, verbose=False)
     tfg.fit(xs, ys)
 
     for fres in tfg.results.group_results:
-        for metric in metrics:
+        for metric in cmetrics:
             assert isinstance(fres.metrics[metric], float)
 
 def test_fit_progress(tfg):
@@ -255,10 +254,9 @@ def test_fit_par():
     assert len(gofs) == n_spectra
 
 def test_print(tfg):
-    """Check print method (alias)."""
 
-    tfg.print_results()
-    assert True
+    for val in ['results', 'algorithm', 'settings', 'data', 'modes', 'metrics', 'bands', 'issue']:
+        tfg.print(val)
 
 def test_save_model_report(tfg, skip_if_no_mpl):
 

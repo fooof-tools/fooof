@@ -1,8 +1,8 @@
-"""Tests for specparam.modes.params."""
+"""Tests for specparam.modes.paramdef."""
 
 from collections import OrderedDict
 
-from specparam.modes.params import *
+from specparam.modes.paramdef import *
 
 ###################################################################################################
 ###################################################################################################
@@ -21,3 +21,4 @@ def test_param_definition():
     assert params_obj.labels == list(params_dict.keys())
     assert params_obj.indices == {'a' : 0, 'b' : 1}
     assert params_obj.descriptions == params_dict
+    params_obj.print()

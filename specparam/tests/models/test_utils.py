@@ -53,7 +53,7 @@ def test_compare_model_objs(tfm, tfg):
         assert not compare_model_objs([f_obj, f_obj2], 'bands')
 
         assert compare_model_objs([f_obj, f_obj2], 'metrics')
-        f_obj2.results.metrics.add_metric(METRICS['error_rmse'])
+        f_obj2.results.metrics.add_metric(METRICS['error']['rmse'])
         assert not compare_model_objs([f_obj, f_obj2], 'metrics')
 
 def test_average_group(tfg, tbands):

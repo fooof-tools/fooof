@@ -1,10 +1,9 @@
 """Define fitting modes."""
 
-from functools import partial
 from collections import OrderedDict
 
 from specparam.modes.mode import Mode
-from specparam.modes.params import ParamDefinition
+from specparam.modes.paramdef import ParamDefinition
 from specparam.modes.funcs import (powerlaw_function, lorentzian_function, double_expo_function,
                                    gaussian_function, skewed_gaussian_function,
                                    cauchy_function, gamma_function, triangle_function)
@@ -69,7 +68,7 @@ params_doublexp = ParamDefinition(OrderedDict({
 ap_doublexp = Mode(
     name='doublexp',
     component='aperiodic',
-    description='Multi-fractal powerlaw function with 2 exponents and a knee.',
+    description='Multi-fractal powerlaw function (2 exponents & a knee).',
     formula=r'A(F) = 10^b * \frac{1}{F^{\chi_{0}} * (k + F^{\chi_{1}})}',
     func=double_expo_function,
     jacobian=None,
@@ -245,25 +244,21 @@ MODES = {
 ###################################################################################################
 ## CHECKER FUNCTION
 
-def check_modes(component, check_params=False):
-    """Check the set of modes that are available.
+def check_mode_definition(mode, component):
+    """Check a mode definition.
 
     Parameters
     ----------
+    mode : Mode or str
+        Definition for a mode to check.
+        If str, should be the label corresponding to a defined mode (see `check_modes`).
     component : {'aperiodic', 'periodic'}
-        Which component to check available modes for.
-    check_params : bool, optional, default: False
-        Whether to print out information on the parameters of each mode.
+        Which component the mode corresponds to.
+
+    Returns
+    -------
+    Mode
+        Mode definition.
     """
 
-    print('Available {:s} modes:'.format(component))
-    for mode in MODES[component].values():
-        if not check_params:
-            print('    {:10s}    {:s}'.format(mode.name, mode.description))
-        else:
-            print('\n{:s}'.format(mode.name))
-            print('    {:s}'.format(mode.description))
-            mode.check_params()
-
-
-check_mode_definition = partial(check_selection, definition=Mode)
+    return check_selection(mode, MODES[component], definition=Mode)

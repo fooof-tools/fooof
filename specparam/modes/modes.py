@@ -2,7 +2,7 @@
 
 from specparam.data import ModelModes
 from specparam.modes.mode import VALID_COMPONENTS
-from specparam.modes.definitions import check_mode_definition, AP_MODES, PE_MODES
+from specparam.modes.definitions import check_mode_definition
 from specparam.reports.strings import gen_modes_str
 
 ###################################################################################################
@@ -28,19 +28,10 @@ class Modes():
         self.components = VALID_COMPONENTS
 
         # Add mode definitions for each component
-        self.aperiodic = check_mode_definition(aperiodic, AP_MODES)
-        self.periodic = check_mode_definition(periodic, PE_MODES)
+        self.aperiodic = check_mode_definition(aperiodic, 'aperiodic')
+        self.periodic = check_mode_definition(periodic, 'periodic')
 
         self.model = model
-
-
-    def check_params(self):
-        """Check the description of the parameters for each mode."""
-
-        if self.aperiodic:
-            self.aperiodic.check_params()
-        if self.periodic:
-            self.periodic.check_params()
 
 
     def get_modes(self):
@@ -91,7 +82,7 @@ class Modes():
         description : bool, optional, default: False
             Whether to print out a description with current fit modes.
         concise : bool, optional, default: False
-            Whether to print the report in a concise mode, or not.
+            Whether to print a concise version of the report.
         """
 
         print(gen_modes_str(self, description, concise))

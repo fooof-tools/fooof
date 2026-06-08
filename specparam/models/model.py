@@ -12,8 +12,8 @@ from specparam.data.data import Data
 from specparam.data.conversions import model_to_dataframe
 from specparam.results.results import Results
 
-from specparam.convert.convert import convert_aperiodic_params, convert_periodic_params
-from specparam.convert.definitions import update_converters, DEFAULT_CONVERTERS
+from specparam.params.convert import convert_aperiodic_params, convert_periodic_params
+from specparam.params.definitions import update_converters, DEFAULT_CONVERTERS
 
 from specparam.algorithms.spectral_fit import SPECTRAL_FIT_SETTINGS_DEF
 from specparam.algorithms.definitions import ALGORITHMS, check_algorithm_definition
@@ -205,19 +205,33 @@ class SpectralModel(BaseModel):
                       plot_full_range else plot_kwargs.pop('plot_power_spectrum', None),
                   freq_range=plot_kwargs.pop('plot_freq_range', None),
                   **plot_kwargs)
-        self.print_results(concise=False)
+        self.print('results')
 
 
-    def print_results(self, concise=False):
-        """Print out model fitting results.
+    def print(self, info='results', concise=False):
+        """Print out information.
 
         Parameters
         ----------
+        info : {'results', 'algorithm', 'settings', 'data', 'modes', 'metrics', 'bands', 'issue'}
+            Which information to print:
+                'results' : print information on the fit results
+                'algorithm' or 'settings: print information on the fit algorithm & settings
+                'data' : print information on the data
+                'modes' : print information on the fit modes
+                'metrics' : print information on the defined fit metrics
+                'bands' : print information on any defined frequency bands
+                'issue' : print instructions on how to report bugs and/or problematic fits
         concise : bool, optional, default: False
-            Whether to print the report in a concise mode, or not.
+            Whether to print a concise version of the report.
         """
 
-        print(gen_model_results_str(self, concise))
+        if info == 'results':
+            print(gen_model_results_str(self, concise))
+        elif info in ['metrics', 'bands']:
+            getattr(self.results, info).print(concise=concise)
+        else:
+            super().print(info, concise=concise)
 
 
     @copy_doc_func_to_method(plot_model)

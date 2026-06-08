@@ -11,7 +11,7 @@ from itertools import repeat, cycle
 import numpy as np
 
 from specparam.modutils.dependencies import safe_import, check_dependency
-from specparam.measures.properties import compute_average, compute_dispersion
+from specparam.utils.properties import compute_average, compute_dispersion
 from specparam.plts.utils import check_ax, set_alpha
 from specparam.plts.settings import (ITERABLES, PLT_FIGSIZES, DEFAULT_COLORS, PLT_TEXT_FONT,
                                      TITLE_FONTSIZE, LABEL_SIZE, TICK_LABELSIZE)
@@ -384,4 +384,4 @@ def plot_formula(formula, ax=None):
 
     ax = check_ax(ax, figsize=(4, 0.5))
     ax.axis('off')
-    ax.text(.5, .5, "${}$".format(formula), fontsize=24, ha='center', va='center');
+    ax.text(.5, .5, "${}$".format(formula), fontsize=24, ha='center', va='center')

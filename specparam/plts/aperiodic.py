@@ -7,7 +7,6 @@ import numpy as np
 from specparam.sim.gen import gen_freqs
 from specparam.modutils.dependencies import safe_import, check_dependency
 from specparam.modes.modes import check_mode_definition
-from specparam.modes.definitions import AP_MODES
 from specparam.plts.settings import ITERABLES, PLT_FIGSIZES
 from specparam.plts.templates import plot_yshade
 from specparam.plts.style import style_param_plot, style_plot
@@ -99,7 +98,7 @@ def plot_aperiodic_fits(aps, freq_range, aperiodic_mode, control_offset=False, a
         Additional plot related keyword arguments, with styling options managed by ``style_plot``.
     """
 
-    aperiodic_mode = check_mode_definition(aperiodic_mode, AP_MODES)
+    aperiodic_mode = check_mode_definition(aperiodic_mode, 'aperiodic')
 
     ax = check_ax(ax, plot_kwargs.pop('figsize', PLT_FIGSIZES['params']))
 

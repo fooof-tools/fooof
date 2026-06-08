@@ -4,7 +4,6 @@ import numpy as np
 
 from specparam.utils.checks import check_flat
 from specparam.modes.modes import check_mode_definition
-from specparam.modes.definitions import AP_MODES, PE_MODES
 
 from specparam.sim.transform import rotate_spectrum
 
@@ -59,7 +58,7 @@ def gen_aperiodic(freqs, aperiodic_mode, aperiodic_params):
         Aperiodic values, in log10 spacing.
     """
 
-    ap_mode = check_mode_definition(aperiodic_mode, AP_MODES)
+    ap_mode = check_mode_definition(aperiodic_mode, 'aperiodic')
 
     ap_vals = ap_mode.func(freqs, *aperiodic_params)
 
@@ -84,7 +83,7 @@ def gen_periodic(freqs, periodic_mode, periodic_params):
         Peak values, in log10 spacing.
     """
 
-    pe_mode = check_mode_definition(periodic_mode, PE_MODES)
+    pe_mode = check_mode_definition(periodic_mode, 'periodic')
 
     pe_vals = pe_mode.func(freqs, *check_flat(periodic_params))
 
