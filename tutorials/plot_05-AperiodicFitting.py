@@ -11,7 +11,7 @@ Choosing and using different modes for fitting the aperiodic component.
 from specparam import SpectralModel
 
 # Import function to check available list of modes
-from specparam.modes.definitions import check_modes
+from specparam.modes import check_modes
 
 # Import a utility to download and load example data
 from specparam.demo import load_example_data

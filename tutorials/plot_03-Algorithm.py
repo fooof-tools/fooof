@@ -194,7 +194,7 @@ plot_spectra(fm.data.freqs, fm.results.model.get_component('peak'), plt_log,
 ###################################################################################################
 
 # Plot the peak removed power spectrum, created by removing peak fit from original spectrum
-plot_spectra(fm.data.freqs, fm.get_data('aperiodic'), plt_log,
+plot_spectra(fm.data.freqs, fm.data.get_data('aperiodic'), plt_log,
              label='Peak Removed Spectrum', color='black')
 
 ###################################################################################################
@@ -212,7 +212,7 @@ plot_spectra(fm.data.freqs, fm.get_data('aperiodic'), plt_log,
 
 # Plot the final aperiodic fit, calculated on the peak removed power spectrum
 _, ax = plt.subplots(figsize=(12, 10))
-plot_spectra(fm.data.freqs, fm.get_data('aperiodic'), plt_log,
+plot_spectra(fm.data.freqs, fm.data.get_data('aperiodic'), plt_log,
              label='Peak Removed Spectrum', color='black', ax=ax)
 plot_spectra(fm.data.freqs, fm.results.model.get_component('aperiodic'), plt_log,
              label='Final Aperiodic Fit', color='blue', alpha=0.5, linestyle='dashed', ax=ax)
@@ -248,7 +248,7 @@ plot_spectra(fm.data.freqs, fm.results.model.modeled_spectrum, plt_log,
 ###################################################################################################
 
 # Print out the model results
-fm.print_results()
+fm.print()
 
 ###################################################################################################
 #
@@ -288,12 +288,12 @@ fm.plot(plt_log)
 #
 # Stored data attributes:
 #
-# - Flattened Spectrum: (``SpectralModel.get_data('peak')``)
+# - Flattened Spectrum: (``SpectralModel.data.get_data('peak')``)
 #
 #   - The original data, with the aperiodic component removed
 #   - This is computed as the power_spectrum minus the model aperiodic fit
 #
-# - Peak Removed Spectrum: (``SpectralModel.get_data('aperiodic')``)
+# - Peak Removed Spectrum: (``SpectralModel.data.get_data('aperiodic')``)
 #
 #   - The original data, with the periodic component (peaks) removed
 #   - This is computed as the power_spectrum minus the model peak fit

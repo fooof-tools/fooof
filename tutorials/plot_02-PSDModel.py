@@ -78,7 +78,7 @@ fm.report(freqs, spectrum, freq_range)
 # The above method 'report', is a convenience method that calls a series of methods:
 #
 # - :meth:`~specparam.SpectralModel.fit`: fits the power spectrum model
-# - :meth:`~specparam.SpectralModel.print_results`: prints out the results
+# - :meth:`~specparam.SpectralModel.print`: prints out the results
 # - :meth:`~specparam.SpectralModel.plot`: plots the data and model fit
 #
 # Each of these methods can also be called individually.
@@ -90,7 +90,7 @@ fm.report(freqs, spectrum, freq_range)
 fm.fit(freqs, spectrum, freq_range)
 
 # After fitting, plotting and parameter fitting can be called independently:
-# fm.print_results()
+# fm.print()
 # fm.plot()
 
 ###################################################################################################

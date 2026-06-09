@@ -112,9 +112,8 @@ fm = SpectralModel()
 
 ###################################################################################################
 
-# You can check all the user defined settings with check_settings
-#  The description parameter here is set to print out quick descriptions of the settings
-fm.print_settings(description=True)
+# You can check all the user defined settings by printing from the model object
+fm.print('settings')
 
 ###################################################################################################
 # Changing Settings
@@ -296,9 +295,9 @@ nfm.plot()
 # There is also functionality to save out a 'report' of a particular model fit.
 #
 # This generates and saves a PDF which contains the same output as
-# :meth:`~specparam.SpectralModel.print_results`,
-# :meth:`~specparam.SpectralModel.plot`, and
-# :meth:`~specparam.SpectralModel.print_settings`.
+# :meth:`~specparam.SpectralModel.print('results')`,
+# :meth:`~specparam.SpectralModel.plot()`, and
+# :meth:`~specparam.SpectralModel.print('settings')`.
 #
 
 ###################################################################################################
