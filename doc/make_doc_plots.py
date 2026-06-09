@@ -9,7 +9,7 @@ from specparam import SpectralModel, SpectralGroupModel
 from specparam.sim.gen import gen_power_spectrum
 from specparam.plts.utils import check_ax
 from specparam.plts.spectra import plot_spectrum
-from specparam.utils.download import load_example_data
+from specparam.demo.download import load_example_data
 
 ###################################################################################################
 ###################################################################################################

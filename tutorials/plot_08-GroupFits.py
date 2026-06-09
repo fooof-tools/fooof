@@ -11,7 +11,7 @@ Using the group model object to run fit models across multiple power spectra.
 from specparam import SpectralGroupModel
 
 # Import a utility to download and load example data
-from specparam.utils.download import load_example_data
+from specparam.demo import load_example_data
 
 ###################################################################################################
 # Fitting Multiple Spectra
@@ -87,7 +87,7 @@ fg.fit(freqs, spectra, [3, 30])
 ###################################################################################################
 
 # Print out results
-fg.print_results()
+fg.print()
 
 ###################################################################################################
 
@@ -220,7 +220,7 @@ nfg.load('group_results')
 ###################################################################################################
 
 # Print results to check that the loaded group
-nfg.print_results()
+nfg.print()
 
 ###################################################################################################
 # Parallel Support
@@ -288,7 +288,7 @@ fm = fg.get_model(ind=2, regenerate=True)
 ###################################################################################################
 
 # Print results and plot extracted model fit
-fm.print_results()
+fm.print()
 fm.plot()
 
 ###################################################################################################

@@ -286,7 +286,7 @@ fm = fg.get_model(worst_fit_ind, regenerate=True)
 ###################################################################################################
 
 # Check results and visualize the extracted model
-fm.print_results()
+fm.print()
 fm.plot()
 
 ###################################################################################################
@@ -350,13 +350,11 @@ print('Average number of fit peaks: ', np.mean(fg.results.n_peaks))
 ###################################################################################################
 
 # Print out instructions to report bad fits
-SpectralModel.print_report_issue()
+fm.print('issue')
 
 ###################################################################################################
 #
-# Note that you can also call this method from SpectralGroupModel
-# (ex: `SpectralGroupModel.print_report_issue()`) as well as from instances of these objects
-# (ex: `fm.print_report_issue()`, `fg.print_report_issue()`)
+# Note that you can also call this method from SpectralGroupModel (ex: `fg.print('issue')`)
 #
 
 ###################################################################################################

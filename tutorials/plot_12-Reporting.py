@@ -82,7 +82,7 @@ methods_report_info(model)
 # some of which might look familiar.
 #
 # The settings information, for example, is the same as printed using the
-# # - :meth:`~specparam.SpectralModel.print_settings` method.
+# # - :meth:`~specparam.SpectralModel.print('settings')` method.
 #
 # Next, let's check out the text version of the methods report.
 #

@@ -11,10 +11,10 @@ An overview of metrics & model evaluation to examine model fit quality.
 from specparam import SpectralModel
 
 # Import function to check available list of metrics
-from specparam.metrics.definitions import check_metrics
+from specparam.metrics import check_metrics
 
 # Import a utility to download and load example data
-from specparam.utils.download import load_example_data
+from specparam.demo import load_example_data
 
 ###################################################################################################
 # Model Metrics
@@ -29,7 +29,7 @@ from specparam.utils.download import load_example_data
 # and thus to assess the quality of the model fits.
 #
 # The module comes with various available metrics. To see the list of available metrics,
-# we can use the :func:`~specparam.metrics.definitions.check_metrics` function.
+# we can use the :func:`~specparam.metrics.check_metrics` function.
 #
 
 ###################################################################################################

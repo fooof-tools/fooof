@@ -246,5 +246,5 @@ fgs = [load_group(file_name, file_path='results') \
 all_fg = combine_model_objs(fgs)
 
 # Explore the results from across all model fits
-all_fg.print_results()
+all_fg.print()
 all_fg.plot()

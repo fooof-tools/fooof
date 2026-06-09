@@ -23,7 +23,7 @@ from sphinx_gallery.sorting import FileNameSortKey, ExplicitOrder
 
 # Set project information
 project = 'specparam'
-copyright = '2018-{}, VoytekLab'.format(date.today().year)
+copyright = '2018-{}'.format(date.today().year)
 author = 'Thomas Donoghue'
 
 # Get and set the current version number

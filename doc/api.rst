@@ -174,6 +174,17 @@ Metric Object
    Metric
    check_metrics
 
+Metric Functions (GoF)
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. currentmodule:: specparam.metrics.gof
+
+.. autosummary::
+   :toctree: generated/
+
+   compute_r_squared
+   compute_adj_r_squared
+
 Metric Functions (Error)
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -187,16 +198,31 @@ Metric Functions (Error)
    compute_root_mean_squared_error
    compute_median_abs_error
 
-Metric Functions (GoF)
-~~~~~~~~~~~~~~~~~~~~~~
+Metric Functions (Pointwise error)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. currentmodule:: specparam.metrics.gof
+**Object Inputs**
+
+The following functions take in model objects directly.
+
+.. currentmodule:: specparam.metrics.pointwise
 
 .. autosummary::
-   :toctree: generated/
+    :toctree: generated/
 
-   compute_r_squared
-   compute_adj_r_squared
+    compute_pointwise_error
+    compute_pointwise_error_group
+
+**Array Inputs**
+
+The following functions operate on arrays of models and data, which may be useful for more custom work-flows.
+
+.. currentmodule:: specparam.metrics.pointwise
+
+.. autosummary::
+    :toctree: generated/
+
+    compute_pointwise_error_arr
 
 Data Objects
 ------------
@@ -276,51 +302,42 @@ An object for defining frequency band definitions.
 
    Bands
 
-Measures
---------
-
-Functionality to analyze power spectrum models and the results parameters / components.
-
-Model Errors
-~~~~~~~~~~~~
-
-Functions for analyzing the error of model fits.
-
-**Object Inputs**
-
-The following functions take in model objects directly.
-
-.. currentmodule:: specparam.measures.pointwise
-
-.. autosummary::
-    :toctree: generated/
-
-    compute_pointwise_error
-    compute_pointwise_error_group
-
-**Array Inputs**
-
-The following functions operate on arrays of models and data, which may be useful for more custom work-flows.
-
-.. currentmodule:: specparam.measures.pointwise
-
-.. autosummary::
-    :toctree: generated/
-
-    compute_pointwise_error_arr
-
 Parameters
+----------
+
+Functionality for working with and converting parameters.
+
+Converters
 ~~~~~~~~~~
 
-Measures & utilities for working with and converting parameters.
+.. currentmodule:: specparam.params.converter
 
-.. currentmodule:: specparam.measures.params
+.. autosummary::
+    :toctree: generated/
+
+    AperiodicParamConverter
+    PeriodicParamConverter
+
+Aperiodic Parameters
+~~~~~~~~~~~~~~~~~~~~
+
+.. currentmodule:: specparam.params.aperiodic
 
 .. autosummary::
     :toctree: generated/
 
     compute_knee_frequency
     compute_time_constant
+
+Periodic Parameters
+~~~~~~~~~~~~~~~~~~~
+
+.. currentmodule:: specparam.params.periodic
+
+.. autosummary::
+    :toctree: generated/
+
+    compute_peak_height
 
 Simulation Code
 ---------------
