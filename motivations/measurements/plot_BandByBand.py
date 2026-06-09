@@ -203,7 +203,7 @@ fm_bands_g2.fit(freqs, g2_spectrum_bands)
 
 # Plot the power spectra differences
 plot_spectra_shading(freqs,
-                     [fm_bands_g1.get_data('peak'), fm_bands_g2.get_data('peak')],
+                     [fm_bands_g1.data.get_data('peak'), fm_bands_g2.data.get_data('peak')],
                      log_powers=False, linewidth=3,
                      shades=bands.definitions, shade_colors=shade_cols,
                      labels=labels)
@@ -294,7 +294,7 @@ fm_pa_g2.fit(freqs, g2_spectrum_pa)
 
 # Plot the power spectra differences
 plot_spectra_shading(freqs,
-                     [fm_pa_g1.get_data('peak'), fm_pa_g2.get_data('peak')],
+                     [fm_pa_g1.data.get_data('peak'), fm_pa_g2.data.get_data('peak')],
                      log_powers=False, linewidth=3,
                      shades=bands.definitions, shade_colors=shade_cols,
                      labels=labels)
