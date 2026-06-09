@@ -80,7 +80,12 @@ def style_param_plot(ax):
     # If labels were provided, add a legend and standardize the dot size
     if ax.get_legend_handles_labels()[0]:
         legend = ax.legend(prop={'size': 16})
-        for handle in legend.legendHandles:
+        # Try / except to cover a change in name in matplotlib
+        try:
+            handles = getattr(legend, 'legend_handles')
+        except:
+            handles = getattr(legend, 'legendHandles')
+        for handle in handles:
             handle._sizes = [100]
 
 
