@@ -2,6 +2,9 @@
 
 from collections import OrderedDict
 
+import numpy as np
+
+from specparam.modes.definitions import ap_powerlaw
 from specparam.modes.paramdef import ParamDefinition
 
 from specparam.modes.mode import *
@@ -41,3 +44,11 @@ def test_mode_params_dict():
                  ndim=2, freq_space='linear', powers_space='linear')
     assert tmode
     assert isinstance(tmode.params, ParamDefinition)
+
+def test_mode_generate():
+
+    freqs = np.linspace(1, 40, 40)
+    params = [1, 1]
+
+    output = ap_powerlaw.generate(freqs, *params)
+    assert isinstance(output, np.ndarray)

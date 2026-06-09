@@ -1,6 +1,6 @@
-"""Test functions for specparam.sim.utils."""
+"""Test functions for specparam.utils.random"""
 
-from specparam.sim.utils import *
+from specparam.utils.random import *
 
 ###################################################################################################
 ###################################################################################################

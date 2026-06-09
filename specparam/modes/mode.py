@@ -89,6 +89,25 @@ class Mode():
         return self.params.n_params
 
 
+    def generate(self, freqs, *params):
+        """Generate component values from component function.
+
+        Parameters
+        ----------
+        freqs : 1d array
+            Frequency values to generate component for.
+        *params
+            Parameters for the fit mode to generate with.
+
+        Returns
+        -------
+        1d array
+            Generated component values.
+        """
+
+        return self.func(freqs, *params)
+
+
     def print(self, info='all', description=False, concise=False):
         """Print out current mode.
 
