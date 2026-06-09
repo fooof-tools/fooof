@@ -99,7 +99,7 @@ import numpy as np
 class DummyAlgorithm(Algorithm):
     """Dummy object to mimic a fit algorithm."""
 
-    def __init__(self, modes=None, data=None, results=None, debug=False):
+    def __init__(self, modes=None, data=None, results=None, model=None, debug=False):
         """Initialize DummyAlgorithm instance."""
 
         # Initialize base algorithm object with algorithm metadata
@@ -107,7 +107,7 @@ class DummyAlgorithm(Algorithm):
             name='dummy_fit_algo',
             description='Dummy fit algorithm.',
             public_settings=DUMMY_ALGO_SETTINGS,
-            modes=modes, data=data, results=results, debug=debug)
+            modes=modes, data=data, results=results, model=None, debug=debug)
 
     def _fit(self):
         """Define the full fitting algorithm."""
@@ -133,7 +133,7 @@ class DummyAlgorithm(Algorithm):
 #       components (`model.results.model._ap_fit` & `model.results.model._peak_fit`)
 #
 # If the above  you do the above, the model object can be used as normal, and you can do
-# (fit / print_results / plot / report / as well as save and load results).
+# (fit / print / plot / report / as well as save and load results).
 #
 # There are also some additional procedures / outputs that a custom fit process may do:
 #
@@ -206,7 +206,7 @@ from scipy.optimize import curve_fit
 class CustomAlgorithm(Algorithm):
     """Custom fitting algorithm."""
 
-    def __init__(self, guess_cf, modes=None, data=None, results=None, debug=False):
+    def __init__(self, guess_cf, modes=None, data=None, results=None, model=None, debug=False):
         """Initialize DummyAlgorithm instance."""
 
         # Initialize base algorithm object with algorithm metadata
@@ -214,7 +214,7 @@ class CustomAlgorithm(Algorithm):
             name='custom_fit_algo',
             description='Example custom algorithm.',
             public_settings=CUSTOM_ALGO_SETTINGS,
-            modes=modes, data=data, results=results, debug=debug)
+            modes=modes, data=data, results=results, model=None, debug=debug)
 
         ## Public settings
         self.settings.guess_cf = guess_cf

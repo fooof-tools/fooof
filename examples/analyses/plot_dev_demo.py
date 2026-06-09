@@ -302,7 +302,7 @@ fg.fit(freqs, spectra, PSD_range)
 ###################################################################################################
 
 # Print out the group results and plots of fit parameters
-fg.print_results()
+fg.print()
 fg.plot()
 
 ###################################################################################################
@@ -559,7 +559,7 @@ fm = fg.get_model(worst_fit_ind, regenerate=True)
 ###################################################################################################
 
 # Check results and visualize the extracted model
-fm.print_results()
+fm.print()
 fm.plot()
 
 ###################################################################################################
