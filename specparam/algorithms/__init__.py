@@ -1,4 +1,6 @@
 """Algorithms sub-module."""
 
 from .algorithm import Algorithm
-from .check import check_algorithms
+
+# Link in report function to list available algorithms
+from specparam.reports.options import check_algorithms
