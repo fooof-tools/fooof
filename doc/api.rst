@@ -391,19 +391,6 @@ Functions for transforming power spectra.
     compute_rotation_offset
     compute_rotation_frequency
 
-Simulation Utilities
-~~~~~~~~~~~~~~~~~~~~
-
-Utilities for simulating power spectra.
-
-.. currentmodule:: specparam.sim.utils
-
-.. autosummary::
-    :toctree: generated/
-
-    create_freqs
-    set_random_seed
-
 Plotting Functions
 ------------------
 
@@ -601,3 +588,15 @@ Utilities that can be applied to arrays.
     normalize
     unlog
     compute_arr_desc
+
+Random
+~~~~~~
+
+Utilities for managing random processes.
+
+.. currentmodule:: specparam.utils.random
+
+.. autosummary::
+    :toctree: generated/
+
+    set_random_seed
