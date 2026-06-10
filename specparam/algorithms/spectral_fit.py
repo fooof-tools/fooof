@@ -103,6 +103,9 @@ class SpectralFitAlgorithm(AlgorithmCF):
     """
     # pylint: disable=attribute-defined-outside-init
 
+    name = 'spectral_fit'
+    description = 'Original parameterizing neural power spectra algorithm.'
+
     def __init__(self, peak_width_limits=(0.5, 12.0), max_n_peaks=np.inf, min_peak_height=0.0,
                  peak_threshold=2.0, ap_percentile_thresh=0.025, ap_guess=None, ap_bounds=None,
                  cf_bound=1.5, bw_std_edge=1.0, gauss_overlap_thresh=0.75, maxfev=5000,
@@ -111,8 +114,6 @@ class SpectralFitAlgorithm(AlgorithmCF):
 
         # Initialize base algorithm object with algorithm metadata
         super().__init__(
-            name='spectral_fit',
-            description='Original parameterizing neural power spectra algorithm.',
             public_settings=SPECTRAL_FIT_SETTINGS_DEF,
             private_settings=SPECTRAL_FIT_PRIVATE_SETTINGS_DEF,
             modes=modes, data=data, results=results, model=model, debug=debug)

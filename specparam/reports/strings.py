@@ -347,11 +347,11 @@ def gen_settings_str(algorithm, description=False, concise=False):
     # Create output string - header
     str_lst = [
         'ALGORITHM',
-        algorithm.name,
+        algorithm.name if algorithm.name else 'undefined',
     ]
 
     if description:
-        str_lst.append(algorithm.description)
+        str_lst.append(algorithm.description if algorithm.description else 'no description')
 
     str_lst.extend([
         '',

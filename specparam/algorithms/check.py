@@ -14,7 +14,6 @@ def check_algorithms(concise=False):
     str_lst.extend(['AVAILABLE ALGORITHMS', ''])
 
     for algorithm in ALGORITHMS.values():
-        algorithm = algorithm()
         str_lst.append('{:s} : {:s}'.format(algorithm.name, algorithm.description))
 
     print(_format(str_lst, concise))

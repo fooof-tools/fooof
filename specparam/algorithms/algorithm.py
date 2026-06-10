@@ -14,12 +14,15 @@ from specparam.reports.strings import gen_settings_str
 class Algorithm():
     """Template object for defining a fit algorithm.
 
-    Parameters
+    Attributes
     ----------
     name : str
         Name of the fitting algorithm.
     description : str
         Description of the fitting algorithm.
+
+    Parameters
+    ----------
     public_settings : SettingsDefinition or dict
         Name and description of public settings for the fitting algorithm.
     private_settings :  SettingsDefinition or dict, optional
@@ -38,13 +41,12 @@ class Algorithm():
         Whether to run in debug state, raising an error if encountered during fitting.
     """
 
-    def __init__(self, name, description, public_settings, private_settings=None,
-                 data_format='spectrum', modes=None, data=None, results=None, model=None,
-                 debug=False):
-        """Initialize Algorithm object."""
+    name = None
+    description = None
 
-        self.name = name
-        self.description = description
+    def __init__(self, public_settings, private_settings=None, data_format='spectrum',
+                 modes=None, data=None, results=None, model=None, debug=False):
+        """Initialize Algorithm object."""
 
         if not isinstance(public_settings, SettingsDefinition):
             public_settings = SettingsDefinition(public_settings)
@@ -181,15 +183,13 @@ class AlgorithmCF(Algorithm):
     % copied in from Algorithm
     """
 
-    def __init__(self, name, description, public_settings, private_settings=None,
-                 data_format='spectrum', modes=None, data=None, results=None,
-                 model=None, debug=False):
+    def __init__(self, public_settings, private_settings=None, data_format='spectrum',
+                 modes=None, data=None, results=None, model=None, debug=False):
         """Initialize Algorithm object."""
 
-        Algorithm.__init__(self, name=name, description=description,
-                           public_settings=public_settings, private_settings=private_settings,
-                           data_format=data_format, modes=modes, data=data, results=results,
-                           model=model, debug=debug)
+        Algorithm.__init__(self, public_settings, private_settings=private_settings,
+                           data_format=data_format, modes=modes, data=data,
+                           results=results, model=model, debug=debug)
 
         self._cf_settings_desc = CURVE_FIT_SETTINGS
         self._cf_settings = SettingsValues(self._cf_settings_desc.names)
