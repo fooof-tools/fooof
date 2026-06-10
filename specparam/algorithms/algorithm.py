@@ -2,6 +2,7 @@
 
 import numpy as np
 
+from specparam.data.data import DATA_FORMATS
 from specparam.utils.checks import check_input_options
 from specparam.algorithms.settings import SettingsDefinition, SettingsValues
 from specparam.modutils.docs import docs_get_section, replace_docstring_sections
@@ -9,8 +10,6 @@ from specparam.reports.strings import gen_settings_str
 
 ###################################################################################################
 ###################################################################################################
-
-DATA_FORMATS = ['spectrum', 'spectra', 'spectrogram', 'spectrograms']
 
 class Algorithm():
     """Template object for defining a fit algorithm.
