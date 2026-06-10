@@ -11,10 +11,10 @@ def check_algorithms(concise=False):
     from specparam.algorithms.definitions import ALGORITHMS
 
     str_lst = []
-    str_lst.extend(['', 'AVAILABLE ALGORITHMS', ''])
+    str_lst.extend(['AVAILABLE ALGORITHMS', ''])
 
     for algorithm in ALGORITHMS.values():
         algorithm = algorithm()
         str_lst.append('{:s} : {:s}'.format(algorithm.name, algorithm.description))
 
-    print(_format(str_lst[1:], concise))
+    print(_format(str_lst, concise))

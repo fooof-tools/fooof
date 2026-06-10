@@ -24,7 +24,7 @@ def check_modes(component='all', check_params=False, concise=False):
     str_lst = []
     for component in components:
 
-        str_lst.extend(['', 'AVAILABLE {} MODES'.format(component.upper()), ''])
+        str_lst.extend(['AVAILABLE {} MODES'.format(component.upper()), ''])
 
         for mode in MODES[component].values():
             str_lst.extend(gen_mode_str_lst(mode, True, label_component=False))
@@ -32,4 +32,4 @@ def check_modes(component='all', check_params=False, concise=False):
                 str_lst.extend(gen_mode_params_str_lst(mode))
                 str_lst.append('')
 
-    print(_format(str_lst[1:], concise))
+    print(_format(str_lst, concise))

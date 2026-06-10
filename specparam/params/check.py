@@ -22,11 +22,11 @@ def check_converters(component='all', concise=False):
     str_lst = []
     for component in components:
 
-        str_lst.extend(['', 'AVAILABLE {} PARAMETER CONVERTERS'.format(component.upper()), ''])
+        str_lst.extend(['AVAILABLE {} PARAMETER CONVERTERS'.format(component.upper()), ''])
 
         for param, convs in CONVERTERS[component].items():
             str_lst.append("'" + param + "'")
             for label, converter in convs.items():
                 str_lst.append('{:s}: {:s}'.format(converter.name, converter.description))
 
-    print(_format(str_lst[1:], concise))
+    print(_format(str_lst, concise))

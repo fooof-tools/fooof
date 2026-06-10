@@ -21,9 +21,9 @@ def check_metrics(category='all', concise=False):
     str_lst = []
     for category in categories:
 
-        str_lst.extend(['', 'AVAILABLE {} METRICS'.format(category.upper()), ''])
+        str_lst.extend(['AVAILABLE {} METRICS'.format(category.upper()), ''])
 
         for metric in METRICS[category].values():
             str_lst.extend(gen_metric_str_lst(metric, True))
 
-    print(_format(str_lst[1:], concise))
+    print(_format(str_lst, concise))
