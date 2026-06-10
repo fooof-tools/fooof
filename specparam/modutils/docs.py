@@ -164,7 +164,7 @@ def docs_get_section(docstring, section, output='extract', end=None):
         if section in line and '--' in docstring_split[ind + 1]:
             in_section = True
         if end:
-            if in_section and '    ' + end == line:
+            if in_section and end == line or '    ' + end == line:
                 in_section = False
                 # In this approach, an extra newline is caught - so pop it off
                 outs.pop()
