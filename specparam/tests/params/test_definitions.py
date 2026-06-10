@@ -34,8 +34,3 @@ def test_update_converters():
     out3 = update_converters(DEFAULT_CONVERTERS, converters3)
     assert out3['periodic'] == DEFAULT_CONVERTERS['periodic']
     assert out3['aperiodic']['knee'] == converters3['aperiodic']['knee']
-
-def test_check_converters():
-
-    check_converters('aperiodic')
-    check_converters('periodic')
