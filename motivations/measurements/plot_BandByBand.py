@@ -21,9 +21,9 @@ from specparam import SpectralModel
 # Import simulation, utility, and plotting tools
 from specparam.bands import Bands
 from specparam.sim import sim_power_spectrum
-from specparam.sim.utils import set_random_seed
-from specparam.data.periodic import get_band_peak
+from specparam.utils.random import set_random_seed
 from specparam.utils.spectral import trim_spectrum
+from specparam.data.periodic import get_band_peak
 from specparam.plts.spectra import plot_spectra_shading
 
 ###################################################################################################

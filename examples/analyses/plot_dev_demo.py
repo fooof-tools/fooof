@@ -45,7 +45,7 @@ from specparam.plts.periodic import plot_peak_params, plot_peak_fits
 from specparam.plts.aperiodic import plot_aperiodic_params, plot_aperiodic_fits
 
 # Import functions to examine frequency-by-frequency error of model fits
-from specparam.measures.pointwise import compute_pointwise_error, compute_pointwise_error_group
+from specparam.metrics.pointwise import compute_pointwise_error, compute_pointwise_error_group
 
 # Import helper utility to access data
 from specparam.demo.download import fetch_example_data

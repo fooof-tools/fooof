@@ -16,7 +16,7 @@ from specparam import SpectralModel, SpectralGroupModel
 # Import some utilities for creating simulated power-spectra
 from specparam.sim import sim_power_spectrum, sim_group_power_spectra
 from specparam.sim.params import param_sampler
-from specparam.sim.utils import set_random_seed
+from specparam.utils.random import set_random_seed
 
 ####################################################################################################
 # Algorithm Settings

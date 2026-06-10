@@ -40,7 +40,7 @@ A description of and introduction to the spectral parameterization module.
 # Import required code for simulating and visualizing example models
 from specparam import SpectralModel
 from specparam.sim import sim_power_spectrum
-from specparam.sim.utils import set_random_seed
+from specparam.utils.random import set_random_seed
 from specparam.plts.spectra import plot_spectra
 from specparam.plts.annotate import plot_annotated_model
 

@@ -19,7 +19,7 @@ from specparam import SpectralModel, SpectralGroupModel
 from specparam.sim import sim_power_spectrum, sim_group_power_spectra
 
 # Import functions to examine frequency-by-frequency error of model fits
-from specparam.measures.pointwise import compute_pointwise_error, compute_pointwise_error_group
+from specparam.metrics.pointwise import compute_pointwise_error, compute_pointwise_error_group
 
 ###################################################################################################
 # Frequency-by-Frequency Error

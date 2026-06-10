@@ -11,10 +11,10 @@ from specparam import SpectralModel
 from specparam.demo import load_example_data
 
 # Import the default set of parameter conversions
-from specparam.convert.definitions import check_converters, DEFAULT_CONVERTERS
+from specparam.params.definitions import check_converters, DEFAULT_CONVERTERS
 
 # Import objects to define parameter conversions
-from specparam.convert.converter import PeriodicParamConverter, AperiodicParamConverter
+from specparam.params.converter import PeriodicParamConverter, AperiodicParamConverter
 
 ###################################################################################################
 # Parameter Conversions
@@ -133,7 +133,7 @@ print(fm1.results.get_params('periodic', version='converted'))
 # Next, we can explore specifying to use different built in parameter conversions.
 #
 # To do so, we can explore the available options with the
-# :func:`~specparam.convert.definitions.check_converters` function.
+# :func:`~specparam.params.definitions.check_converters` function.
 #
 
 ###################################################################################################
@@ -256,8 +256,8 @@ fm3.report(freqs, powers, freq_range)
 # However, only passing in the callable is a bit light on details and description. If you
 # want to implement parameter conversions using an approach that keeps track of additional
 # description of the approach, you can use the
-# :class:`~specparam.convert.converter.AperiodicParamConverter` and
-# :class:`~specparam.convert.converter.PeriodicParamConverter` objects to
+# :class:`~specparam.params.converter.AperiodicParamConverter` and
+# :class:`~specparam.params.converter.PeriodicParamConverter` objects to
 #
 
 ###################################################################################################

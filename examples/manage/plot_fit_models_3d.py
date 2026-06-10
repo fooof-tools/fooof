@@ -61,8 +61,8 @@ from specparam.models import fit_models_3d, combine_model_objs
 
 # Import simulation & IO utilities to help with the example
 from specparam.sim import sim_group_power_spectra
-from specparam.sim.utils import create_freqs
 from specparam.sim.params import param_sampler
+from specparam.utils.random import create_freqs
 from specparam.io.models import load_group
 
 ###################################################################################################

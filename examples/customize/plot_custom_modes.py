@@ -19,7 +19,7 @@ from specparam.sim import sim_power_spectrum
 
 # Import objects used to define a custom mode
 from specparam.modes.mode import Mode
-from specparam.modes.params import ParamDefinition
+from specparam.modes.paramdef import ParamDefinition
 
 ###################################################################################################
 # Defining Custom Fit Modes

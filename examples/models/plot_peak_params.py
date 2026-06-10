@@ -10,11 +10,11 @@ Exploring properties and topics related to peak parameters.
 from specparam import SpectralModel
 from specparam.plts.spectra import plot_spectra
 from specparam.plts.periodic import plot_peak_params
-from specparam.sim.utils import set_random_seed
+from specparam.plts.annotate import plot_annotated_model
 from specparam.sim.params import Stepper, param_iter
 from specparam.sim import sim_power_spectrum, sim_group_power_spectra
-from specparam.plts.annotate import plot_annotated_model
-from specparam.measures.params import compute_time_constant, compute_knee_frequency
+from specparam.utils.random import set_random_seed
+from specparam.params.aperiodic import compute_time_constant, compute_knee_frequency
 
 ###################################################################################################
 # Gaussian Peak Model

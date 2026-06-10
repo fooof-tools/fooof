@@ -21,10 +21,10 @@ from specparam.utils.select import nearest_ind
 from specparam.demo import load_example_data
 
 # Import function to directly compute peak heights
-from specparam.convert.params import compute_peak_height
+from specparam.params.periodic import compute_peak_height
 
 # Import the default parameter conversions
-from specparam.convert.definitions import DEFAULT_CONVERTERS
+from specparam.params.definitions import DEFAULT_CONVERTERS
 
 # sphinx_gallery_start_ignore
 from specparam.plts.utils import check_ax
