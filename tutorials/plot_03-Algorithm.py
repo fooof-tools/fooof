@@ -28,6 +28,19 @@ A step-by-step overview of the algorithm for parameterizing neural power spectra
 #
 
 ###################################################################################################
+# Algorithm Visualizer
+# ~~~~~~~~~~~~~~~~~~~~
+#
+# Before stepping through the procedure step-by-step in code, we can first examine the fitting
+# algorithm in the following visualizer:
+#
+# .. image:: https://raw.githubusercontent.com/fooof-tools/Visualizers/main/gifs/specparam-algorithm.gif
+#    :width: 650 px
+#    :align: center
+#    :alt: algorithm_visualizer
+#
+
+###################################################################################################
 
 # sphinx_gallery_thumbnail_number = 4
 
