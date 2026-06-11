@@ -3,21 +3,33 @@ Developmental Data Demo
 =======================
 
 An example analysis applied to developmental data, demonstrating best practices.
+
+This guide is part of a broader project on
+'Spectral parameterization for studying neurodevelopment: how and why'.
+
+.. seealso::
+
+    Reference for the full project on best-practices for parameterizing developmental data:
+
+    Ostlund B, Donoghue T, Anaya B, Gunther KE, Karalunas SL, Voytek B, Pérez-Edgar KE (2022).
+    Spectral parameterization for studying neurodevelopment: How and why.
+    Developmental Cognitive Neuroscience, 54, 101073.
+    https://doi.org/10.1016/j.dcn.2022.101073
+
+For more information, find the full project in the
+`journal article <https://doi.org/10.1016/j.dcn.2022.101073>`_ and/or the
+`Github repository <https://github.com/fooof-tools/DevelopmentalDemo/>`_.
+
+If you wish to reference this example or use guidelines from it,
+please cite the associated paper.
 """
 
 ###################################################################################################
 # Spectral Parameterization for studying neurodevelopment
 # -------------------------------------------------------
 #
-# This example is adapted from the
-# `Developmental Data Demo <https://github.com/fooof-tools/DevelopmentalDemo/>`_.
-#
-# If you wish to reference this example or use guidelines from it, please cite the associated
-# paper `Spectral parameterization for studying neurodevelopment: how and why` by
-# Brendan Ostlund, Thomas Donoghue, Berenice Anaya, Kelley E Gunther, Sarah L Karalunas,
-# Bradley Voytek, and Koraly E Pérez-Edgar.
-#
-# Paper link: https://doi.org/10.1016/j.dcn.2022.101073
+# This guide provides an overview of best-practice guidelines and considerations for applying
+# spectral parameterization to developmental data.
 #
 
 ###################################################################################################
@@ -678,6 +690,5 @@ fg.results.drop(fg.get_metrics('error', 'mae') > 0.10)
 # For more on this topic, see the
 # `DevelopmentalDemo repository <https://github.com/fooof-tools/DevelopmentalDemo/>`_
 # and/or the
-# `associated paper  <https://doi.org/10.1016/j.dcn.2022.101073>`_
-# for further information.
+# `associated paper  <https://doi.org/10.1016/j.dcn.2022.101073>`_.
 #
