@@ -11,7 +11,7 @@ module for time series simulations & analyses.
 
 ###################################################################################################
 
-# Imports from NeuroDSP to simulate & plot time series
+# Imports from neurodsp to simulate & plot time series
 from neurodsp.sim import sim_powerlaw, sim_oscillation, sim_combined, set_random_seed
 from neurodsp.spectral import compute_spectrum
 from neurodsp.plts import plot_time_series, plot_power_spectra
@@ -32,8 +32,10 @@ times = create_times(n_seconds, fs)
 #
 # Part of the motivation behind spectral parameterization is dissociating aperiodic
 # activity, with no characteristic frequency, to periodic power, which is defined as
-# having frequency specific power. This leads to the idea of oscillations as 'peaks'
-# of power in the power spectrum, which can be detected and measured.
+# having frequency specific power.
+#
+# This leads to the idea of oscillations as 'peaks' of power in the power spectrum,
+# which can be detected and measured.
 #
 # In this exploration, we will use simulated time series to examine how rhythmic signals
 # do display as 'peaks' of power in frequency domain representations. We will also
