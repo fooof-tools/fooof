@@ -104,6 +104,12 @@ def test_no_model_str():
 
     assert _no_model_str()
 
+## MODEL COMPARISONS
+
+def test_gen_model_comparison_str(tmodelcomp):
+
+    assert gen_model_comparison_str(tmodelcomp)
+
 ## UTILITIES
 
 def test_format():
