@@ -7,7 +7,7 @@ import numpy as np
 from specparam.sim.gen import gen_freqs
 from specparam.modutils.dependencies import safe_import, check_dependency
 from specparam.modes.modes import check_mode_definition
-from specparam.plts.settings import ITERABLES, PLT_FIGSIZES
+from specparam.plts.settings import ITERABLES, PLT_FIGSIZES, DEFAULT_COLORS
 from specparam.plts.templates import plot_yshade
 from specparam.plts.style import style_param_plot, style_plot
 from specparam.plts.utils import check_ax, recursive_plot, savefig, check_plot_kwargs
@@ -105,7 +105,7 @@ def plot_aperiodic_fits(aps, freq_range, aperiodic_mode, control_offset=False, a
     if isinstance(aps, list):
 
         if not colors:
-            colors = cycle(plt.rcParams['axes.prop_cycle'].by_key()['color'])
+            colors = cycle(DEFAULT_COLORS)
 
         recursive_plot(aps, plot_function=plot_aperiodic_fits, ax=ax,
                        freq_range=tuple(freq_range), aperiodic_mode=aperiodic_mode,

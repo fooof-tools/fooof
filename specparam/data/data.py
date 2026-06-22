@@ -21,9 +21,10 @@ from specparam.plts.utils import check_plot_kwargs
 ###################################################################################################
 
 # Define set of data fields
-DATA_FIELDS = ['power_spectrum', 'freq_range', 'freq_res']
 META_DATA_FIELDS = ['freq_range', 'freq_res']
-FORMATS = ['power']
+DATA_FORMATS = ['spectrum', 'spectra', 'spectrogram', 'spectrograms']
+DATA_FIELDS = ['power_spectrum', 'freq_range', 'freq_res']
+DATA_UNITS = ['power']
 
 
 class Data():
@@ -58,7 +59,7 @@ class Data():
     All power values are stored internally in log10 scale.
     """
 
-    def __init__(self, check_freqs=True, check_data=True, format='power', model=None):
+    def __init__(self, check_freqs=True, check_data=True, units='power', model=None):
         """Initialize Data object."""
 
         self._reset_data(True, True)
@@ -70,8 +71,8 @@ class Data():
             'data' : check_data,
         }
 
-        check_input_options(format, FORMATS, 'format')
-        self.format = format
+        check_input_options(units, DATA_UNITS, 'units')
+        self.units = units
 
         self._model = model
 
