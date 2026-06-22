@@ -24,7 +24,28 @@ class ModelComparison():
         """Initialize model comparison object."""
 
         self.models = []
-        self.add_models(models)
+        if models:
+            self.add_models(models)
+
+
+    def __len__(self):
+        """Define length of object as the number of defined models."""
+
+        return len(self.models)
+
+
+    def __iter__(self):
+        """Define iteration as stepping across models within the object."""
+
+        for model in self.models:
+            yield(model)
+
+
+    def copy(self):
+        """Return a copy of the current object."""
+
+        return deepcopy(self)
+
 
     @replace_docstring_sections([docs_get_section(SpectralModel.fit.__doc__, 'Parameters')])
     def fit(self, freqs=None, data=None, freq_range=None, prechecks=True):
@@ -39,6 +60,7 @@ class ModelComparison():
         for model in self.models[1:]:
             model.fit(prechecks=False)
 
+
     @replace_docstring_sections([docs_get_section(SpectralModel.report.__doc__, 'Parameters')])
     def report(self, freqs=None, data=None, freq_range=None,
                plt_log=False, plot_full_range=False, **plot_kwargs):
@@ -49,7 +71,7 @@ class ModelComparison():
         % copied in from SpectralModel object
         """
 
-        self.fit(freqs, data, freq_range, prechecks)
+        self.fit(freqs, data, freq_range)
         self.print('comparison')
         self.plot(plt_log=plt_log,
                   freqs=freqs if plot_full_range else plot_kwargs.pop('plot_freqs', None),
@@ -57,6 +79,7 @@ class ModelComparison():
                       plot_full_range else plot_kwargs.pop('plot_power_spectrum', None),
                   freq_range=plot_kwargs.pop('plot_freq_range', None),
                   **plot_kwargs)
+
 
     def add_models(self, models, clear=False):
         """Add model definitions.
@@ -78,10 +101,12 @@ class ModelComparison():
                 model.data = self.data
                 model.algorithm._reset_subobjects(data=self.data)
 
-    @copy_func_docstring_drop_first(plot_model_comparison)
-    def plot(self):
 
-        plot_model_comparison(self)
+    @copy_func_docstring_drop_first(plot_model_comparison)
+    def plot(self, ax=None, **plot_kwargs):
+
+        plot_model_comparison(self, ax=ax, **plot_kwargs)
+
 
     def print(self, info='comparison'):
         """Print out result information."""
