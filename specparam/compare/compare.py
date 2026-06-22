@@ -2,7 +2,7 @@
 
 from copy import deepcopy
 
-from specparam.plts.compare import plot_comparison
+from specparam.plts.compare import plot_model_comparison
 from specparam.reports.strings import gen_model_comparison_str
 
 ###################################################################################################
@@ -20,7 +20,7 @@ class ModelComparison():
     def fit(self, freqs=None, data=None, freq_range=None, prechecks=True):
         """   """
 
-        self.models[0].fit(freqs, data, freq_range)
+        self.models[0].fit(freqs, data, freq_range, prechecks)
         for model in self.models[1:]:
             model.fit(prechecks=False)
 
@@ -41,11 +41,12 @@ class ModelComparison():
             self.data = deepcopy(models[0].data)
             for model in self.models:
                 model.data = self.data
+                model.algorithm._reset_subobjects(data=self.data)
 
     def plot(self):
         """   """
 
-        plot_comparison(self)
+        plot_model_comparison(self)
 
     def print(self):
         """   """
