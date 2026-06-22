@@ -14,13 +14,15 @@ error_mae = Metric(
     measure='mae',
     description='Mean absolute error of the model fit to the data.',
     func=compute_mean_abs_error,
+    space='log',
 )
 
 error_mse = Metric(
     category='error',
     measure='mse',
     description='Mean squared error of the model fit to the data.',
-    func=compute_mean_squared_error
+    func=compute_mean_squared_error,
+    space='log',
 )
 
 error_rmse = Metric(
@@ -28,6 +30,7 @@ error_rmse = Metric(
     measure='rmse',
     description='Root mean squared error of the model fit to the data.',
     func=compute_root_mean_squared_error,
+    space='log',
 )
 
 error_medae = Metric(
@@ -35,14 +38,28 @@ error_medae = Metric(
     measure='medae',
     description='Median absolute error of the model fit to the data.',
     func=compute_median_abs_error,
+    space='log',
+)
+
+error_maelin = Metric(
+    category='error',
+    measure='maelin',
+    description='Mean absolute error of the model fit to the data, in linear space.',
+    func=compute_mean_abs_error,
+    space='linear',
 )
 
 # Collect available error metrics
 ERROR_METRICS = {
+
+    # log spacing
     'mae' : error_mae,
     'mse' : error_mse,
     'rmse' : error_rmse,
     'medae' : error_medae,
+
+    # linear spacing
+    'maelin' : error_maelin,
 }
 
 ###################################################################################################
@@ -53,6 +70,15 @@ gof_rsquared = Metric(
     measure='rsquared',
     description='R-squared between the model fit and the data.',
     func=compute_r_squared,
+    space='log',
+)
+
+gof_rsquaredlin = Metric(
+    category='gof',
+    measure='rsquaredlin',
+    description='R-squared between the model fit and the data, in linear space.',
+    func=compute_r_squared,
+    space='linear',
 )
 
 gof_adjrsquared = Metric(
@@ -62,12 +88,18 @@ gof_adjrsquared = Metric(
     func=compute_adj_r_squared,
     kwargs={'n_params' : lambda data, results: \
             results.params.periodic.params.size + results.params.aperiodic.params.size},
+    space='log',
 )
 
 # Collect available error metrics
 GOF_METRICS = {
+
+    # log spacing
     'rsquared' : gof_rsquared,
     'adjrsquared' : gof_adjrsquared,
+
+    # linear spacing
+    'rsquaredlin' : gof_rsquaredlin,
 }
 
 ###################################################################################################
