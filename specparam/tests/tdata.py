@@ -8,6 +8,7 @@ from specparam.data.data import Data, Data2D, Data2DT, Data3D
 from specparam.data.stores import FitResults
 from specparam.models import (SpectralModel, SpectralGroupModel,
                               SpectralTimeModel, SpectralTimeEventModel)
+from specparam.compare import ModelComparison
 from specparam.sim.params import param_sampler
 from specparam.sim.sim import sim_power_spectrum, sim_group_power_spectra, sim_spectrogram
 
@@ -136,6 +137,20 @@ def get_tfe():
     tfe.fit(xs, ys)
 
     return tfe
+
+## TEST MODEL COMPARISON OBJECTS
+
+def get_tmodelcomp():
+    """Get a model comparison object, with fit power spectra, for testing."""
+
+    modelcomp = ModelComparison([
+        SpectralModel(aperiodic_mode='fixed', periodic_mode='gaussian'),
+        SpectralModel(aperiodic_mode='knee', periodic_mode='gaussian'),
+    ])
+
+    modelcomp.fit(*sim_power_spectrum(*default_spectrum_params()))
+
+    return modelcomp
 
 ## TEST OTHER OBJECTS
 
