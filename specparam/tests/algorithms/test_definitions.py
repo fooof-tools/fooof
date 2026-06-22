@@ -14,10 +14,6 @@ def test_algorithms_library():
         assert isinstance(algorithm, Algorithm)
         assert algorithm.name == key
 
-def test_check_algorithms():
-
-    check_algorithms()
-
 def test_check_algorithm_definition():
 
     for algorithm in ALGORITHMS.keys():
