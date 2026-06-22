@@ -34,6 +34,13 @@ class Modes():
         self.model = model
 
 
+    @property
+    def label(self):
+        """Define label for the current set of modes."""
+
+        return 'ap-{:s}_pe-{:s}'.format(self.aperiodic.name, self.periodic.name)
+
+
     def get_modes(self):
         """Get the modes definition.
 

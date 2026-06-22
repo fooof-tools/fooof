@@ -15,6 +15,7 @@ def test_modes():
     assert modes
     assert isinstance(modes.aperiodic, Mode)
     assert isinstance(modes.periodic, Mode)
+    assert modes.label
     modes.print()
 
 def test_modes_gets():
