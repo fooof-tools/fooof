@@ -27,6 +27,10 @@ def test_metrics_obj(tfm):
     metrics.compute_metrics(tfm.data, tfm.results)
     assert isinstance(metrics.results, dict)
 
+    # Check iteration
+    for metric in metrics:
+        assert metric
+
     # Check indexing
     met_out = metrics['error_mae']
     assert isinstance(met_out, Metric)

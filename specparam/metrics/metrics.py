@@ -34,6 +34,12 @@ class Metrics():
         return len(self.labels)
 
 
+    def __iter__(self):
+        """Make object iterable, across individual metrics."""
+
+        return iter(self.metrics)
+
+
     def __getitem__(self, label):
         """Index into the object based on metric label.
 
@@ -43,11 +49,11 @@ class Metrics():
             Label of the metric to access.
         """
 
-        for ind, clabel in enumerate(self.labels):
-            if label == clabel:
-                return self.metrics[ind]
-
-        raise ValueError('Requested label not found.')
+        for metric in self:
+            if metric.label == label:
+                return metric
+        else:
+            raise ValueError('Requested label not found.')
 
 
     def add_metric(self, metric):
