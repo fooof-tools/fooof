@@ -3,6 +3,7 @@
 from collections import OrderedDict
 
 import numpy as np
+from matplotlib.colors import to_hex
 
 from specparam.modutils.dependencies import safe_import
 
@@ -14,8 +15,10 @@ plt = safe_import('.pyplot', 'matplotlib')
 # Define list of iterables to check against
 ITERABLES = (list, tuple, np.ndarray)
 
-# Define list of default plot colors
-DEFAULT_COLORS = plt.rcParams['axes.prop_cycle'].by_key()['color'] if plt else None
+# Define list of default plot colors, making sure colors are hex, for downstream consistency
+#   Hex encoding changed in mpl: https://github.com/matplotlib/matplotlib/issues/29915
+DEFAULT_COLORS = [to_hex(col) for col in plt.rcParams['axes.prop_cycle'].by_key()['color']] \
+    if plt else None
 
 # Define default figure sizes
 PLT_FIGSIZES = {
