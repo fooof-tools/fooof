@@ -1,4 +1,6 @@
 """Metrics sub-module."""
 
 from .metric import Metric
-from .check import check_metrics
+
+# Link in report function to list available metrics
+from specparam.reports.options import check_metrics
