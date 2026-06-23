@@ -143,7 +143,8 @@ sphinx_gallery_conf = {
                                         '../examples/sims',
                                         '../examples/analyses',
                                         '../motivations/concepts',
-                                        '../motivations/measurements']),
+                                        '../motivations/measurements',
+                                        '../motivations/models']),
     'within_subsection_order': FileNameSortKey,
     'default_thumb_file': 'img/spectrum.png',
     'backreferences_dir': 'generated',   # Where to drop linking files between examples & API

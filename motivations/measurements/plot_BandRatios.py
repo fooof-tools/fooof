@@ -3,6 +3,23 @@ Band Ratio Measures
 ===================
 
 Exploring how band ratio measures relate to periodic & aperiodic activity.
+
+This example is a brief overview of how band ratios measures relate to periodic and
+aperiodic activity, drawing from a full project on this topic.
+
+.. seealso::
+    Reference for the full project on methodological properties of band ratio measures:
+
+    Donoghue T, Dominguez J & Voytek B (2020). Electrophysiological Frequency Band Ratio
+    Measures Conflate Periodic and Aperiodic Neural Activity. eNeuro, 7(6)
+    https://doi.org/10.1523/ENEURO.0192-20.2020
+
+For more information, find the full project in the
+`journal article <https://doi.org/10.1523/ENEURO.0192-20.2020>`_ and/or the
+`Github repository <https://github.com/voytekresearch/BandRatios>`_.
+
+If you wish to reference this example or use guidelines from it,
+please cite the associated paper.
 """
 
 ###################################################################################################
@@ -19,19 +36,6 @@ Exploring how band ratio measures relate to periodic & aperiodic activity.
 #
 # In this notebook we will explore this measure in the context of conceptualizing neural power
 # spectra as a combination of aperiodic and periodic activity.
-#
-
-###################################################################################################
-# Band Ratios Project
-# ~~~~~~~~~~~~~~~~~~~
-#
-# This example offers a relatively quick demonstration of how band ratios measures
-# relate to periodic and aperiodic activity.
-#
-# We have completed a full project investigating methodological properties of band
-# ratio measures, which is available as a
-# `published paper <https://doi.org/10.1523/ENEURO.0192-20.2020>`_ and/or on
-# `Github <https://github.com/voytekresearch/BandRatios>`_.
 #
 
 ###################################################################################################

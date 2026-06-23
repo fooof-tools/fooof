@@ -1,8 +1,8 @@
 """
-Rhythmicity of Time Series
-==========================
+Spectral Representations
+========================
 
-Exploring the rhythmicity of time series and their frequency representations.
+Exploring properties of time series and their corresponding frequency domain representations.
 
 This example uses the
 `neurodsp <https://neurodsp-tools.github.io/>`_
@@ -10,16 +10,16 @@ module for time series simulations & analyses.
 """
 
 ###################################################################################################
-# Rhythmicity of Time Series
-# --------------------------
+# Frequency Domain Representations
+# --------------------------------
 #
-# Central to the motivation for parameterizing neural power is the claim that power at a
+# Central to the motivation for parameterizing power spectra is the claim that power at a
 # given frequency is not sufficient to claim that there is evidence for rhythmic, or
 # periodic, activity at that frequency.
 #
-# In this example, we will explore this idea by examining some example signals in the
-# time domain, and their frequency domain representations. We will use these signals to
-# motivate if and when signals should be interpreted as containing periodic activity.
+# This example explores and seeks to motivate this idea, by examining the relationship between
+# time domain signals and their frequency domain representations, with the goal of examining
+# how we can move between different representations and what this means for interpreting signals.
 #
 
 ###################################################################################################
@@ -29,16 +29,15 @@ module for time series simulations & analyses.
 # Stated informally, the Fourier theorem tells us that any time series can be represented
 # as a sum of sinusoids.
 #
-# This is a powerful and useful theorem, as it means that we can use tools such as the
-# Fourier transform and other similar measures, to compute frequency representations
-# of any time series data.
+# This is a powerful idea, as it means that we can use tools such as the Fourier transform and
+# other similar measures, to compute frequency representations of *any* time series.
 #
-# However, just because a signal can be represented by sinusoids does not mean that any
-# given signal, or any given aspect of a signal, for which a power spectrum can be computed
-# should be conceptualized as being comprised of rhythmic components.
+# However, just because a signal can be *represented* by sinusoids does not mean that the
+# signal should be *interpreted* in terms of sine waves.
 #
-# The power spectrum is just a possible representation of the original data, not a
-# descriptive claim of the actual components of the data.
+# Alternately stated, a frequency domain representation by itself does not mean we can or
+# should conceptualize a time series as being comprised of rhythmic activity - it provides
+# a possible representation of the data, not a claim for the actual components of the data.
 #
 
 ###################################################################################################
@@ -70,18 +69,19 @@ times = create_times(n_seconds, s_rate)
 n_points = len(times)
 
 ###################################################################################################
-# Frequency Representations of Aperiodic Signals
-# ----------------------------------------------
+# Frequency Representations of a Transient Signal
+# -----------------------------------------------
 #
-# Let's start with aperiodic signals, and examine how different types of aperiodic
-# signals are represented in the frequency domain.
+# To examine this idea - that we can represent any signal as a power spectrum, but this does
+# not mean that we should interpret them as sine waves per se - we can start with some simple
+# signals with transients.
 #
 
 ###################################################################################################
 # The Dirac Delta
 # ~~~~~~~~~~~~~~~
 #
-# The Dirac delta is arguably the simplest signal, as it's a signal of all zeros,
+# The Dirac delta is arguably the simplest signal: a signal of all 0s,
 # except for a single value of 1.
 #
 
@@ -98,7 +98,7 @@ plot_time_series(times, dirac_sig)
 
 ###################################################################################################
 #
-# Next, lets compute the frequency representation of the delta function.
+# Next, lets compute the frequency domain representation of the Dirac delta.
 #
 
 ###################################################################################################
@@ -115,105 +115,53 @@ plot_power_spectra(freqs, powers)
 # Section Conclusions
 # ^^^^^^^^^^^^^^^^^^^
 #
-# As we can see above, the power spectrum of the Dirac delta function has
-# power across all frequencies.
+# As we can see above, the power spectrum of the Dirac delta function has power
+# across all frequencies!
 #
-# This is despite it containing containing a single non-zero value, and thus having
-# no rhythmic properties to it in the time domain.
+# This is despite it containing a single non-zero value, and thus having no rhythmic
+# properties in the time domain.
 #
-# The Dirac delta example can be taken as a proof of principle that observing power
-# at a particular frequency does not necessarily imply that one should consider that
-# there are any rhythmic properties at that frequency in the original time series.
+# The Dirac delta example serves as a proof-of-principle that observing power at a particular
+# frequency does not necessarily imply that one should consider that there are any rhythmic
+# properties at that frequency in the original time series.
 #
-# In this case, and many like it, power across all frequencies is a representation of
-# transient (or aperiodic) activity in the time series. Broadly, when there are transients,
-# or aperiodic components, lots of sinusoids have to be added together in order to represent
-# aperiodic activity out of a basis set of periodic sine waves, and this is why such
+# In this case, the power we see across all frequencies is a representation of transient activity
+# in the time series. When there are transients (or as we will see next, aperiodic activity more
+# generally) the signal can still be represented in the frequency domain as a combination of
+# sine waves. However, in order to represent aperiodic activity from a basis set of periodic sine
+# waves, lots of sinusoids have to be added together, giving
+
 # signals typically look very broadband in the frequency domain.
+
+# or aperiodic components,
+
+#
+# Notably
 #
 
-###################################################################################################
-# Colored Noise Signals
-# ~~~~~~~~~~~~~~~~~~~~~
-#
-# Let's now look at 'noise' signals.
-#
-# In the signals below, we will simulate colored noise signals, in which samples are
-# drawn randomly from noise distributions, with no rhythmic properties.
-#
-# As we will see, in the power spectrum, these signals exhibit power at all frequencies,
-# with specific patterns of powers across frequencies, which is dependent on the 'color'
-# of the noise.
-#
 
 ###################################################################################################
-# White Noise
-# ^^^^^^^^^^^
+# Frequency Representations of Aperiodic Signals
+# ---------------------------------------------
 #
-# A 'white noise' signal is one that is created with uncorrelated samples drawn from
-# a random distribution. Since each element of the signal is sampled randomly,
-# there is no consistent rhythmic structure in the signal.
+# Let's start with aperiodic signals, and examine how different types of aperiodic
+# signals are represented in the frequency domain.
 #
 
 ###################################################################################################
 
-# Simulate a white noise time series signal
-white_sig = np.random.normal(0, 1, n_points)
+# Simulate an aperiodic signal
+aperiodic_sig = sim_powerlaw(n_seconds, s_rate, exponent=-1)
 
 ###################################################################################################
 
-# Plot the white noise time series
-plot_time_series(times, white_sig)
-
-###################################################################################################
-#
-# As before, we can compute and visualize the power spectrum of this signal.
-#
+# Plot the aperiodic time series
+plot_time_series(times, aperiodic_sig)
 
 ###################################################################################################
 
-# Compute the power spectrum of the white noise signal
-freqs, powers = compute_spectrum_welch(white_sig, s_rate)
-
-###################################################################################################
-
-# Visualize the power spectrum of the white noise signal
-plot_power_spectra(freqs, powers)
-
-###################################################################################################
-#
-# In the frequency representation, we can see that white noise has a flat power spectrum,
-# with equal power across all frequencies. This is the definition of white noise.
-#
-# This is similar to the delta function, though note that in this case the power across
-# frequencies is representing continuous aperiodic activity, rather than a single transient.
-#
-
-###################################################################################################
-# Pink Noise
-# ^^^^^^^^^^
-#
-# Other 'colors' of noise refer to different patterns of power distributions
-# in the power spectrum.
-#
-# For example, pink noise is a signal where power systematically decreases across
-# frequencies in the power spectrum.
-#
-
-###################################################################################################
-
-# Simulate a pink noise signal
-pink_sig = sim_powerlaw(n_seconds, s_rate, exponent=-1)
-
-###################################################################################################
-
-# Plot the pink noise time series
-plot_time_series(times, pink_sig)
-
-###################################################################################################
-
-# Compute the power spectrum of the pink noise signal
-freqs, powers = compute_spectrum_welch(pink_sig, s_rate)
+# Compute the power spectrum of the aperiodic signal
+freqs, powers = compute_spectrum_welch(aperiodic_sig, s_rate)
 
 ###################################################################################################
 
@@ -221,21 +169,7 @@ freqs, powers = compute_spectrum_welch(pink_sig, s_rate)
 plot_power_spectra(freqs, powers)
 
 ###################################################################################################
-# Section Conclusion
-# ^^^^^^^^^^^^^^^^^^
-#
-# The 'colored noise' signals above are simulated signals with no rhythmic properties,
-# in the sense that there are no characteristic frequencies or visible rhythms in the data.
-#
-# Nevertheless, and by definition, in the power spectra of such signals, there is power across
-# all frequencies, with some pattern of power across frequencies.
-#
-# However, there are no frequencies at which power is different from expected from an
-# aperiodic noise signal. These signals are statistically, by definition, aperiodic.
-#
-
-###################################################################################################
-# Frequency Representations of Rhythmic Signals
+# Frequency Representations of Periodic Signals
 # ---------------------------------------------
 #
 # Next, lets check what frequency representations look like for time series that do have
