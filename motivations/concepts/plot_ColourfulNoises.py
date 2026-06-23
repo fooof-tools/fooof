@@ -7,23 +7,26 @@ Exploring properties of aperiodic signals, with power across all frequencies.
 This example uses the
 `neurodsp <https://neurodsp-tools.github.io/>`_
 module for time series simulations & analyses.
-
-...
-
-colours of noise
-synaptic noise
-knees / multi-fractals?
 """
 
 ###################################################################################################
 # Non-Frequency Specific Power
 # ----------------------------
 #
+# colours of noise
+# synaptic noise
+# knees / multi-fractals?
 #
-
 
 ###################################################################################################
 
+# Import numpy
+import numpy as np
+
+# ...
+from neurodsp.plts import plot_time_series
+from neurodsp.spectral import compute_spectrum_welch
+from neurodsp.sim import sim_powerlaw, set_random_seed
 
 ###################################################################################################
 # Colored Noise Signals
@@ -132,13 +135,10 @@ plot_power_spectra(freqs, powers)
 ###################################################################################################
 
 
-
 ###################################################################################################
 
 
-
 ###################################################################################################
-
 
 
 ###################################################################################################
