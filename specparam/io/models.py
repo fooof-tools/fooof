@@ -3,6 +3,8 @@
 Notes
 -----
 Model loader function import model objects locally to prevent circular imports.
+
+TODO: sweep through for managing saving across different fit modes
 """
 
 import io
