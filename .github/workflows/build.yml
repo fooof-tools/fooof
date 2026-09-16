@@ -12,7 +12,7 @@ jobs:
     # Tag ubuntu image version to 22.04 in order to support python 3.7
     #   When dropping 3.7, can update release (to 'ubuntu-24.04' or 'ubuntu-latest')
     #runs-on: ubuntu-22.04
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     env:
       MODULE_NAME: specparam
     strategy:
