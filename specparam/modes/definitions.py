@@ -4,7 +4,8 @@ from collections import OrderedDict
 
 from specparam.modes.mode import Mode
 from specparam.modes.paramdef import ParamDefinition
-from specparam.modes.funcs import (powerlaw_function, lorentzian_function, double_expo_function,
+from specparam.modes.funcs import (powerlaw_function, lorentzian_function,
+                                   double_expo_function, knee_constant_function,
                                    gaussian_function, skewed_gaussian_function,
                                    cauchy_function, gamma_function, triangle_function)
 from specparam.modes.jacobians import jacobian_gauss
@@ -73,6 +74,28 @@ ap_doublexp = Mode(
     func=double_expo_function,
     jacobian=None,
     params=params_doublexp,
+    ndim=1,
+    freq_space='linear',
+    powers_space='log10',
+)
+
+## AP - Knee with Constant Mode
+
+params_knee_constant = ParamDefinition(OrderedDict({
+    'offset' : 'Offset of the aperiodic component.',
+    'exponent' : 'Exponent of the aperiodic component.',
+    'knee' : 'Knee of the aperiodic component.',
+    'constant' : 'Constant value which the aperiodic component decays to, after the exponent.',
+}))
+
+ap_knee_constant = Mode(
+    name='knee_constant',
+    component='aperiodic',
+    description='Fit a Lorentzian function that decays to a constant.',
+    formula=r'XX',
+    func=knee_constant_function,
+    jacobian=None,
+    params=params_knee_constant,
     ndim=1,
     freq_space='linear',
     powers_space='log10',
