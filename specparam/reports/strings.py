@@ -732,6 +732,50 @@ def gen_event_results_str(event, concise=False):
     return _format(str_lst, concise)
 
 
+## MODEL COMPARISONS
+
+def gen_model_comparison_str(models, concise=False):
+    """Generate a string representation of model comparisons.
+
+    Parameters
+    ----------
+    models : ModelComparison
+        Set of model objects to access results from.
+    concise : bool, optional, default: False
+        Whether to generate a concise version of the string.
+
+    Returns
+    -------
+    str
+        Formatted string of model comparisons.
+    """
+
+    str_lst = [
+        'SPECTRUM MODEL COMPARISON',
+        '',
+    ]
+
+    for ind, model in enumerate(models.models):
+        str_lst.append('Model {}: '.format(ind + 1) + model.modes.label)
+
+        metric_str = 'Model metrics - '
+        for m_ind in range(len(model.results.metrics)):
+            metric_str = metric_str + '{}: {:1.4f} '.format(\
+                model.results.metrics.flabels[m_ind],
+                list(model.results.metrics.results.values())[m_ind])
+        str_lst.append(metric_str)
+
+        str_lst.append(\
+            'Model size: {:d} parameters [{:d} ap + {:d} pe ({:d} peak(s) x {:d})].'.format(\
+                model.results.n_params, model.modes.aperiodic.n_params,
+                model.results.n_peaks * model.modes.periodic.n_params,
+                model.results.n_peaks, model.modes.periodic.n_params))
+
+        str_lst.append('')
+
+    return _format(str_lst, concise)
+
+
 ## HELPER SUB-FUNCTIONS FOR MODEL REPORT STRINGS
 
 def _report_str_algo(model):

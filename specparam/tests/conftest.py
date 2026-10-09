@@ -10,7 +10,8 @@ from specparam.modutils.dependencies import safe_import
 
 from specparam.tests.tdata import (get_tdata, get_tdata2d, get_tdata2dt, get_tdata3d,
                                    get_tfm, get_tfm2, get_tfg, get_tfg2, get_tft, get_tfe,
-                                   get_tbands, get_tresults, get_tmodes, get_tdocstring)
+                                   get_tmodelcomp, get_tbands, get_tresults, get_tmodes,
+                                   get_tdocstring)
 from specparam.tests.tsettings import (BASE_TEST_FILE_PATH, TEST_DATA_PATH,
                                        TEST_REPORTS_PATH, TEST_PLOTS_PATH)
 
@@ -98,6 +99,10 @@ def tft():
 @pytest.fixture(scope='session')
 def tfe():
     yield get_tfe()
+
+@pytest.fixture(scope='session')
+def tmodelcomp():
+    yield get_tmodelcomp()
 
 @pytest.fixture(scope='session')
 def tbands():
