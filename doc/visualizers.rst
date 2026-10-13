@@ -6,6 +6,13 @@ This page includes animated visualizers to explore topics related to spectral pa
 The source code to create these visualizations is in the
 `visualizers repository <https://github.com/fooof-tools/Visualizers/>`_.
 
+Fitting Algorithm
+-----------------
+
+Animated visualizer showing the fitting algorithm:
+
+.. image:: https://raw.githubusercontent.com/fooof-tools/Visualizers/main/gifs/specparam-algorithm.gif
+
 Spectral Rotation
 -----------------
 
