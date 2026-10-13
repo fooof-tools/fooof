@@ -9,6 +9,8 @@ from specparam.sim.transform import compute_rotation_offset
 from specparam.modutils.docs import (docs_get_section, replace_docstring_sections,
                                      docs_replace_param)
 
+from specparam.sim.gen import gen_freqs as create_freqs
+
 ###################################################################################################
 ###################################################################################################
 
