@@ -153,6 +153,18 @@ def test_event_get_group(tfe):
 
     ntfe0 = tfe.get_group(None, None)
     assert isinstance(ntfe0, SpectralTimeEventModel)
+    # `None` means 'select all', so the full data & results should carry over
+    assert ntfe0.data.spectrograms.shape == tfe.data.spectrograms.shape
+    tkey0 = list(ntfe0.results.event_time_results.keys())[0]
+    assert ntfe0.results.event_time_results[tkey0].shape == \
+        tfe.results.event_time_results[tkey0].shape
+
+    # A `None` on only one of the two index arguments should still select
+    # all indices on that axis, not insert a new axis via `arr[None]`
+    ntfe_half = tfe.get_group([0], None)
+    tkey_half = list(ntfe_half.results.event_time_results.keys())[0]
+    assert ntfe_half.results.event_time_results[tkey_half].shape == \
+        (1, tfe.data.n_time_windows)
 
     einds = [0, 1]
     winds = [1, 2]

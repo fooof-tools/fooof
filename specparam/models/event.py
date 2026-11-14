@@ -319,22 +319,20 @@ class SpectralTimeEventModel(SpectralTimeModel):
             # Initialize a new model object, with same settings as current object
             output = initialize_model_from_source(self, 'event')
 
-            if event_inds is not None or window_inds is not None:
+            # Add data for specified power spectra, if available
+            if self.data.has_data:
+                output.data.spectrograms = self.data.spectrograms[einds, :, :][:, :, winds]
 
-                # Add data for specified power spectra, if available
-                if self.data.has_data:
-                    output.data.spectrograms = self.data.spectrograms[einds, :, :][:, :, winds]
+            # Add results for specified power spectra - event group results
+            temp = [self.results.event_group_results[ei][wi] for ei in einds for wi in winds]
+            step = int(len(temp) / len(einds))
+            output.results.event_group_results = \
+                [temp[ind:ind+step] for ind in range(0, len(temp), step)]
 
-                # Add results for specified power spectra - event group results
-                temp = [self.results.event_group_results[ei][wi] for ei in einds for wi in winds]
-                step = int(len(temp) / len(einds))
-                output.results.event_group_results = \
-                    [temp[ind:ind+step] for ind in range(0, len(temp), step)]
-
-                # Add results for specified power spectra - event time results
-                output.results.event_time_results = \
-                    {key : self.results.event_time_results[key][event_inds][:, window_inds] \
-                    for key in self.results.event_time_results}
+            # Add results for specified power spectra - event time results
+            output.results.event_time_results = \
+                {key : self.results.event_time_results[key][einds][:, winds] \
+                for key in self.results.event_time_results}
 
         elif output_type in ['time', 'group']:
 
