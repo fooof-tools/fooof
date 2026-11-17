@@ -551,7 +551,7 @@ class Data2DT(Data2D):
     def plot(self, **plt_kwargs):
         """Plot the spectrogram."""
 
-        plot_spectrogram(self.freqs, self.spectrogram, **plot_kwargs)
+        plot_spectrogram(self.freqs, self.spectrogram, **plt_kwargs)
 
 
 @replace_docstring_sections([docs_get_section(Data.__doc__, 'Parameters'),
@@ -644,10 +644,10 @@ class Data3D(Data2DT):
             super().add_data(freqs, spectrograms, freq_range)
 
 
-    def plot(self, event_ind):
+    def plot(self, event_ind, **plt_kwargs):
         """Plot a selected spectrogram."""
 
-        plot_spectrogram(self.freqs, self.spectrograms[event_ind, :, :], **plot_kwargs)
+        plot_spectrogram(self.freqs, self.spectrograms[event_ind, :, :], **plt_kwargs)
 
 
     def _reset_data(self, clear_freqs=False, clear_spectrum=False,
