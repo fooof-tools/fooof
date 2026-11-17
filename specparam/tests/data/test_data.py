@@ -106,6 +106,11 @@ def test_data2dt_add_data():
     assert np.all(tdata2dt.spectrogram)
     assert tdata2dt.n_spectra == tdata2dt.n_time_windows == len(pows.T)
 
+@plot_test
+def test_data2dt_plot(tdata2dt, skip_if_no_mpl):
+
+    tdata2dt.plot(cmap="viridis", aspect="auto")
+
 ## 3D Data Object
 
 def test_data3d():
@@ -127,3 +132,8 @@ def test_data3d_add_data():
     assert np.all(tdata3d.spectrograms)
     assert tdata3d.n_events
     assert tdata3d.n_spectra == 2 * len(pows.T)
+
+@plot_test
+def test_data3d_plot(tdata3d, skip_if_no_mpl):
+
+    tdata3d.plot(0, cmap="viridis", aspect="auto")
